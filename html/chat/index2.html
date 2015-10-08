@@ -1,0 +1,106 @@
+<html>
+	<head>
+		<title>Perk - Chat</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<script src="../assets/js/prefixfree.min.js"></script>
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+
+							<!-- Firechat -->
+  		<script src="https://cdn.firebase.com/js/client/2.0.2/firebase.js"></script>
+  		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  		<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap-modal.min.js"></script>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+
+				<!-- Logo -->
+				<!-- <a class="logo" href="../"><img src="../logo/logo6-small.png"></a> -->
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul>
+						</ul>
+					</nav>
+			</header>
+
+		<!-- intro -->
+			<section id="intro" class="main style1 dark fullscreen">
+				<div class="content container 75%">
+					<header>
+						<h2></h2>
+					</header>
+
+
+  <!-- Download from https://github.com/firebase/Firechat -->
+  <link rel="stylesheet" href="firechat/2.0.0/firechat-default.css" />
+  <script src="firechat/2.0.0/firechat-default.js"></script>
+  <script>
+    var chatRef = new Firebase('https://firechat-demo.firebaseio.com'),
+        target = document.getElementById("firechat-container"),
+        authModal = $('#auth-modal').modal({ show: false }),
+        chat = new FirechatUI(chatRef, target);
+
+    chat.on('auth-required', function() {
+      authModal.modal('show');
+      return false;
+    });
+
+    chatRef.onAuth(function(authData) {
+      if (authData) {
+        var userId = authData.uid,
+            username = authData[authData.provider].displayName;
+
+        chat.setUser(userId, username);
+        $('#user-name').text(username);
+        $('#user-info').show();
+        setTimeout(function() {
+          chat._chat.enterRoom('-Iy1N3xs4kN8iALHV0QA')
+        }, 500);
+      } else {
+        $('#user-info').hide();
+        chat._chat.enterRoom('-Iy1N3xs4kN8iALHV0QA')
+      }
+    });
+
+    function login(provider) {
+      authModal.modal('hide');
+      chatRef.authWithOAuthPopup(provider, function(error, authData) {
+        if (error) {
+          console.log(error);
+        }
+      });
+    }
+
+    function logout() {
+      chatRef.unauth();
+      location.reload();
+    }
+  </script>
+
+		<!-- Scripts -->
+				<!-- Firebase -->
+				<script src='https://cdn.firebase.com/js/client/2.1.0/firebase.js'></script>
+
+				<!-- Firechat -->
+				<link rel='stylesheet' href='https://cdn.firebase.com/libs/firechat/2.0.1/firechat.min.css' />
+				<script src='https://cdn.firebase.com/libs/firechat/2.0.1/firechat.min.js'></script>
+
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

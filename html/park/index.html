@@ -1,0 +1,62 @@
+<html>
+	<head>
+		<title>Perk - Driver</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<script src="../assets/js/prefixfree.min.js"></script>
+		<style>#map { width: 100%; height: 100%; }</style>
+	   <script src="https://maps.googleapis.com/maps/api/js"></script>
+	   <script>
+	      function initialize() {
+	        var mapCanvas = document.getElementById('map');
+	        var mapOptions = {
+	          center: new google.maps.LatLng(34.0569172,-117.8217494),
+	          zoom: 15,
+	          mapTypeId: google.maps.MapTypeId.ROADMAP
+	        }
+	        var map = new google.maps.Map(mapCanvas, mapOptions)
+	      }
+	      google.maps.event.addDomListener(window, 'load', initialize);
+	   </script>
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+
+				<!-- Logo -->
+				<div align="center">
+					<a href="../"><img src="../images/perk2.png" style="align:center"></a>
+				</div>
+
+			</header>
+		<!-- intro -->
+			<section id="intro">
+				<div id="map"></div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<!-- Menu -->
+					<div class="copyright">
+						<center>&copy; RZZK. All rights reserved.</center>
+					</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
