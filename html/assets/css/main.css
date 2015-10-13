@@ -2507,6 +2507,26 @@
 				background: #f5f6f7;
 			}
 
+		.main.style4 {
+			text-align: center;
+			padding: 0 0 2em 0;
+			line-height: 2px;
+			letter-spacing: -1px;
+			}
+		}
+
+			.main.style3 .content > header {
+				margin-bottom: 1em;
+			}
+
+			.main.style3.primary {
+				background: #fff;
+			}
+
+			.main.style3.secondary {
+				background: #f5f6f7;
+			}
+
 /* Dark */
 
 	.dark {
