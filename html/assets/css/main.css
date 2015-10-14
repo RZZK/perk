@@ -46,11 +46,10 @@
    	display: block;
 		color: #666666;
 		text-decoration: none;
-		height: 2.5em;
 		line-height: 2.5em;
 		padding: 0 0.5em 0 0.5em;
 		outline: 0;
-		font-weight: 600;
+		font-weight: 400;
 	}
 
 	.left{
@@ -58,11 +57,10 @@
 		display: block;
 		color: #666666;
 		text-decoration: none;
-		height: 2.5em;
 		line-height: 2.5em;
 		padding: 0 0.5em 0 0.5em;
 		outline: 0;
-		font-weight: 600;
+		font-weight: 400;
 	}
 
 /* Login */
@@ -3499,7 +3497,7 @@
 
 			body {
 				min-width: 320px;
-				font-size: 12pt;
+				font-size: 14pt;
 				line-height: 1.5em;
 			}
 
