@@ -41,6 +41,27 @@
 	body {
 		-webkit-text-size-adjust: none;
 	}
+	.right{
+   	float:right;
+   	display: block;
+		color: #666666;
+		text-decoration: none;
+		height: 2.5em;
+		line-height: 2.5em;
+		padding: 0 0.5em 0 0.5em;
+		outline: 0;
+	}
+
+	.left{
+		float:left;
+		display: block;
+		color: #666666;
+		text-decoration: none;
+		height: 2.5em;
+		line-height: 2.5em;
+		padding: 0 0.5em 0 0.5em;
+		outline: 0;
+	}
 
 /* Login */
 }
