@@ -1,6 +1,6 @@
-﻿<html>
+<html>
 	<head>
-		<title>Perk - Trade your parking spot for a ride to your car</title>
+		<title>Perk - Login</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -8,19 +8,17 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<script src="assets/js/prefixfree.min.js"></script>
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-
-		<style>#map { width: 100%; height: 100%; }</style>
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->		
 	   <script src="https://maps.googleapis.com/maps/api/js"></script>
 	   <script>
 	      function initialize() {
-	        var mapCanvas = document.getElementById('map');
+	        var mapCanvas = document.getElementById('googlemaps');
 	        var mapOptions = {
 	          center: new google.maps.LatLng(34.0569172,-117.8217494),
 	          zoom: 16,
 	          mapTypeId: google.maps.MapTypeId.ROADMAP
 	        }
-	        var map = new google.maps.Map(mapCanvas, mapOptions)
+	        var googlemaps = new google.maps.Map(mapCanvas, mapOptions)
 	      }
 	      google.maps.event.addDomListener(window, 'load', initialize);
 	   </script>
@@ -31,23 +29,30 @@
 		<!-- Header -->
 			<header id="header">
 				
-				<!-- Logo and Nav -->
+				<!-- Logo -->
 				<div align="center">
-						<a href="#"><span class="left">Ride</span></a>
-						<a href="park/"><span class="right">Park</span>​</a>
 					<a href="#"><img src="images/perk2.png" style="align:center"></a>
 				</div>
 
 			</header>
 
 		<!-- intro -->
-			<section id="intro">
-				<div id="map"></div>
+
+			<section id="blank" class="main style1 dark fullscreen">
+				<div id="googlemaps" class="blackbg"></div>
+				<div class="content container 75%">
+						<div class="login">
+							<input type="text" placeholder="username" name="user"><br>
+							<input type="password" placeholder="password" name="password"><br>
+							<input type="button" value="Login">
+						</div>
+						<p><a href="signup/">Create an account</a></p>
+				</div>
+				
 			</section>
 
 		<!-- Footer -->
 			<footer id="footer">
-				<!-- Menu -->
 					<div class="copyright">
 						<center>&copy; RZZK. All rights reserved.</center>
 					</div>
