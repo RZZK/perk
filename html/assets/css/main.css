@@ -78,7 +78,7 @@ div.blackbg {
   	height: 100%;
   	background-color: #000;
   	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  	-webkit-filter: blur(5px)
+  	-webkit-filter: blur(5px);
    filter: alpha(opacity=50);
    opacity: 0.3;
 }
