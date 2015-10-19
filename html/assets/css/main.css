@@ -41,6 +41,13 @@
 	body {
 		-webkit-text-size-adjust: none;
 	}
+
+	.lightbold{
+		text-decoration: none;
+		line-height: 2.5em;
+		font-weight: 400;
+	}
+
 	.right{
    	float:right;
    	display: block;
@@ -78,7 +85,7 @@ div.blackbg {
   	height: 100%;
   	background-color: #000;
   	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  	-webkit-filter: blur(5px)
+  	-webkit-filter: blur(5px);
    filter: alpha(opacity=50);
    opacity: 0.3;
 }
@@ -2548,14 +2555,6 @@ div.blackbg {
 				background: #f5f6f7;
 			}
 
-		.main.style4 {
-			text-align: center;
-			padding: 0 0 2em 0;
-			line-height: 2px;
-			letter-spacing: -1px;
-			}
-		}
-
 			.main.style3 .content > header {
 				margin-bottom: 1em;
 			}
@@ -2567,6 +2566,22 @@ div.blackbg {
 			.main.style3.secondary {
 				background: #f5f6f7;
 			}
+
+		.main.style4 {
+			text-align: center;
+			padding: 0 0 2em 0;
+			line-height: 2px;
+			letter-spacing: -1px;
+			}
+		}
+
+		.main.style5 {
+			text-align: center;
+			padding: 6em 0 6em 0;
+			line-height: 2px;
+			letter-spacing: 0px;
+			}
+		}
 
 /* Dark */
 
@@ -3073,6 +3088,17 @@ div.blackbg {
 		background-color: #000000;
 	}
 
+/* Intro small */
+
+	#introsmall {
+		background: url("images/overlay.png"), url("../../images/IMG_4442_dark.jpg");
+		color: white;
+		background-attachment: fixed, fixed;
+		background-position: top left, bottom center;
+		background-repeat: repeat, no-repeat;
+		background-color: #000000;
+	}
+
 
 /* Intro */
 
@@ -3527,7 +3553,7 @@ div.blackbg {
 
 			body {
 				min-width: 320px;
-				font-size: 14pt;
+				font-size: 12pt;
 				line-height: 1.5em;
 			}
 
