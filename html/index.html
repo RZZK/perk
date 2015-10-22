@@ -6,31 +6,16 @@
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<script src="assets/js/prefixfree.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->		
-	   <script src="https://maps.googleapis.com/maps/api/js"></script>
-	   <script>
-	      function initialize() {
-	        var mapCanvas = document.getElementById('googlemaps');
-	        var mapOptions = {
-	          center: new google.maps.LatLng(34.0569172,-117.8217494),
-	          zoom: 16,
-	          mapTypeId: google.maps.MapTypeId.ROADMAP
-	        }
-	        var googlemaps = new google.maps.Map(mapCanvas, mapOptions);
-			googlemaps.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true,disableDefaultUI: true});
-	      }
-	      google.maps.event.addDomListener(window, 'load', initialize);
-		  
-	   </script>
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 
 	</head>
-	<body>
+	<body ng-app="app" ng-controller="loginController">
 
 		<!-- Header -->
 			<header id="header">
-				
+
 				<!-- Logo -->
 				<div align="center">
 					<a href="#"><img src="images/perk2.png" style="align:center"></a>
@@ -51,29 +36,34 @@
 								if(log){
 									$(login).attr("loggedIn");
 								}
-							}				
+							}
 			</script>
 			<section id="blank" class="main style1 dark fullscreen">
-				
+
 				<div id="googlemaps" class="blackbg" style="filter: blur(5px)"></div>
 				<div class="content container 75%">
-						<div class="login">
+
+						<!-- if newUser = false, display login -->
+						<div ng-hide="displaySignUp" class="login">
 							<input type="text" placeholder="username" name="user"><br>
 							<input type="password" placeholder="password" name="password"><br>
-							<input type="button" value="Login" onclick="login();">
+							<input type="button" value="Login" ng-click="login()">
+							<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
 						</div>
-						
-						<p><a href="signup/">Create an account</a></p>
-				</div>
-				
-			</section>
 
-		<!-- Footer -->
-			<footer id="footer">
-					<div class="copyright">
-						<center>&copy; RZZK. All rights reserved.</center>
-					</div>
-			</footer>
+						<!-- if newUser = true, display signup -->
+						<div ng-show="displaySignUp" class="login">
+							<input type="text" placeholder="username" name="user">
+							<input type="password" placeholder="password" name="password"><br>
+							<input type="e-mail" placeholder="e-mail" name="e-mail">
+							<input type="phonenumber" placeholder="phone number" name="phonenumber"><br>
+							<input type="vehicle" placeholder="vehicle" name="vehicle">
+							<input type="vehiclecolor" placeholder="vehicle color" name="vehiclecolor"><br>
+							<input type="button" value="Sign-up">
+							<p><a href="" ng-click="newUser()">Cancel</a></p>
+						</div>
+				</div>
+			</section>
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
@@ -85,6 +75,23 @@
 			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/login.js"></script>
+
+			<script src="https://maps.googleapis.com/maps/api/js"></script>
+		   <script>
+		      function initialize() {
+		        var mapCanvas = document.getElementById('googlemaps');
+		        var mapOptions = {
+		          center: new google.maps.LatLng(34.0569172,-117.8217494),
+		          zoom: 16,
+		          mapTypeId: google.maps.MapTypeId.ROADMAP
+		        }
+		        var googlemaps = new google.maps.Map(mapCanvas, mapOptions);
+				googlemaps.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true,disableDefaultUI: true});
+		      }
+		      google.maps.event.addDomListener(window, 'load', initialize);
+
+		   </script>
 
 	</body>
 </html>
