@@ -7,6 +7,14 @@ angular.module('app', []).controller('loginController', function($scope, $http)
     .error(function (data){ $scope.users = [{id:0, fName:'Error', lName:'Could not load data'}]; });
   */
 
+  $scope.username = '';
+  $scope.passw1 = '';
+  $scope.passw2 = '';
+  $scope.email = '';
+  $scope.number = '';
+  $scope.vehicle = '';
+  $scope.vcolor = '';
+
   $scope.displaySignUp = false;
   $scope.error = false;
   $scope.incomplete = false;
@@ -19,15 +27,23 @@ angular.module('app', []).controller('loginController', function($scope, $http)
 
   $scope.login = function()
   {
-    id_counter += 1;
-    $scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
+     console.log("entered login function");
+    //$scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
+  };
 
+  $scope.signup = function()
+  {
+    console.log("entered signup function");
+    //$scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
   };
 
   $scope.$watch('passw1',function() {$scope.test();});
   $scope.$watch('passw2',function() {$scope.test();});
-  $scope.$watch('fName', function() {$scope.test();});
-  $scope.$watch('lName', function() {$scope.test();});
+  $scope.$watch('username', function() {$scope.test();});
+  $scope.$watch('email', function() {$scope.test();});
+  $scope.$watch('number', function() {$scope.test();});
+  $scope.$watch('vehicle', function() {$scope.test();});
+  $scope.$watch('vcolor', function() {$scope.test();});
 
   $scope.test = function()
   {
@@ -36,8 +52,10 @@ angular.module('app', []).controller('loginController', function($scope, $http)
 
     $scope.incomplete = false;
 
-    // if the fields are still empty
-    if ($scope.edit && (!$scope.fName.length || !$scope.lName.length ||!$scope.passw1.length || !$scope.passw2.length))
+    // if all fields are still empty
+    if (!$scope.username.length || !$scope.passw1.length || !$scope.passw2.length
+      || !$scope.email.length || !$scope.number.length || !$scope.vehicle.length
+      || !$scope.vcolor.length)
     {
        $scope.incomplete = true;
     }
