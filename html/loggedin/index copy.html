@@ -56,9 +56,6 @@
 				<div id="googlemaps" class="blackbg" style="filter: blur(5px)"></div>
 				<div class="content container 75%">
 
-					<!-- user is not logged in -->
-					<div ng-hide="loggedIn">
-
 						<!-- if newUser = false, display login -->
 						<div ng-hide="displaySignUp" class="login">
 							<input type="text" placeholder="username"><br>
@@ -81,21 +78,6 @@
 										style="padding-left: 100px; padding-right: 100px; margin-top: 10px;">Sign-Up</button>
 							<p><a href="" ng-click="newUser()">Cancel</a></p>
 						</div>
-					</div>
-					<!-- end of user not logged in -->
-
-						<!-- user is logged in -->
-						<div ng-show="loggedIn">
-							<button class="btn btn-success" ng-click="ride()"
-										style="padding-left: 60px; padding-right: 60px; margin-top: 10px;">
-										Request a Ride
-							</button>
-							<button class="btn btn-success" ng-click="park()"
-										style="padding-left: 70px; padding-right: 70px; margin-top: 10px;">
-										View users
-							</button>
-						</div>
-						<!-- end of user logged in -->
 				</div>
 			</section>
 
