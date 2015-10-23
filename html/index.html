@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Perk - Login</title>
+		<title>Perk</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -16,11 +16,12 @@
 		<!-- Header -->
 			<header id="header">
 
-				<!-- Logo -->
+				<!-- Logo and Nav -->
 				<div align="center">
+					<a href="#"><span class="glyphicon glyphicon-th-list left"></span></a>
+					<a href="#"><span class="glyphicon glyphicon-cog right"></span>​</a>
 					<a href="#"><img src="images/perk2.png" style="align:center"></a>
 				</div>
-
 			</header>
 
 		<!-- intro -->
@@ -86,6 +87,7 @@
 
 						<!-- user is logged in -->
 						<div ng-show="loggedIn">
+<<<<<<< HEAD
 							<button class="btn btn-success" ng-click="ride()"
 										style="padding-left: 60px; padding-right: 60px; margin-top: 10px;">
 										Request a Ride
@@ -96,6 +98,48 @@
 							</button>
 						</div>
 						<!-- end of user logged in -->
+=======
+							<a href="#">
+								<button class="btn btn-success" ng-click="ride()"
+										style="padding-left: 60px; padding-right: 60px; margin-top: 10px;">
+										Request a Ride
+								</button>
+							</a>
+							<a href="#info">
+								<button class="btn btn-success" ng-click="park()"
+										style="padding-left: 70px; padding-right: 70px; margin-top: 10px;">
+										View users
+								</button>
+							</a>
+						</div>
+						<!-- end of user logged in -->
+				</div>
+			</section>
+
+		<!-- info -->
+			<section id="info" class="main style3 primary">
+				<div class="content container">
+					<a class="carousel-control left" href="#/current/prev" data-slide="prev">
+    					<span class="glyphicon glyphicon-chevron-left"></span>
+					</a>
+
+					<a class="carousel-control right" href="#/current/next" data-slide="next">
+    					<span class="glyphicon glyphicon-chevron-right"></span>
+					</a>
+
+					<header>
+						<h2>[First Name Last Name]</h2>
+						<p>email@cpp.edu</p>
+					</header>
+					<p>
+						<a class="btn btn-default btn-lg" href="#" role="button">Call</a>
+						<a class="btn btn-default btn-lg" href="#" role="button">Chat</a>
+					</p>
+					<p><b>Vehicle Make/Model</b> : </p>
+					<p><b>Vehicle Color</b> : </p>
+					<br>
+					<br>
+>>>>>>> refs/remotes/origin/master
 				</div>
 			</section>
 
