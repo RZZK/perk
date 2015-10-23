@@ -18,6 +18,7 @@ angular.module('app', []).controller('loginController', function($scope, $http)
   $scope.displaySignUp = false;
   $scope.error = false;
   $scope.incomplete = false;
+  $scope.loggedIn = false;
 
   $scope.newUser = function(id)
   {
@@ -37,13 +38,12 @@ angular.module('app', []).controller('loginController', function($scope, $http)
 
   $scope.login = function()
   {
-     console.log("entered login function");
+     $scope.loggedIn = true;
     //$scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
   };
 
   $scope.signup = function()
   {
-    console.log("entered signup function");
     //$scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
   };
 
