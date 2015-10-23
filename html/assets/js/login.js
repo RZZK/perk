@@ -22,7 +22,17 @@ angular.module('app', []).controller('loginController', function($scope, $http)
   $scope.newUser = function(id)
   {
      if(id == 'signup') { $scope.displaySignUp = true; }
-     else { $scope.displaySignUp = false; }
+     else
+     {
+        $scope.displaySignUp = false;
+        $scope.username = null;
+        $scope.passw1 = null;
+        $scope.passw2 = null;
+        $scope.email = null;
+        $scope.number = null;
+        $scope.vehicle = null;
+        $scope.vcolor = null;
+     }
   };
 
   $scope.login = function()
