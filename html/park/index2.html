@@ -1,0 +1,230 @@
+<html>
+	<head>
+		<title>Perk - Driver</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<script src="../assets/js/prefixfree.min.js"></script>
+	   <script>
+			//test
+			var json_text = ' [{"id":"10", "name":"Bob","time":"12:30","selected":"false"},{"id":"14", "name":"Bob","time":"12:30","selected":"false"},{"id":"17", "name":"Bob","time":"12:30","selected":"false"},{"id":"26", "name":"Bob","time":"12:30","selected":"false"},{"id":"33", "name":"Bob","time":"12:30","selected":"false"},{"id":"77", "name":"Bob","time":"12:30","selected":"false"}]';
+	   </script>
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>	
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+
+				<!-- Logo -->
+				<div align="center">
+					<a href="../"><img src="../images/perk2.png" style="align:center"></a>
+				</div>
+
+			</header>
+		<!-- Table -->
+			<table class="table btn" id="table" style="text-indent: 5px">
+				<tr style="cursor:default;color: rgba(185, 186, 187, 0.498039);background-color:#455A64" height="100">
+					<td class="Banner" width="20%">
+						 Name
+					</td>
+					<td  class="Banner"  width = "40%">
+						Pickup Time
+					</td>
+					<td  class="Banner"  width = "40%">
+						Status
+					</td>
+				</tr>
+			</table>
+				
+				
+				
+		<!-- Footer -->
+			<footer id="footer">
+				<!-- Menu -->
+					<div class="copyright">
+						<center>&copy; RZZK. All rights reserved.</center>
+					</div>
+			</footer>
+			
+				
+		<style> 
+			.Banner{
+				 font-weight: bold;
+				
+				}
+			.table{
+				width:100%;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			.table tr{
+				height: 50px;
+			}
+			.btn { 
+				cursor:pointer;
+			} 
+			.noselect {
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			.odd{
+				background: white;
+				transition: background .5s;
+				} 
+			.even{
+				background: #ECEFF1;
+				transition: background .5s;
+				} 
+			.even:hover{
+				background:#CFD8DC;
+				-webkit-transition: background .5s; /* For Safari 3.1 to 6.0 */
+				transition: background .5s;
+				box-shadow: 0px 2px 2px black;
+			}
+			.odd:hover{
+				background:#CFD8DC;
+				-webkit-transition: background .5s; /* For Safari 3.1 to 6.0 */
+				transition: background .5s;
+			}
+			.selected{
+				background-color: #26C6DA;
+			}
+    }
+		</style>
+		
+		<script>
+			var table = document.getElementById("table"); 
+			var list = createList(json_text);
+			initializeTable();
+			
+			//Function fills the list variable with json text responsible for keeping track of the table
+			//JSON should be in the following format:  '[{"id":"10", "name":"Bob","time":"12:30","selected":"false"},{"id":"14", "name":"Bob","time":"12:30","selected":"false"}]'
+			function createList(json){
+				var json_array  = JSON.parse(json);
+				var list = new Array();
+				
+				json_array.forEach(function(e){
+					list.push({
+						"id": e.id,
+						"name": e.name,
+						"time": e.time,
+						"selected": e.selected,
+						"row": null
+					});
+				});
+				return list;
+			}
+			
+			
+			function initializeTable(){
+				list.forEach(function(e){
+					addEntry(e);
+				});
+				oddsAndEvens();
+			}
+			
+			//Function color codes the table based on whether its an even row or an odd row
+			function oddsAndEvens(){
+				
+				var b = true;
+				list.forEach(function(e){
+				
+					var cls;
+					if(b) cls = e.row.className.replace("odd","even");
+					else cls = e.row.className.replace("even","odd");
+					e.row.className = cls;
+					b = !b;
+				});
+			}
+			
+			//Function will add a row to the table given an assoc array of data
+			function addEntry(e){
+				var row = table.insertRow();
+				e["row"] = row;
+				row.className = "btn noselect";
+				row.className += (table.length % 2 == 0) ? " even": " odd";
+				var cell = row.insertCell();
+				cell.innerHTML = e.name;
+				cell = row.insertCell();
+				cell.innerHTML  = e.time;
+				cell = row.insertCell();
+				cell.innerHTML = "Available"
+				
+				row.addEventListener("click",function rowClicked(){
+					e.selected = !e.selected;
+					if(e.selected){
+						var cls = e.row.className.replace("odd","selected");
+						cls = cls.replace("even","selected");
+						e.row.className = cls;
+						e.row.cells[2].innerHTML = "Request Pending";
+						ellipsis(e);
+					}
+					else{
+						e.row.cells[2].innerHTML = "Available";
+						e.row.className = e.row.className.replace("selected","odd");
+						oddsAndEvens();
+					}
+				});
+			}
+			function sortList(){
+				list.sort(function(a,b){
+					var t1 = new Date(a.time);
+					var t2 = new Date(b.time);
+					return t1 - t2;
+				});
+			}
+			function clearTable(){
+				
+			}
+			
+			function addUser(name,time){
+				
+				
+				//TODO
+			}
+			function removeUser(name,time){
+				//TODO
+			}
+			
+			function ellipsis(e){
+				var x = setInterval(frame, 600);
+				var i = 1;
+				function frame(){
+					if(!e.selected){
+						clearInterval(x);
+						return;
+					}
+					e.row.cells[2].innerHTML = "Request Pending";
+					for(var i2 = 0; i2 < i; i2++) e.row.cells[2].innerHTML += ".";
+					i++;
+					if(i == 4) i = 0;
+					
+				}
+			}	
+			
+			
+		</script>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
