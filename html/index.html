@@ -7,18 +7,30 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+		<link rel="stylesheet" href="assets/css/snapjs/snap.css">
+		<link rel="stylesheet" href="assets/css/angular-snap-only.css">
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 
 	</head>
 	<body ng-app="app" ng-controller="loginController">
 
+		<!-- need to merge myUsers.js with login.js for this page to work -->
+		<!-- Left slide out page -->
+		<div id="shelf-1" snap-drawer>
+			  <h1>testing testing</h1>
+			  <p>testing testing</p>
+   	</div>
+
+   	<div id="content" class="scrollable" snap-content snap-options="snapOpts">
+
+
 		<!-- Header -->
 			<header id="header">
 
 				<!-- Logo and Nav -->
 				<div align="center">
-					<a href="#"><span class="glyphicon glyphicon-th-list left"></span></a>
+					<a href="#" snap-toggle="left"><span class="glyphicon glyphicon-th-list left"></span></a>
 					<a href="#"><span class="glyphicon glyphicon-cog right"></span>​</a>
 					<a href="#"><img src="images/perk2.png" style="align:center"></a>
 				</div>
@@ -125,6 +137,7 @@
 					</p>
 				</div>
 			</section>
+		</div>
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
@@ -138,6 +151,8 @@
 			<script src="assets/js/main.js"></script>
 			<script src="assets/js/login.js"></script>
 			<script>$('body').bind('touchmove', function(e){e.preventDefault()})</script>
+			<script src="assets/js/snap.js"></script>
+			<script src="assets/js/angular-snap.js"></script>
 
 			<script src="https://maps.googleapis.com/maps/api/js"></script>
 		   <script>

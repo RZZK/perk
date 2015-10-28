@@ -1,4 +1,4 @@
-angular.module('app', []).controller('loginController', function($scope, $http)
+angular.module('app', ['snap']).controller('loginController', function($scope, $http)
 {
   /*
     // this method is currently not loading data from json correctly
@@ -6,7 +6,7 @@ angular.module('app', []).controller('loginController', function($scope, $http)
     .success(function (data){ $scope.users = data; })
     .error(function (data){ $scope.users = [{id:0, fName:'Error', lName:'Could not load data'}]; });
   */
-
+  $scope.snapOpts = { disable: 'right' };
   $scope.username = '';
   $scope.passw1 = '';
   $scope.passw2 = '';
