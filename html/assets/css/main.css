@@ -40,7 +40,6 @@
 
 	body {
 		-webkit-text-size-adjust: none;
-		overflow: hidden;
 		width: 100%;
 		position: relative
 	}
