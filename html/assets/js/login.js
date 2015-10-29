@@ -6,6 +6,21 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
     .success(function (data){ $scope.users = data; })
     .error(function (data){ $scope.users = [{id:0, fName:'Error', lName:'Could not load data'}]; });
   */
+  $scope.fName = '';
+  $scope.lName = '';
+  $scope.departTime = '';
+  $scope.lot = '';
+  $scope.users =
+  [
+    {id:1, fName:'Hege', lot: "F", departTime:"5:00pm" },
+    {id:2, fName:'Kim', lot: "Structure", departTime:"5:30pm" },
+    {id:3, fName:'Sal', lot: "Structure", departTime:"8:15pm" },
+    {id:4, fName:'Jack', lot: "Structure", departTime:"9:00pm" },
+    {id:5, fName:'John', lot: "Overflow", departTime:"9:05pm" },
+    {id:6, fName:'Peter', lot: "F", departTime:"10:00pm" },
+    {id:7, fName:'Lollerskates', lot: "F", departTime:"11:59pm" }
+  ];
+
   $scope.snapOpts = { disable: 'right' };
   $scope.username = '';
   $scope.passw1 = '';
