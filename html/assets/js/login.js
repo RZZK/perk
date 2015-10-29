@@ -17,6 +17,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
 
   $scope.displaySignUp = false;
   $scope.showRiderList = false;
+  $scope.showMenu = true;
   $scope.error = false;
   $scope.incomplete = false;
   $scope.loggedIn = false;
@@ -37,7 +38,12 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      }
   };
 
-  $scope.showRiders = function () { $scope.showRiderList = true; }
+  $scope.showRiders = function ()
+  {
+     $scope.showRiderList = true;
+     $scope.showMenu = false;
+  }
+  $scope.displayMenu = function () { $scope.showMenu = true; }
   $scope.login = function()
   {
      $scope.loggedIn = true;
