@@ -39,7 +39,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
 
   $scope.newUser = function(id)
   {
-     if(id == 'signup') { $scope.displaySignUp = false; }
+     if(id == 'signup') { $scope.displaySignUp = true; }
      else
      {
         $scope.displaySignUp = false;
