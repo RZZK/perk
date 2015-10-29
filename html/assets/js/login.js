@@ -33,10 +33,12 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.displaySignUp = false;
   $scope.showRiderList = false;
   $scope.showMenu = true;
+  $scope.showAddDeparture = false;
+  $scope.welcomeScreen = true;
   $scope.error = false;
   $scope.incomplete = false;
   $scope.loggedIn = false;
-
+//---------------------------------------------------------------------------------------------------------------
   $scope.newUser = function(id)
   {
      if(id == 'signup') { $scope.displaySignUp = true; }
@@ -52,24 +54,53 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
         $scope.vcolor = null;
      }
   };
-
+//---------------------------------------------------------------------------------------------------------------
   $scope.showRiders = function ()
   {
-     $scope.showRiderList = true;
+     $scope.welcomeScreen = false;
+     $scope.showAddDeparture = false;
      $scope.showMenu = false;
+     $scope.showRiderList = true;
+
   }
+//---------------------------------------------------------------------------------------------------------------
   $scope.displayMenu = function () { $scope.showMenu = true; }
+//---------------------------------------------------------------------------------------------------------------
+  $scope.displayAddDeparture = function ()
+  {
+     $scope.welcomeScreen = false;
+     $scope.showRiderList = false;
+     $scope.showAddDeparture = true;
+  }
+//---------------------------------------------------------------------------------------------------------------
   $scope.login = function()
   {
      $scope.loggedIn = true;
     //$scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
   };
-
+//---------------------------------------------------------------------------------------------------------------
   $scope.signup = function()
   {
     //$scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
   };
+//---------------------------------------------------------------------------------------------------------------
+  $scope.submitTime = function()
+  {
+    /*id_counter += 1;
 
+    // add to data
+    $scope.users.push({id:id_counter,
+                        fName:$scope.fName,
+                        lot:$scope.lot,
+                        departTime:$scope.departTime})
+
+    // clear fields and reset save button
+    $scope.fName = null;
+    $scope.lot = null;
+    $scope.departTime = null;
+    $scope.incomplete = true;*/
+  };
+//---------------------------------------------------------------------------------------------------------------
   $scope.$watch('passw1',function() {$scope.test();});
   $scope.$watch('passw2',function() {$scope.test();});
   $scope.$watch('username', function() {$scope.test();});
@@ -77,7 +108,9 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.$watch('number', function() {$scope.test();});
   $scope.$watch('vehicle', function() {$scope.test();});
   $scope.$watch('vcolor', function() {$scope.test();});
-
+  $scope.$watch('lot', function() {$scope.test();});
+  $scope.$watch('departTime', function() {$scope.test();});
+//---------------------------------------------------------------------------------------------------------------
   $scope.test = function()
   {
     if ($scope.passw1 !== $scope.passw2) { $scope.error = true; } // if the passwords do not match, throw error
@@ -88,9 +121,13 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
     // if all fields are still empty
     if (!$scope.username.length || !$scope.passw1.length || !$scope.passw2.length
       || !$scope.email.length || !$scope.number.length || !$scope.vehicle.length
-      || !$scope.vcolor.length)
+      || !$scope.vcolor.length )
     {
        $scope.incomplete = true;
     }
+
+    //if fields are empty during add phase
+    if ($scope.lot.length && $scope.departTime.length) { $scope.incomplete = false; }
   };
+//---------------------------------------------------------------------------------------------------------------
 });

@@ -10,7 +10,10 @@
 		font-size: 100%;
 		font: inherit;
 		vertical-align: baseline;
+		text-decoration: none;
 	}
+
+	a:hover, a:visited, a:link, a:active { text-decoration: none; }
 
 	article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
 		display: block;
@@ -79,6 +82,11 @@
   top: 0;
   left: 0;
   z-index: 0; /* Set z-index to 0 as it will be on a layer below the contact form */
+  text-decoration: none;
+}
+
+#leftmenu {
+	color: #666666;
 }
 
 div.blackbg {
@@ -2578,10 +2586,9 @@ div.blackbg {
 		}
 
 		.main.style5 {
-			text-align: center;
-			padding: 6em 0 6em 0;
-			line-height: 2px;
-			letter-spacing: 0px;
+			position: relative;
+ 			top: 50%;
+ 			transform: translateY(-50%);
 			}
 		}
 
@@ -3088,24 +3095,34 @@ div.blackbg {
 		background-position: top left, bottom center;
 		background-repeat: repeat, no-repeat;
 		background-color: #000000;
+		text-decoration: none;
+	}
+
+	#white {
+		background-size: 256px 256px, cover;
+		background-attachment: fixed, fixed;
+		background-position: top left, bottom center;
+		background-repeat: repeat, no-repeat;
+		background-color: white;
+		text-decoration: none;
 	}
 
 /* Intro small */
 
 	#introsmall {
 		background: url("images/overlay.png"), url("../../images/IMG_4442_dark.jpg");
-		color: white;
 		background-attachment: fixed, fixed;
 		background-position: top left, bottom center;
 		background-repeat: repeat, no-repeat;
 		background-color: #000000;
+		text-decoration: none;
 	}
 
 
 /* Intro */
 
 	#intro {
-		background: url("images/overlay.png"), url("../../images/IMG_4442.jpg");
+		background: url("images/overlay.png"), url("../../images/IMG_4442_blurred.jpg");
 		background-size: 256px 256px, cover;
 		background-attachment: fixed, fixed;
 		background-position: top left, bottom center;
