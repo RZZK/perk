@@ -13,8 +13,8 @@
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 
 	</head>
-	<!-- <body ng-app="app" ng-controller="loginController" style="overflow: hidden;"> -->
-	<body ng-app="app" ng-controller="loginController">
+	<body ng-app="app" ng-controller="loginController" style="overflow: hidden;">
+	<!-- <body ng-app="app" ng-controller="loginController" -->
 
 		<!-- need to merge myUsers.js with login.js for this page to work -->
 		<!-- Left slide out page -->
@@ -132,33 +132,7 @@
 						<!-- end of user logged in -->
 				</section>
 
-				<section ng-show="showRiderList">
-					<section id="introsmall" class="main style2" >
-					  <div class="container" align="center">
-						 <!--add departure time / edit time-->
-						 <h3>Add departure time</h3>
-						 <form class="form-horizontal">
-
-							<div class="form-group">
-							  <div class="col-sm-30">
-								 <input type="text" ng-model="lot" ng-disabled="!edit" placeholder="Lot">
-							  </div>
-							</div>
-
-							<div class="form-group">
-							  <div class="col-sm-30">
-								 <input type="text" ng-model="departTime" ng-disabled="!edit" placeholder="12:00am/pm">
-							  </div>
-							</div>
-							</form>
-
-						 <button class="btn btn-success" ng-disabled="incomplete" ng-click="submitTime()">
-							<span class="glyphicon glyphicon-save"></span> Submit
-						 </button>
-					  </div>
-				  </section>
-
-
+				<section ng-show="showRiderList" style="padding-top: 40px;">
 				 <!--table data-->
 				 <table class="table table-striped">
 					<thead>
