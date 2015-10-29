@@ -16,13 +16,14 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.vcolor = '';
 
   $scope.displaySignUp = false;
+  $scope.showRiderList = false;
   $scope.error = false;
   $scope.incomplete = false;
   $scope.loggedIn = false;
 
   $scope.newUser = function(id)
   {
-     if(id == 'signup') { $scope.displaySignUp = true; }
+     if(id == 'signup') { $scope.displaySignUp = false; }
      else
      {
         $scope.displaySignUp = false;
@@ -36,6 +37,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      }
   };
 
+  $scope.showRiders = function () { $scope.showRiderList = true; }
   $scope.login = function()
   {
      $scope.loggedIn = true;
