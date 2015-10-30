@@ -7,17 +7,18 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
-		<link rel="stylesheet" href="assets/css/snapjs/snap.css">
+		<link rel="stylesheet" href="assets/css/snap.css">
 		<link rel="stylesheet" href="assets/css/angular-snap-only.css">
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+
 
 	</head>
 	<body ng-app="app" ng-controller="loginController" style="overflow: hidden;">
 	<!-- <body ng-app="app" ng-controller="loginController" -->
 
 		<!-- Left slide out page -->
-		<div id="leftmenu" style="padding-left: 12px; padding-top: 5px;" ng-show="showMenu" snap-drawer>
+		<div id="leftmenu" style="padding-left: 12px; padding-top: 5px;" snap-drawer>
 				<h3>John Doe</h3>
 				<p>johndoe@cpp.edu</p>
 				<hr>
@@ -123,29 +124,17 @@
 
 						<!-- user is logged in -->
 						<div ng-show="loggedIn">
-							<!-- Header -->
 								<header id="header">
 									<!-- Logo and Nav -->
 									<div align="center">
 										<a href="" snap-toggle="left" ng-click="displayMenu()"><span class="glyphicon glyphicon-th-list left"></span></a>
-										<a href="" ng-click=""><span class="glyphicon glyphicon-refresh right"></span></a>
+										<a href="" onclick="initSecondMap()"><span class="glyphicon glyphicon-refresh right"></span></a>
 										<a href="#"><img src="images/perk2.png" style="align:center"></a>
 									</div>
 								</header>
-							<section id="white" class="main fullscreen">
-								<div align="center">
-
+							<section>
 									<section ng-show="welcomeScreen">
-										<section id="intro" class="main fullscreen">
-											<div class="content container 100%" align="center" style="color: white; padding-top: 16em;">
-												<a href="#">
-													<button class="btn btn-success"
-													style="padding-left: 60px; padding-right: 60px; margin-top: 10px;">
-														Welcome!
-													</button>
-												</a>
-											</div>
-										</section>
+											<div id="secondMap"></div>
 									</section>
 
 									<section ng-hide="welcomeScreen">
@@ -174,7 +163,7 @@
 
 											  </div>
 										</section>
-										<section ng-show="showRiderList" style="padding-top: 40px;">
+										<section id="white" ng-show="showRiderList" style="padding-top: 40px;" class="main fullscreen">
 										 <!--table data-->
 										 <table class="table table-striped">
 											<thead>
@@ -219,20 +208,41 @@
 			<script src="assets/js/angular-snap.js"></script>
 
 			<script src="https://maps.googleapis.com/maps/api/js"></script>
-		   <script>
-		      function initialize() {
-		        var mapCanvas = document.getElementById('googlemaps');
-		        var mapOptions = {
-		          center: new google.maps.LatLng(34.0569172,-117.8217494),
-		          zoom: 16,
-		          mapTypeId: google.maps.MapTypeId.ROADMAP
-		        }
-		        var googlemaps = new google.maps.Map(mapCanvas, mapOptions);
-				googlemaps.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true,disableDefaultUI: true});
-		      }
-		      google.maps.event.addDomListener(window, 'load', initialize);
 
-		   </script>
+			<script>
+				function initialize() {
+				  var mapCanvas = document.getElementById('googlemaps');
+				  var mapOptions = {
+					 center: new google.maps.LatLng(34.0569172,-117.8217494),
+					 zoom: 16,
+					 mapTypeId: google.maps.MapTypeId.ROADMAP
+				  }
+				  var googlemaps = new google.maps.Map(mapCanvas, mapOptions);
+				googlemaps.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true,disableDefaultUI: true});
+				}
+				google.maps.event.addDomListener(window, 'load', initialize);
+
+			</script>
+
+			<script>
+				function initSecondMap()
+				{
+					var mapCanvas = document.getElementById('secondMap');
+					var mapOptions =
+					{
+						center: new google.maps.LatLng(34.0569172,-117.8217494),
+						zoom: 16,
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+					}
+					var secondMap = new google.maps.Map(mapCanvas, mapOptions);
+					secondMap.setOptions({draggable: true, zoomControl: false, scrollwheel: true, disableDoubleClickZoom: false,disableDefaultUI: true});
+				}
+				//google.maps.event.addDomListener(window, 'click', initSecondMap);
+				google.maps.event.addDomListener(window, 'load', initSecondMap);
+				//google.maps.event.addDomListener(window, 'idle', initSecondMap);
+
+			</script>
+
 
 	</body>
 </html>

@@ -85,9 +85,16 @@
   text-decoration: none;
 }
 
+#secondMap {
+  height: 100%;
+  width: 100%;
+}
+
 #leftmenu {
 	color: #666666;
 }
+
+
 
 div.blackbg {
 	z-index: 1;
