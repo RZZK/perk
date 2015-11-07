@@ -74,14 +74,9 @@
 
 
 				<script>
-								function login(){
-									document.getElementById("googlemaps").className = "";
-
-									var log = true;
-									if(log){
-										$(login).attr("loggedIn");
-									}
-								}
+					function login(){
+						$('#googlemaps').removeClass('blackbg');
+					}
 				</script>
 					<section id="blank" class="main style4">
 					<div id="googlemaps" class="blackbg"></div>
@@ -101,7 +96,7 @@
 								<div ng-hide="displaySignUp" class="login">
 									<input type="text" placeholder="username"><br>
 									<input type="password" placeholder="password"><br>
-									<button class="btn btn-success" ng-click="login()"
+									<button class="btn btn-success" ng-click="login()" onclick="login()"
 												style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
 									<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
 								</div>
