@@ -2600,6 +2600,14 @@ div.blackbg {
 			}
 		}
 
+		.main.style6 {
+			text-align: center;
+			padding: 0 0 2em 0;
+			line-height: 30px;
+			letter-spacing: -1px;
+			}
+		}
+
 /* Dark */
 
 	.dark {
