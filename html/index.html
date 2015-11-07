@@ -75,15 +75,16 @@
 
 				<script>
 								function login(){
-									$(googlemaps).className("");
-									
+									document.getElementById("googlemaps").className = "";
+
 									var log = true;
 									if(log){
 										$(login).attr("loggedIn");
 									}
 								}
 				</script>
-
+					<section id="blank" class="main style4">
+					<div id="googlemaps" class="blackbg"></div>
 					<!-- user is not logged in -->
 					<div ng-hide="loggedIn">
 						<!-- Header -->
@@ -94,8 +95,6 @@
 								</div>
 							</header>
 
-						<section id="blank" class="main style1 dark fullscreen">
-							<div id="googlemaps" class="blackbg"></div>
 							<div class="content container 100%">
 
 								<!-- if newUser = false, display login -->
@@ -120,7 +119,7 @@
 									<p><a href="" ng-click="newUser()">Cancel</a></p>
 								</div>
 							</div>
-						</section>
+
 					</div>
 					<!-- end of user not logged in -->
 
@@ -136,7 +135,7 @@
 								</header>
 							<section>
 									<section ng-show="welcomeScreen">
-											<div id="secondMap"></div>
+											<div id="googlemaps"></div>
 									</section>
 
 									<section ng-hide="welcomeScreen">
@@ -192,6 +191,8 @@
 							</section>
 						</div>
 						<!-- end of user logged in -->
+
+					</section>
 		</div><!-- end of snap-content -->
 
 		<!-- Scripts -->
