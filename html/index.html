@@ -95,7 +95,7 @@
 								</div>
 							</header>
 
-							<div class="content container 100%">
+							<div class="content container 100%" style="padding-top: 16em;">
 
 								<!-- if newUser = false, display login -->
 								<div ng-hide="displaySignUp" class="login">
@@ -134,15 +134,14 @@
 									</div>
 								</header>
 							<section>
-									<section ng-show="welcomeScreen">
-											<div id="googlemaps"></div>
+									<section ng-show="welcomeScreen" style="padding-top: 16em;">
 											<h3>WELCOME</h3>
 									</section>
 
 									<section ng-hide="welcomeScreen">
 										<section id="blank" ng-show="showAddDeparture">
 
-									  		<div class="content container 100%" align="center" style="color: white; padding-top: 2em;">
+									  		<div class="content container 100%" align="center" style="color: white; padding-top: 16em;">
 													 <h3>Add departure time</h3>
 													 <form class="form-horizontal">
 
@@ -165,7 +164,7 @@
 
 											  </div>
 										</section>
-										<section id="white" ng-show="showRiderList" style="padding-top: 40px;" class="main fullscreen">
+										<section id="white" ng-show="showRiderList" class="main fullscreen" style="padding-top: 2em;">
 										 <!--table data-->
 										 <table class="table table-striped">
 											<thead>
@@ -227,26 +226,5 @@
 				google.maps.event.addDomListener(window, 'load', initialize);
 
 			</script>
-
-			<script>
-				function initSecondMap()
-				{
-					var mapCanvas = document.getElementById('secondMap');
-					var mapOptions =
-					{
-						center: new google.maps.LatLng(34.0569172,-117.8217494),
-						zoom: 16,
-						mapTypeId: google.maps.MapTypeId.ROADMAP
-					}
-					var secondMap = new google.maps.Map(mapCanvas, mapOptions);
-					secondMap.setOptions({draggable: true, zoomControl: false, scrollwheel: true, disableDoubleClickZoom: false,disableDefaultUI: true});
-				}
-				//google.maps.event.addDomListener(window, 'click', initSecondMap);
-				google.maps.event.addDomListener(window, 'load', initSecondMap);
-				//google.maps.event.addDomListener(window, 'idle', initSecondMap);
-
-			</script>
-
-
 	</body>
 </html>

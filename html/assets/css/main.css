@@ -2586,7 +2586,7 @@ div.blackbg {
 
 		.main.style4 {
 			text-align: center;
-			padding: 16em 0 2em 0;
+			padding: 0 0 2em 0;
 			line-height: 30px;
 			letter-spacing: -1px;
 			height: 100%;
@@ -2605,6 +2605,7 @@ div.blackbg {
 			padding: 0 0 2em 0;
 			line-height: 30px;
 			letter-spacing: -1px;
+			height: 100%;
 			}
 		}
 
