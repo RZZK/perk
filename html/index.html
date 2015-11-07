@@ -24,7 +24,7 @@
 				<hr>
 
 				<p>
-					<a href="" ng-click="displayAddDeparture()" style="color: #666666;" snap-close>
+					<a href="" ng-click="displayAddDeparture()" onclick="addBlur()" style="color: #666666;" snap-close>
 						<span class="glyphicon glyphicon-map-marker"></span>​ Add departure time
 					</a>
 				</p>
@@ -74,9 +74,13 @@
 
 
 				<script>
-					function login(){
+					function removeBlur(){
 						$('#googlemaps').removeClass('blackbg');
 						enableUserInput(MyMap);
+					}
+					function addBlur(){
+						$('#googlemaps').addClass('blackbg');
+						disableUserInput(MyMap);
 					}
 				</script>
 					<section id="blank" class="main style4">
@@ -97,7 +101,7 @@
 								<div ng-hide="displaySignUp" class="login">
 									<input type="text" placeholder="username"><br>
 									<input type="password" placeholder="password"><br>
-									<button class="btn btn-success" ng-click="login()" onclick="login()"
+									<button class="btn btn-success" ng-click="login()" onclick="removeBlur()"
 												style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
 									<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
 								</div>
