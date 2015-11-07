@@ -24,7 +24,7 @@
 				<hr>
 
 				<p>
-					<a href="" ng-click="displayAddDeparture()" style="color: #666666;" snap-close>
+					<a href="" ng-click="displayAddDeparture()" onclick="addBlur()" style="color: #666666;" snap-close>
 						<span class="glyphicon glyphicon-map-marker"></span>​ Add departure time
 					</a>
 				</p>
@@ -74,14 +74,17 @@
 
 
 				<script>
-								function login(){
-									var log = true;
-									if(log){
-										$(login).attr("loggedIn");
-									}
-								}
+					function removeBlur(){
+						$('#googlemaps').removeClass('blackbg');
+						enableUserInput(MyMap);
+					}
+					function addBlur(){
+						$('#googlemaps').addClass('blackbg');
+						disableUserInput(MyMap);
+					}
 				</script>
-
+					<section id="blank" class="main style4">
+					<div id="googlemaps" class="blackbg"></div>
 					<!-- user is not logged in -->
 					<div ng-hide="loggedIn">
 						<!-- Header -->
@@ -92,15 +95,13 @@
 								</div>
 							</header>
 
-						<section id="blank" class="main style1 dark fullscreen">
-							<div id="googlemaps" class="blackbg" style="filter: blur(5px)"></div>
-							<div class="content container 100%">
+							<div class="content container 100%" style="padding-top: 16em;">
 
 								<!-- if newUser = false, display login -->
 								<div ng-hide="displaySignUp" class="login">
 									<input type="text" placeholder="username"><br>
 									<input type="password" placeholder="password"><br>
-									<button class="btn btn-success" ng-click="login()"
+									<button class="btn btn-success" ng-click="login()" onclick="removeBlur()"
 												style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
 									<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
 								</div>
@@ -118,7 +119,7 @@
 									<p><a href="" ng-click="newUser()">Cancel</a></p>
 								</div>
 							</div>
-						</section>
+
 					</div>
 					<!-- end of user not logged in -->
 
@@ -133,12 +134,12 @@
 									</div>
 								</header>
 							<section>
-									<section ng-show="welcomeScreen">
-											<div id="secondMap"></div>
+									<section ng-show="welcomeScreen" style="padding-top: 16em;">
+											<h3>WELCOME</h3>
 									</section>
 
 									<section ng-hide="welcomeScreen">
-										<section id="intro" ng-show="showAddDeparture" class="main fullscreen">
+										<section id="blank" ng-show="showAddDeparture">
 
 									  		<div class="content container 100%" align="center" style="color: white; padding-top: 16em;">
 													 <h3>Add departure time</h3>
@@ -163,7 +164,7 @@
 
 											  </div>
 										</section>
-										<section id="white" ng-show="showRiderList" style="padding-top: 40px;" class="main fullscreen">
+										<section id="white" ng-show="showRiderList" class="main fullscreen" style="padding-top: 2em;">
 										 <!--table data-->
 										 <table class="table table-striped">
 											<thead>
@@ -190,6 +191,8 @@
 							</section>
 						</div>
 						<!-- end of user logged in -->
+
+					</section>
 		</div><!-- end of snap-content -->
 
 		<!-- Scripts -->
@@ -210,39 +213,38 @@
 			<script src="https://maps.googleapis.com/maps/api/js"></script>
 
 			<script>
+			var MyMap;
 				function initialize() {
 				  var mapCanvas = document.getElementById('googlemaps');
 				  var mapOptions = {
 					 center: new google.maps.LatLng(34.0569172,-117.8217494),
 					 zoom: 16,
-					 mapTypeId: google.maps.MapTypeId.ROADMAP
+					 mapTypeId: google.maps.MapTypeId.ROADMAP,
+					streetViewControl: false,
+					mapTypeControl: false,
+					disableDefaultUI: true,
+					draggable: false,
+					zoomControl: false, 
+					scrollwheel: false,
+					disableDoubleClickZoom: true,
+					styles: [
+						{
+						elementType: "labels.icon",
+						stylers: [{visibility: "off"}]
+						}
+					]
 				  }
-				  var googlemaps = new google.maps.Map(mapCanvas, mapOptions);
-				googlemaps.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true,disableDefaultUI: true});
+				var m = new google.maps.Map(mapCanvas, mapOptions);
+				MyMap = m;
+				}
+				
+				function disableUserInput(map){
+					map.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true});
+				}
+				function enableUserInput(map){
+					map.setOptions({draggable: true, zoomControl: true, scrollwheel: true, disableDoubleClickZoom: false});
 				}
 				google.maps.event.addDomListener(window, 'load', initialize);
-
 			</script>
-
-			<script>
-				function initSecondMap()
-				{
-					var mapCanvas = document.getElementById('secondMap');
-					var mapOptions =
-					{
-						center: new google.maps.LatLng(34.0569172,-117.8217494),
-						zoom: 16,
-						mapTypeId: google.maps.MapTypeId.ROADMAP
-					}
-					var secondMap = new google.maps.Map(mapCanvas, mapOptions);
-					secondMap.setOptions({draggable: true, zoomControl: false, scrollwheel: true, disableDoubleClickZoom: false,disableDefaultUI: true});
-				}
-				//google.maps.event.addDomListener(window, 'click', initSecondMap);
-				google.maps.event.addDomListener(window, 'load', initSecondMap);
-				//google.maps.event.addDomListener(window, 'idle', initSecondMap);
-
-			</script>
-
-
 	</body>
 </html>
