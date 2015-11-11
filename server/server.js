@@ -11,7 +11,7 @@ my_client.connect();
 
 //RUN METHODS AS TEST IN HERE
 
-disconnec();
+disconnect();
 
 function query(sql){
 	return my_client.query(sql, function (err, rows, fields) {
