@@ -16,9 +16,9 @@ var post= {userEmail:email, userPhone:phone, userVehicle:vehicle, userName:name}
 
 if(userExists=true)
 {
- connection.query('INSERT into users VALUES ?',post, function(err, result)  );      
+ connection.query('INSERT into users VALUES ?',post, function(err, result){});      
 }else{
-  console.log(“The information you have entered is already in our records”);
+  console.log("The information you have entered is already in our records");
 }
 
 });
@@ -28,10 +28,9 @@ if(userExists=true)
 ////////////////// userExist ////////////////////////////////////////
 var userExist= connection.query(function(cEmail, cPhone)    {
 
-boolean mark=true;
+var mark=true;
 
-var counter='SELECT  COUNT (where email = cEmail')
-from users 
+var counter='SELECT  COUNT (*) where email=cEmail from users '
 
 if(counter=0)
 {
@@ -45,37 +44,37 @@ else{
 /////////////////////// end userExist ///////////////////////
 
 //////////////// addToPark ///////////////////////////////
+
+var addToPark = connection.query(function(){
 if(userExist)
 {
- var id= Select userid from users where email=Cemail;
+ var id= 'Select userid from users where Cemail=email'
 
- var postPark={userid:id, lat:cLat, lon:cLon;, parkTime:cTime};
+ var postPark={userid:id, lat:cLat, lon:cLon, parkTime:cTime};
 
-   connection.query('INSERT into park VALUES ?',postPark,       function(err, result)        
+   connection.query('INSERT into park VALUES ?',postPark, function(err, result){});       
 }
 else{
- // user is not in the user table,
-   not sure on how to handle the error
+ console.log("Something went wrong *jumps out 10th floor window*");
 }
-
+});
 ////////////////////// end addToPark///////////////////
 
 ////////////// addToPickUp ////////////////////////////
-var addToPickUp(connection.query(function() {
+var addToPickUp=connection.query(function() {
 if(userExist)
 {
- var id= Select userid from users where email=Cemail;
+ var id= 'Select userid from users where email=Cemail'
 
- var postPick={userid:id, lat:cLat, lon:cLon;, pickTime:cTime, lotNumber:cLot};
+ var postPick={userid:id, lat:cLat, lon:cLon, pickTime:cTime, lotNumber:cLot};
 
-   connection.query('INSERT into park VALUES ?',postPick,  function(err, result)        
+   connection.query('INSERT into park VALUES ?',postPick,  function(err, result){});        
 }
 
 else{
- // user is not in the user table,
-   not sure on how to handle the error
-}
+ console.log("Something went wrong *jumps out of 10th floor window");
 
+}
 });
 ////////////// end addToPickUp ////////////////////////////
 
