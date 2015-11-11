@@ -11,7 +11,8 @@ my_client.connect();
 
 //RUN METHODS AS TEST IN HERE
 
-my_client.disconnect();
+disconnec();
+
 function query(sql){
 	return my_client.query(sql, function (err, rows, fields) {
 		if (err) {
@@ -22,7 +23,7 @@ function query(sql){
 	});
 }
 function disconnect(){
-	my_client.disconnect();
+	my_client.end();
 }
 function addUser(name,email,phone,car){
 	var sql = 0/*SOMETHING HERE*/;
@@ -62,13 +63,19 @@ function removePickup(userID){
 	if(userExistsInTable("pickup",userID)) query(sql);
 	else console.log("CAN'T DELETE: USER " + userID + " NOT IN pickup");
 }
-function getPickupList(){
+function getPickupList(){ //DO THESE FIRST SO YOU CAN USE THEM TO DEBUG
 	var sql = 0/*SOMETHING HERE*/;
 	return query(sql);
 }
-function getParkList(){
+function getParkList(){ //DO THESE FIRST SO YOU CAN USE THEM TO DEBUG
 	var sql = 0/*SOMETHING HERE*/;
 	return query(sql);
+}
+function printPickupList(){
+	console.log(getPickupList());
+}
+function prinParkList(){
+	console.log(getParkList());
 }
 function userExistsInTable(table,userID){
 	var sql = 0/*SOMETHING HERE*/;
