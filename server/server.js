@@ -1,10 +1,10 @@
-var mysql = require(‘mysql’);
+var mysql = require('mysql');
 
 var connection=mysql.createConnection({
-host: ‘localhost’,
-user: ‘root’,
-password: ‘mysqlpassword’,
-database: ‘perk’,
+host: 'localhost',
+user: 'root',
+password: 'mysqlpassword',
+database: 'perk'
 });
 
 connection.connect();
@@ -15,7 +15,7 @@ var post= {userEmail:email, userPhone:phone, userVehicle:vehicle, userName:name}
 
 if(userExists=true)
 {
- connection.query(‘INSERT into users VALUES ?’,post, function(err, result)        
+ connection.query('INSERT into users VALUES ?',post, function(err, result)        
 
 }
 
@@ -30,7 +30,7 @@ else{
 var userExist= connection.query(function(cEmail, cPhone)    {
 boolean mark=true;
 
-var counter=‘SELECT  COUNT (where email = cEmail’)
+var counter='SELECT  COUNT (where email = cEmail')
 from users 
 
 if(counter=0)
@@ -51,7 +51,7 @@ if(userExist)
 
  var postPark={userid:id, lat:cLat, lon:cLon;, parkTime:cTime};
 
-   connection.query(‘INSERT into park VALUES ?’,postPark,       function(err, result)        
+   connection.query('INSERT into park VALUES ?',postPark,       function(err, result)        
 }
 else{
  // user is not in the user table,
@@ -68,7 +68,7 @@ if(userExist)
 
  var postPick={userid:id, lat:cLat, lon:cLon;, pickTime:cTime, lotNumber:cLot};
 
-   connection.query(‘INSERT into park VALUES ?’,postPick,  function(err, result)        
+   connection.query('INSERT into park VALUES ?',postPick,  function(err, result)        
 }
 
 else{
