@@ -93,3 +93,5 @@ function continueExecution()
 {
    //finish doing things after the pause
 }
+
+console.log("hi");
