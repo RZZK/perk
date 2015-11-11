@@ -9,7 +9,7 @@ database: 'perk'
 
 connection.connect();
 
-///////////////// add user to database /////////////////////////
+////////////////// add user to database /////////////////////////
 
 var post= {userEmail:email, userPhone:phone, userVehicle:vehicle, userName:name};
 
