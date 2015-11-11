@@ -16,7 +16,7 @@ var post= {userEmail:email, userPhone:phone, userVehicle:vehicle, userName:name}
 
 if(userExists=true)
 {
- connection.query('INSERT into users VALUES ?',post, function(err, result)  )      
+ connection.query('INSERT into users VALUES ?',post, function(err, result)  );      
 }else{
   console.log(“The information you have entered is already in our records”);
 }
