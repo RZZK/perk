@@ -9,14 +9,17 @@ database: 'perk'
 });
 my_client.connect();
 
+//RUN METHODS AS TEST IN HERE
+
+my_client.disconnect();
 function query(sql){
-		return my_client.query(sql, function (err, rows, fields) {
-        if (err) {
-                console.log('can not connect');
-                console.log(err);
-                return;
-			}
-	}
+	return my_client.query(sql, function (err, rows, fields) {
+		if (err) {
+			console.log('can not connect');
+			console.log(err);
+			return;
+		}
+	});
 }
 function disconnect(){
 	my_client.disconnect();
@@ -29,7 +32,7 @@ function addUser(name,email,phone,car){
 }
 function removeUser(userID){
 	var sql = 0/*SOMETHING HERE*/;
-	if(userExistsInTable("users",userID) query(sql);
+	if(userExistsInTable("users",userID)) query(sql);
 	else console.log("CAN'T DELETE: USER " + userID + " NOT IN users");
 	query(sql);
 }
