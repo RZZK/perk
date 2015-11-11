@@ -10,72 +10,73 @@ database: 'perk'
 connection.connect();
 
 ////////////////// add user to database /////////////////////////
-var addUser= connection.query(function(){
-
-var post= {userEmail:email, userPhone:phone, userVehicle:vehicle, userName:name};
-
-if(userExists=true)
-{
- connection.query('INSERT into users VALUES ?',post, function(err, result){});      
-}else{
-  console.log("The information you have entered is already in our records");
+function addUser (email, phone, vehicle, name){
+	var post= {userEmail:email, userPhone:phone, userVehicle:vehicle, userName:name};
+	if(userExists=true)
+	{
+		connection.query('INSERT into users VALUES ?',post, function(err, result){});      
+	}else{
+		console.log("The information you have entered is already in our records");
+	}	
 }
 
-});
 ////////////////// end addUser /////////////////////////////////////////
 
 
 ////////////////// userExist ////////////////////////////////////////
-var userExist= connection.query(function(cEmail, cPhone)    {
+function userExist(Cemail){
 
-var mark=true;
-
-var counter='SELECT  COUNT (*) where email=cEmail from users '
+var x = connection.query('SELECT EXISTS(SELECT 1 from user where Cemail=email)')    
+console.log(x);
 
 if(counter=0)
 {
     return mark;
+} else{
+	mark=false;
+	return mark;
 }
-else{
-   mark=false;
-   return mark;
+
 }
-});
+
 /////////////////////// end userExist ///////////////////////
 
 //////////////// addToPark ///////////////////////////////
 
-var addToPark = connection.query(function(){
-if(userExist)
-{
- var id= 'Select userid from users where Cemail=email'
+function addToPark(latitude, longitude, pTime){
+	if(userExist(cEmail))
+	{
+		var id= 'Select userid from users where Cemail=email'
+		var postPark={userid:id, lat:latiude, lon:longitude, parkTime:pTime};
+		connection.query('INSERT into park VALUES ?',postPark, function(err, result){});  
+	}
+	
+	else
+	{
+		console.log("Something went wrong *jumps out 10th floor window*");
+	}	
+		
 
- var postPark={userid:id, lat:cLat, lon:cLon, parkTime:cTime};
 
-   connection.query('INSERT into park VALUES ?',postPark, function(err, result){});       
 }
-else{
- console.log("Something went wrong *jumps out 10th floor window*");
-}
-});
 ////////////////////// end addToPark///////////////////
 
 ////////////// addToPickUp ////////////////////////////
-var addToPickUp=connection.query(function() {
-if(userExist)
+function addToPickUp(latitude,longitude, pTime, clotnumber)
 {
- var id= 'Select userid from users where email=Cemail'
+	if(userExist) 
+	{
+		var id= 'Select userid from users where Cemail=email'
+		var postPick={userid:id, lat:latitude, lon:longitude, parkTime:pTime, lotnumber:clotnumber};
+		connection.query('INSERT into pickup VALUES ?',postPick, function(err, result){});
+	}
+	else
+	{
+		 console.log("Something went wrong *jumps out of 10th floor window");
 
- var postPick={userid:id, lat:cLat, lon:cLon, pickTime:cTime, lotNumber:cLot};
+	}
 
-   connection.query('INSERT into park VALUES ?',postPick,  function(err, result){});        
 }
-
-else{
- console.log("Something went wrong *jumps out of 10th floor window");
-
-}
-});
 ////////////// end addToPickUp ////////////////////////////
 
 /////////// deleteFromPickUp ////////////////////////////
