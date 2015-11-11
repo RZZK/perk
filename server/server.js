@@ -10,6 +10,7 @@ database: 'perk'
 connection.connect();
 
 ////////////////// add user to database /////////////////////////
+var addUser= connection.query(function(){
 
 var post= {userEmail:email, userPhone:phone, userVehicle:vehicle, userName:name};
 
@@ -23,11 +24,14 @@ else{
   console.log(“The information you have entered is already in our records”);
 
 }
+
+});
 ////////////////// end addUser /////////////////////////////////////////
 
 
 ////////////////// userExist ////////////////////////////////////////
 var userExist= connection.query(function(cEmail, cPhone)    {
+
 boolean mark=true;
 
 var counter='SELECT  COUNT (where email = cEmail')
