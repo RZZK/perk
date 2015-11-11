@@ -8,7 +8,7 @@ database: 'perk'
 });
 
 connection.connect();
-
+console.log(userExist("smashtilldawn.com");
 ////////////////// add user to database /////////////////////////
 function addUser (email, phone, vehicle, name){
 	var post= {userEmail:email, userPhone:phone, userVehicle:vehicle, userName:name};
@@ -26,7 +26,7 @@ function addUser (email, phone, vehicle, name){
 ////////////////// userExist ////////////////////////////////////////
 function userExist(Cemail){
 
-var x = connection.query('SELECT EXISTS(SELECT 1 from user where Cemail=email)')    
+var x = connection.query('SELECT EXISTS(SELECT 1 from users where Cemail=email)')    
 console.log(x);
 
 if(counter=0)
@@ -81,7 +81,7 @@ function addToPickUp(latitude,longitude, pTime, clotnumber)
 
 /////////// deleteFromPickUp ////////////////////////////
 
- 
+ function deleteFromPickUp(
 
 function doStuff()
 {
