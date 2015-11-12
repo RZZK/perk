@@ -93,10 +93,10 @@
 								</div>
 							</header>
 
-							<div class="content container 100%" style="padding-top: 16em;">
+							<div class="content container 100%">
 
 								<!-- if newUser = false, display login -->
-								<div ng-hide="displaySignUp" class="login">
+								<div ng-hide="displaySignUp" style="padding-top: 16em;" class="login">
 									<input type="text" placeholder="username"><br>
 									<input type="password" placeholder="password"><br>
 									<button class="btn btn-success" ng-click="login()" onclick="removeBlur()"
@@ -104,7 +104,7 @@
 									<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
 								</div>
 								<!-- if newUser = true, display signup -->
-								<div ng-show="displaySignUp" class="login">
+								<div ng-show="displaySignUp" style="padding-top: 8em;" class="login">
 									<input type="text" ng-model="username" placeholder="username"><br>
 									<input type="password" ng-model="passw1" placeholder="password"><br>
 									<input type="password" ng-model="passw2" placeholder="confirm password"><br>
@@ -208,11 +208,11 @@
 			<script>$('body').bind('touchmove', function(e){e.preventDefault()})</script>
 			<script src="assets/js/snap.js"></script>
 			<script src="assets/js/angular-snap.js"></script>
-			
+
 			<script src="https://maps.googleapis.com/maps/api/js"></script>
 			<script>
 				google.maps.event.addDomListener(window, 'load', initialize);
-				
+
 			</script>
 	</body>
 </html>
