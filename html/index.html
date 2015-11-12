@@ -17,7 +17,7 @@
 
 		<!-- Left slide out page -->
 		<div id="leftmenu" style="padding-left: 12px; padding-top: 5px;" snap-drawer>
-				<h3>John Doe</h3>
+				<h3>{{ currentUserName }}</h3>
 				<p>johndoe@cpp.edu</p>
 				<hr>
 
@@ -28,12 +28,12 @@
 				</p>
 				<p>
 					<a href="" ng-click="showRiders()" style="color: #666666;" snap-close>
-						<span class="glyphicon glyphicon-user"></span>​ View riders
+						<span class="glyphicon glyphicon-user"></span>​ Look for passengers
 					</a>
 				</p>
 				<p>
-					<a href="" ng-click="" style="color: #666666;" snap-close>
-						<span class="glyphicon glyphicon-screenshot"></span>​ Look for parking
+					<a href="" ng-click="showDrivers()" style="color: #666666;" snap-close>
+						<span class="glyphicon glyphicon-screenshot"></span>​ Look for drivers
 					</a>
 				</p>
 				<hr>
@@ -43,7 +43,11 @@
 				<p><span class="glyphicon glyphicon-info-sign"></span>​ Help</p>
 				<p><span class="glyphicon glyphicon-thumbs-up"></span>​ Feedback</p>
 				<hr>
-				<p><span class="glyphicon glyphicon-off"></span>​ Log Out</p>
+				<p>
+					<a href="" ng-click="toggleBottomSlider()" style="color: #666666;" snap-close>
+						<span class="glyphicon glyphicon-off"></span>​ Log Out
+					</a>
+				</p>
 		</div>
 
 		<div id="content" snap-content snap-options="snapOpts">
@@ -97,8 +101,8 @@
 
 								<!-- if newUser = false, display login -->
 								<div ng-hide="displaySignUp" style="padding-top: 15em;" class="login">
-									<input type="text" placeholder="username"><br>
-									<input type="password" placeholder="password"><br>
+									<input type="text" ng-model="username" placeholder="username"><br>
+									<input type="password" ng-model="passw1" placeholder="password"><br>
 									<button class="btn btn-success" ng-click="login()" onclick="removeBlur()"
 												style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
 									<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
@@ -127,18 +131,16 @@
 									<!-- Logo and Nav -->
 									<div align="center">
 										<a href="" snap-toggle="left" ng-click="displayMenu()"><span class="glyphicon glyphicon-th-list left"></span></a>
-										<a href="" onclick="initSecondMap()"><span class="glyphicon glyphicon-refresh right"></span></a>
+										<a href="" ng-click="refresh()"><span class="glyphicon glyphicon-refresh right"></span></a>
 										<a href="#"><img src="images/perk2.png" style="align:center"></a>
 									</div>
 								</header>
 							<section>
 									<section ng-show="welcomeScreen" style="padding-top: 16em;">
-											<h3>WELCOME</h3>
-									</section>
 
+									</section>
 									<section ng-hide="welcomeScreen">
 										<section id="blank" ng-show="showAddDeparture">
-
 									  		<div class="content container 100%" align="center" style="color: white; padding-top: 16em;">
 													 <h3>Add departure time</h3>
 													 <form class="form-horizontal">
@@ -184,6 +186,33 @@
 											</tbody>
 										 </table>
 										</section>
+										<section id="white" ng-show="showDriverList" class="main fullscreen" style="padding-top: 2em;">
+										 <!--table data-->
+										 <table class="table table-striped">
+											<thead>
+											  <tr>
+												 <th><span class="lightbold">Name</span></th>
+												 <th><span class="lightbold">E-mail</span></th>
+												 <th><span class="lightbold">Location</span></th>
+											  </tr>
+											</thead>
+											<tbody>
+											  <tr ng-repeat="user in users">
+												 <td>{{ user.fName }}</td>
+												 <td>{{ user.email }}</td>
+												 <td>{{ user.departTime }}</td>
+												 <td>
+													<button class="btn" ng-click="editEntry(user.id)"> Request </button>
+												 </td>
+											  </tr>
+											</tbody>
+										 </table>
+										</section>
+										<section id="white" ng-show="displayBottomSlider" class="main" style="padding-top: 2em; margin-top: 30em; height: 50%;">
+											<p>person 1</p>
+											<p>email: person1@cpp.edu</p>
+											<p>vehicle: magic carpet</p>
+										</section>
 									</section>
 
 							</section>
@@ -205,14 +234,10 @@
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
 			<script src="assets/js/login.js"></script>
-			<script>$('body').bind('touchmove', function(e){e.preventDefault()})</script>
+			<script src="assets/js/scroll.js"></script> <!-- disables and enables scrolling on mobile -->
 			<script src="assets/js/snap.js"></script>
 			<script src="assets/js/angular-snap.js"></script>
-
 			<script src="https://maps.googleapis.com/maps/api/js"></script>
-			<script>
-				google.maps.event.addDomListener(window, 'load', initialize);
-
-			</script>
+			<script> google.maps.event.addDomListener(window, 'load', initialize); </script>
 	</body>
 </html>

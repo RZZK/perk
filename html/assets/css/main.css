@@ -85,16 +85,9 @@
   text-decoration: none;
 }
 
-#secondMap {
-  height: 100%;
-  width: 100%;
-}
-
 #leftmenu {
 	color: #666666;
 }
-
-
 
 div.blackbg {
 	z-index: 1;
@@ -2601,11 +2594,11 @@ div.blackbg {
 		}
 
 		.main.style6 {
+			position: auto;
+			margin-top: 30%;
+		  	height: 200px;
 			text-align: center;
-			padding: 0 0 2em 0;
-			line-height: 30px;
 			letter-spacing: -1px;
-			height: 100%;
 			}
 		}
 
