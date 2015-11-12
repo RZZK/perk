@@ -64,12 +64,20 @@ function removePickup(userID){
 	else console.log("CAN'T DELETE: USER " + userID + " NOT IN pickup");
 }
 function getPickupList(){ //DO THESE FIRST SO YOU CAN USE THEM TO DEBUG
-	var sql = 0/*SOMETHING HERE*/;
+	var sql = 'SELECT * from pickup'
+	console.log("INformation for the pickup");
 	return query(sql);
+		
+
+	
 }
 function getParkList(){ //DO THESE FIRST SO YOU CAN USE THEM TO DEBUG
-	var sql = 0/*SOMETHING HERE*/;
+	var sql ='SELECT * from park'
+	console.log("INformation for the park");
 	return query(sql);
+		
+	
+
 }
 function printPickupList(){
 	console.log(getPickupList());
