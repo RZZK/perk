@@ -15,12 +15,13 @@ prinParkList();
 disconnect();
 
 function query(sql){
-	return my_client.query(sql, function (err, rows, fields) {
+	my_client.query(sql, function (err, rows, fields) {
 		if (err) {
 			console.log('can not connect');
 			console.log(err);
 			return;
 		}
+		return rows;
 	});
 }
 function disconnect(){

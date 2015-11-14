@@ -6,20 +6,12 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
     .success(function (data){ $scope.users = data; })
     .error(function (data){ $scope.users = [{id:0, fName:'Error', lName:'Could not load data'}]; });
   */
+  $scope.currentUserName = '';
+  $scope.currentUserEmail = '';
   $scope.fName = '';
   $scope.lName = '';
   $scope.departTime = '';
   $scope.lot = '';
-  $scope.users =
-  [
-    {id:1, fName:'Hege', lot: "F", departTime:"5:00pm" },
-    {id:2, fName:'Kim', lot: "Structure", departTime:"5:30pm" },
-    {id:3, fName:'Sal', lot: "Structure", departTime:"8:15pm" },
-    {id:4, fName:'Jack', lot: "Structure", departTime:"9:00pm" },
-    {id:5, fName:'John', lot: "Overflow", departTime:"9:05pm" },
-    {id:6, fName:'Peter', lot: "F", departTime:"10:00pm" },
-    {id:7, fName:'Lollerskates', lot: "F", departTime:"11:59pm" }
-  ];
 
   $scope.snapOpts = { disable: 'right' };
   $scope.username = '';
@@ -30,10 +22,24 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.vehicle = '';
   $scope.vcolor = '';
 
+  $scope.users =
+  [
+    {id:1, fName:'Hege',   email:'demo@cpp.edu', lot: "F", departTime:"5:00pm" },
+    {id:2, fName:'Kim',    email:'demo@cpp.edu', lot: "Structure", departTime:"5:30pm" },
+    {id:3, fName:'Sal',    email:'demo@cpp.edu', lot: "Structure", departTime:"8:15pm" },
+    {id:4, fName:'Jack',   email:'demo@cpp.edu', lot: "Structure", departTime:"9:00pm" },
+    {id:5, fName:'John',   email:'demo@cpp.edu', lot: "Overflow", departTime:"9:05pm" },
+    {id:6, fName:'Peter',  email:'demo@cpp.edu', lot: "F", departTime:"10:00pm" },
+    {id:7, fName:'Lollerskates', email:'demo@cpp.edu', lot: "F", departTime:"11:59pm" }
+  ];
+
   $scope.displaySignUp = false;
   $scope.showRiderList = false;
+  $scope.showDriverList = false;
   $scope.showAddDeparture = false;
+  $scope.displayBottomSlider = false;
   $scope.welcomeScreen = true;
+
   $scope.error = false;
   $scope.incomplete = false;
   $scope.loggedIn = false;
@@ -58,43 +64,64 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   {
      $scope.welcomeScreen = false;
      $scope.showAddDeparture = false;
+     $scope.showDriverList = false;
+     $scope.displayBottomSlider = false;
+
      $scope.showRiderList = true;
+  }
+//---------------------------------------------------------------------------------------------------------------
+  $scope.showDrivers = function ()
+  {
+     $scope.welcomeScreen = false;
+     $scope.showAddDeparture = false;
+     $scope.showRiderList = false;
+     $scope.displayBottomSlider = false;
+     
+     $scope.showDriverList = true;
   }
 //---------------------------------------------------------------------------------------------------------------
   $scope.displayAddDeparture = function ()
   {
      $scope.welcomeScreen = false;
      $scope.showRiderList = false;
+     $scope.showDriverList = false;
+     $scope.displayBottomSlider = false;
+
      $scope.showAddDeparture = true;
+  }
+  $scope.toggleBottomSlider = function ()
+  {
+     $scope.welcomeScreen = false;
+     $scope.showRiderList = false;
+     $scope.showDriverList = false;
+     $scope.showAddDeparture = false;
+
+     $scope.displayBottomSlider = true;
   }
 //---------------------------------------------------------------------------------------------------------------
   $scope.login = function()
   {
+     // should save username and email so they can be displayed on the left drawer
+     // use username as key, and get first name, last name, and e-mail
+     $scope.currentUserName = $scope.username;
+     $scope.currentUserEmail = $scope.email;
+
      $scope.loggedIn = true;
     //$scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
   };
 //---------------------------------------------------------------------------------------------------------------
   $scope.signup = function()
   {
-    //$scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
+     // should push data to database if username is not taken
   };
 //---------------------------------------------------------------------------------------------------------------
   $scope.submitTime = function()
   {
-    /*id_counter += 1;
-
-    // add to data
-    $scope.users.push({id:id_counter,
-                        fName:$scope.fName,
-                        lot:$scope.lot,
-                        departTime:$scope.departTime})
-
-    // clear fields and reset save button
-    $scope.fName = null;
-    $scope.lot = null;
-    $scope.departTime = null;
-    $scope.incomplete = true;*/
+     // takes the data from "Add departure time" and saves it to the table
+     // should use the info of the user that is logged in (name, email, phone number?)
+     // should take the "Lot" and "Time" that the user typed in the two fields
   };
+  $scope.refresh = function() { $scope.$apply(); };
 //---------------------------------------------------------------------------------------------------------------
   $scope.$watch('passw1',function() {$scope.test();});
   $scope.$watch('passw2',function() {$scope.test();});
