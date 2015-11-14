@@ -88,3 +88,58 @@ function userExistsInTable(table,userID){
 	if(result == 0/*SOMETHING HERE*/) return true;
 	else return false;
 }
+
+//--------------------END SQL FUNCTIONS -----------------------------------------//
+
+
+function User(name,email,phone, picture,socket){
+	this.socket = socket; 
+	this.loggedIn = false;
+	this.name = name;
+	this.email = email;
+	this.phone = phone;
+	this.picture = picture;
+}
+function Passenger(user,lat,lng,time){
+	this.user = user;
+	this.lat = lat;
+	this.lon = lon;
+	this.time = time;
+}
+function Driver(user,car,time){
+	this.user = user;
+	this.car = car;
+	this.time = time;
+}
+function Car(lat,lng,model){
+	this.lat = lat;
+	this.lng = lng;
+	this.model = model;
+}
+function getCurrentData(callback){
+	getPickupList(function(x,pickupRows,z){
+		getParkList(function(x2,parkRows,z2){
+			var data = {
+				pickup: pickupRows,
+				park: parkRows
+			};
+			callback(data);
+		});
+	});
+}
+
+
+
+var app = require('http').createServer();
+var io = require('socket.io')(app);
+app.listen(8001);
+
+
+io.on('connection', function (socket) {
+	getCurrentData(function(data){
+		socket.emit('currentData', data);
+	}); 
+	socket.on('addUser', function (data) {
+		
+	});
+});
