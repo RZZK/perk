@@ -1,9 +1,8 @@
 var MyMap;
 var drivers = new Array();
 var lots = new Array();
-var showDrivers = false; 
-var showLots = false; 
-
+var showDrivers = false;
+var showLots = false;
 
 function initialize() {
 	var mapCanvas = document.getElementById('googlemaps');
@@ -15,7 +14,7 @@ function initialize() {
 		mapTypeControl: false,
 		disableDefaultUI: true,
 		draggable: false,
-		zoomControl: false, 
+		zoomControl: false,
 		scrollwheel: false,
 		disableDoubleClickZoom: true,
 		styles: [
@@ -30,7 +29,7 @@ function initialize() {
 	setShowDrivers(true);
 	addLot(new Lot(34.0569172,-117.8217494));
 	setShowLots(true);
-}			
+}
 function disableUserInput(map){
 	map.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true});
 }
@@ -112,8 +111,8 @@ function Car(lat,lng,model){
 		position: new google.maps.LatLng(this.lat, this.lng),
 		icon: {
 			url: "assets/imgs/car.png",
-			scaledSize: new google.maps.Size(50, 50), 
-			origin: new google.maps.Point(0,0), 
+			scaledSize: new google.maps.Size(50, 50),
+			origin: new google.maps.Point(0,0),
 			anchor: new google.maps.Point(0, 0)
 		},
 		animation: google.maps.Animation.DROP
@@ -130,6 +129,9 @@ function Car(lat,lng,model){
 		marker.setMap(null);
 	}
 }
+function loadSlider(){
+		angular.element(document.getElementById('controller')).scope().toggleBottomSlider();
+}
 function Lot(lat,lng){
 	this.lat = lat;
 	this.lng = lng;
@@ -138,11 +140,13 @@ function Lot(lat,lng){
 		animation: google.maps.Animation.DROP,
 		icon: {
 			url: "assets/imgs/parking.png",
-			scaledSize: new google.maps.Size(50, 50), 
-			origin: new google.maps.Point(0,0), 
+			scaledSize: new google.maps.Size(50, 50),
+			origin: new google.maps.Point(0,0),
 			anchor: new google.maps.Point(0, 0)
 		}
 	});
+
+	this.marker.addListener('click', loadSlider);
 	this.addPassenger = function(passenger){
 		this.passengers.push(passenger);
 	};

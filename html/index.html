@@ -12,7 +12,7 @@
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 	</head>
-	<body ng-app="app" ng-controller="loginController" style="overflow: hidden;">
+	<body id="controller" ng-app="app" ng-controller="loginController" style="overflow: hidden;">
 	<!-- <body ng-app="app" ng-controller="loginController" -->
 
 		<!-- Left slide out page -->
@@ -208,10 +208,12 @@
 											</tbody>
 										 </table>
 										</section>
-										<section id="white" ng-show="displayBottomSlider" class="main" style="padding-top: 2em; margin-top: 30em; height: 50%;">
-											<p>person 1</p>
-											<p>email: person1@cpp.edu</p>
-											<p>vehicle: magic carpet</p>
+										<section id="white" class="main" style="padding-top: 2em; margin-top: 30em; height: 50%;">
+											<div id="bottomSlider">
+												<p>person 1</p>
+												<p>email: person1@cpp.edu</p>
+												<p>vehicle: magic carpet</p>
+											</div>
 										</section>
 									</section>
 
@@ -223,7 +225,7 @@
 		</div><!-- end of snap-content -->
 
 		<!-- Scripts -->
-			<script src="map.js"></script>
+
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.poptrox.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
@@ -234,6 +236,7 @@
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
 			<script src="assets/js/login.js"></script>
+			<script src="map.js"></script>
 			<script src="assets/js/scroll.js"></script> <!-- disables and enables scrolling on mobile -->
 			<script src="assets/js/snap.js"></script>
 			<script src="assets/js/angular-snap.js"></script>
