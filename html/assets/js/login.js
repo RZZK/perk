@@ -76,7 +76,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.showAddDeparture = false;
      $scope.showRiderList = false;
      $scope.displayBottomSlider = false;
-     
+
      $scope.showDriverList = true;
   }
 //---------------------------------------------------------------------------------------------------------------
@@ -89,6 +89,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
 
      $scope.showAddDeparture = true;
   }
+//---------------------------------------------------------------------------------------------------------------
   $scope.toggleBottomSlider = function ()
   {
      $scope.welcomeScreen = false;
@@ -97,6 +98,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.showAddDeparture = false;
 
      $scope.displayBottomSlider = true;
+     $scope.$apply();
   }
 //---------------------------------------------------------------------------------------------------------------
   $scope.login = function()
