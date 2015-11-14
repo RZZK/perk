@@ -10,18 +10,13 @@ database: 'perk'
 my_client.connect();
 
 //RUN METHODS AS TEST IN HERE
-
+printPickupList()
 disconnect();
-
 function query(sql){
-	my_client.query(sql, function (err, rows, fields) {
-		if (err) {
-			console.log('can not connect');
-			console.log(err);
-			return;
-		}
-		return rows;
-	});
+	my_client.query(sql,function(x,y,z){});
+}
+function query(sql,callback){
+	my_client.query(sql, callback);
 }
 function disconnect(){
 	my_client.end();
@@ -64,27 +59,28 @@ function removePickup(userID){
 	if(userExistsInTable("pickup",userID)) query(sql);
 	else console.log("CAN'T DELETE: USER " + userID + " NOT IN pickup");
 }
-function getPickupList(){ //DO THESE FIRST SO YOU CAN USE THEM TO DEBUG
+function getPickupList(callback){ //DO THESE FIRST SO YOU CAN USE THEM TO DEBUG
 	var sql = 'SELECT * from pickup'
 	console.log("INformation for the pickup");
-	return query(sql);
-		
-
-	
+	query(sql,callback);
 }
-function getParkList(){ //DO THESE FIRST SO YOU CAN USE THEM TO DEBUG
+function getParkList(callback){ //DO THESE FIRST SO YOU CAN USE THEM TO DEBUG
 	var sql ='SELECT * from park'
-	console.log("INformation for the park");
-	return query(sql);
+	console.log("Information for the park");
+	return query(sql,callback);
 		
 	
 
 }
 function printPickupList(){
-	console.log(getPickupList());
+	getPickupList(function(err,rows,elem){
+		console.log(rows);
+	});
 }
-function prinParkList(){
-	console.log(getParkList());
+function printParkList(){
+	getParkList(function(err,rows,elem){
+		console.log(rows);
+	});
 }
 function userExistsInTable(table,userID){
 	var sql = 0/*SOMETHING HERE*/;
