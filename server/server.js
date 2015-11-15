@@ -23,7 +23,10 @@ function query(sql){
 	});
 }
 function query(sql,callback){
-	my_client.query(sql, callback);
+	my_client.query(sql, function(x,y,z){
+		if(!!x) console.log("sql error: " + x);
+		callback(x,y,z);
+	});
 }
 function disconnect(){
 	my_client.end();
@@ -70,8 +73,8 @@ function userExists(email,password,callback){
 			else callback(true);
 		});
 }
-function addPark(userID,lat,lng,time){
-	var sql ='INSERT into park(userid,lat,lng,time) VALUES("'+userID+'","'+ lat+'","'+ lng+'","' +time+'")';
+function addPark(userID,lat,lon,parkTime){
+	var sql ='INSERT into park(parkid,lat,lon,parkTime) VALUES("'+userID+'","'+ lat+'","'+ lon+'","' +parkTime+'")';
 	userExistsInTable("park",userID,function(exists){
 		if(!exists){
 			query(sql);
@@ -81,7 +84,7 @@ function addPark(userID,lat,lng,time){
 	});
 }
 function removePark(userID){
-	var sql ='DELETE from park where userid= '+userID;
+	var sql ='DELETE from park where parkid= '+userID;
 	userExistsInTable("park",userID,function(exists){
 		if(exists){
 			query(sql);
@@ -90,8 +93,8 @@ function removePark(userID){
 		}
 	});
 }
-function addPickup(userID,lat,lng,time,lot){
-	var sql = 'INSERT into pickup(userid,lat,lng,time, lot) VALUES('+userID+','+ lat+','+ lng+',' +time+','+lot+')';
+function addPickup(userID,lat,lon,parkTime,lot){
+	var sql = 'INSERT into pickup(pickupid,lat,lon,parkTime, lot) VALUES('+userID+','+ lat+','+ lon+',' +parkTime+','+lot+')';
 	
 	userExistsInTable("pickup",userID,function(exists){
 		if(!exists){
@@ -102,7 +105,7 @@ function addPickup(userID,lat,lng,time,lot){
 	});
 }
 function removePickup(userID){
-	var sql = 'DELETE from pickup where userid= '+userid;
+	var sql = 'DELETE from pickup where pickupid= '+userid;
 	userExistsInTable("pickup",userID,function(exists){
 		if(exists){
 			query(sql);
@@ -151,28 +154,7 @@ function printUserList(){
 	});
 }
 function userExistsInTable(table,userID,callback){
-	if(table === "park"){
-		userExistsInPark(userID,callback);
-		return;
-	}
-	if(table === "pickup"){
-		userExistsInPickup(userID,callback);
-	}
-	var sql = 'SELECT * FROM users where userid= "'+userID + '";';
-	query(sql,function(x,y,z){
-		console.log(x);
-		callback(y.length != 0);
-	});
-}
-function userExistsInPark(userID,callback){
-	var sql = 'SELECT * FROM park where userid= "'+userID + '";';
-	query(sql,function(x,y,z){
-		console.log(x);
-		callback(y.length != 0);
-	});
-}
-function userExistsInPickup(userID,callback){
-	var sql = 'SELECT * FROM pickup where userid= "'+userID + '";';
+	var sql = 'SELECT * FROM ' + table + ' where userid= "'+userID + '";';
 	query(sql,function(x,y,z){
 		console.log(x);
 		callback(y.length != 0);
