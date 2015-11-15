@@ -31,8 +31,8 @@ function query(sql,callback){
 function disconnect(){
 	my_client.end();
 }
-function addUser(name,email,phone,car){ 
-	var sql = 'INSERT into users(name, email, phone, car) VALUES("'+name+'", "'+email+'", "'+phone+'","'+ car+'")';
+function addUser(name,email,phone,car,password){ 
+	var sql = 'INSERT into users(name, email, phone, car, password) VALUES("'+name+'", "'+email+'", "'+phone+'","'+ car+'"," '+password+'")';
 	userExists(name,email,phone,car,function(exists){
 		if(!exists){
 			console.log("SQL: ADDING USER -- name: " + name + " email: " + email);
