@@ -24,8 +24,13 @@ function query(sql){
 }
 function query(sql,callback){
 	my_client.query(sql, function(x,y,z){
-		if(!!x) console.log("sql error: " + x);
-		callback(x,y,z);
+		if(!!x){
+			console.log("///////////////////////////////SQL-ERROR////////////////////////////////////////");
+			console.log(sql + "\n");
+			console.log(x);
+			console.log("///////////////////////////////SQL-ERROR////////////////////////////////////////");
+			
+		} else callback(x,y,z);
 	});
 }
 function disconnect(){
