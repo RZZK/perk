@@ -70,8 +70,8 @@ function userExists(email,password,callback){
 			else callback(true);
 		});
 }
-function addPark(userID,lat,lon,parkTime){
-	var sql ='INSERT into park(parkid,lat,lon,parkTime) VALUES("'+userID+'","'+ lat+'","'+ lon+'","' +parkTime+'")';
+function addPark(userID,lat,lng,time){
+	var sql ='INSERT into park(userid,lat,lng,time) VALUES("'+userID+'","'+ lat+'","'+ lng+'","' +time+'")';
 	userExistsInTable("park",userID,function(exists){
 		if(!exists){
 			query(sql);
@@ -81,7 +81,7 @@ function addPark(userID,lat,lon,parkTime){
 	});
 }
 function removePark(userID){
-	var sql ='DELETE from park where parkid= '+userID;
+	var sql ='DELETE from park where userid= '+userID;
 	userExistsInTable("park",userID,function(exists){
 		if(exists){
 			query(sql);
@@ -90,8 +90,8 @@ function removePark(userID){
 		}
 	});
 }
-function addPickup(userID,lat,lon,parkTime,lot){
-	var sql = 'INSERT into pickup(pickupid,lat,lon,parkTime, lot) VALUES('+userID+','+ lat+','+ lon+',' +parkTime+','+lot+')';
+function addPickup(userID,lat,lng,time,lot){
+	var sql = 'INSERT into pickup(userid,lat,lng,time, lot) VALUES('+userID+','+ lat+','+ lng+',' +time+','+lot+')';
 	
 	userExistsInTable("pickup",userID,function(exists){
 		if(!exists){
@@ -102,7 +102,7 @@ function addPickup(userID,lat,lon,parkTime,lot){
 	});
 }
 function removePickup(userID){
-	var sql = 'DELETE from pickup where pickupid= '+userid;
+	var sql = 'DELETE from pickup where userid= '+userid;
 	userExistsInTable("pickup",userID,function(exists){
 		if(exists){
 			query(sql);
@@ -165,14 +165,14 @@ function userExistsInTable(table,userID,callback){
 	});
 }
 function userExistsInPark(userID,callback){
-	var sql = 'SELECT * FROM park where parkid= "'+userID + '";';
+	var sql = 'SELECT * FROM park where userid= "'+userID + '";';
 	query(sql,function(x,y,z){
 		console.log(x);
 		callback(y.length != 0);
 	});
 }
 function userExistsInPickup(userID,callback){
-	var sql = 'SELECT * FROM pickup where pickupid= "'+userID + '";';
+	var sql = 'SELECT * FROM pickup where userid= "'+userID + '";';
 	query(sql,function(x,y,z){
 		console.log(x);
 		callback(y.length != 0);
