@@ -210,11 +210,15 @@ function Car(lat,lng,model){
 function getCurrentData(callback){
 	getPickupList(function(pickupRows){
 		getParkList(function(parkRows){
-			var data = {
+			getUserList(function(userRows){
+				var data = {
 				pickup: pickupRows,
-				park: parkRows
+				park: parkRows,
+				users: userRows
 			};
 			callback(data);
+			})
+			
 		});
 	});
 }
@@ -368,7 +372,6 @@ io.on('connection', function (socket) {
 		}
 	});
 	socket.on('pair',function(data){
-		
 	});
 	socket.on('disconnect',function(){
 		removeUserBySocket(socket);
@@ -383,3 +386,4 @@ io.on('connection', function (socket) {
 //login [username:hello,password;goodbye]
 
 
+//TODO stop getCurrentData from sharing users passwords
