@@ -190,11 +190,11 @@ function User(userid,name,email,phone, picture,socket){
 	this.phone = phone;
 	this.picture = picture;
 }
-function Passenger(userid,lat,lon,lot,time){
+function Passenger(userid,lat,lng,lot,time){
 	this.userid = userid;
 	this.lot = lot;
 	this.lat = lat;
-	this.lon = lon;
+	this.lng = lng;
 	this.time = time;
 }
 function Driver(userid,car,time){
@@ -301,10 +301,9 @@ var drivers = new Array();
 io.on('connection', function (socket) {
 	getCurrentData(function(data){
 		socket.emit('initial', data);
-	}); 
-	
+	});
 	socket.on('login', function (data) {
-		//input format [username,password]
+		//input format [username:hello,password;goodbye]
 		getUser(data.email,data.password, function(x,y,z){
 			
 			if(y.length != 0){
@@ -325,11 +324,11 @@ io.on('connection', function (socket) {
 		var indexOfPassenger = indexOfSocketInPassengers(socket);
 		if(indexOfPassenger == -1){
 			var user = getUserBySocket(socket); 
-			var passenger = new Passenger(user.userid,data.lat,data.lon,data.lot,data.time);
+			var passenger = new Passenger(user.userid,data.lat,data.lng,data.lot,data.time);
 			users.forEach(function(usr){
 				sendNewPassengerToSocket(usr.socket,passenger);
 			});
-			addPickup(user.userid,data.lat,data.lon,data.time,data.lot);
+			addPickup(user.userid,data.lat,data.lng,data.time,data.lot);
 		} else {
 			console.log("User already in pickup table.");
 		}
@@ -341,7 +340,7 @@ io.on('connection', function (socket) {
 		var indexOfDriver = indexOfSocketInDrivers(socket);
 		if(indexOfDriver == -1){
 			var user = getUserBySocket(socket); 
-			var driver = new Driver(user.userid, new Car(data.lat,data.lon,user.model),data.time);
+			var driver = new Driver(user.userid, new Car(data.lat,data.lng,user.model),data.time);
 			users.forEach(function(usr){
 				sendNewDriverToSocket(usr.socket,driver);
 			});
@@ -351,9 +350,36 @@ io.on('connection', function (socket) {
 		}
 	});
 	socket.on("location",function(data){
+		//data format: {lat:12323.34,lng:1244.5}
+		var indexOfUser = indexOfSocket(socket);
+		var indexOfDriver = indexOfSocketInDrivers(socket);
+		var indexOfPassenger = indexOfSocketInPassengers(socket);
+		if(indexOfUser == -1) return;
+		if(indexOfDriver != -1){
+			drivers[i].lat = data.lat;
+			drivers[i].lng = data.lng;
+			socket.emit("driver-move",drivers[i]);
+		} else if(indexOfPassenger != -1){
+			passenger[i].lat = data.lat;
+			passenger[i].lng = data.lng;
+			socket.emit("passenger-move",passengers[i]);
+		} else {
+			socket.emit("location","User not found.")
+		}
+	});
+	socket.on('pair',function(data){
 		
 	});
 	socket.on('disconnect',function(){
 		removeUserBySocket(socket);
 	});
+	
 });
+//Client socket commands
+// passenger-move {lat:12323.34,lng:1244.5}
+//driver-move {lat:12323.34,lng:1244.5}
+//pickup [lat:14.415,lng:124241.124214,time:'23:41:44']
+//park [lat:14.415,lng:124241.124214,time:'23:41:44']
+//login [username:hello,password;goodbye]
+
+
