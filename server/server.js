@@ -18,10 +18,6 @@ my_client.connect();
 // userExists("Tom ","nunyabizznes","525-999","camry ");
 // printPickupList();
 
-function query(sql){
-	my_client.query(sql,function(x,y,z){
-	});
-}
 function query(sql,callback){
 	my_client.query(sql, function(x,y,z){
 		if(!!x){
@@ -30,7 +26,9 @@ function query(sql,callback){
 			console.log(x);
 			console.log("///////////////////////////////SQL-ERROR////////////////////////////////////////");
 			
-		} else callback(x,y,z);
+		} else{
+			if(!!callback) callback(x,y,z);
+		}
 	});
 }
 function disconnect(){
@@ -78,8 +76,8 @@ function userExists(email,password,callback){
 			else callback(true);
 		});
 }
-function addPark(userID,lat,lon,parkTime){
-	var sql ='INSERT into park(parkid,lat,lon,parkTime) VALUES("'+userID+'","'+ lat+'","'+ lon+'","' +parkTime+'")';
+function addPark(userID,lat,lng,time){
+	var sql ='INSERT into park(userid,lat,lng,time) VALUES("'+userID+'",'+ lat+','+ lng+',"' +time+'")';
 	userExistsInTable("park",userID,function(exists){
 		if(!exists){
 			query(sql);
@@ -89,7 +87,7 @@ function addPark(userID,lat,lon,parkTime){
 	});
 }
 function removePark(userID){
-	var sql ='DELETE from park where parkid= '+userID;
+	var sql ='DELETE from park where userid= '+userID;
 	userExistsInTable("park",userID,function(exists){
 		if(exists){
 			query(sql);
@@ -98,8 +96,8 @@ function removePark(userID){
 		}
 	});
 }
-function addPickup(userID,lat,lon,parkTime,lot){
-	var sql = 'INSERT into pickup(pickupid,lat,lon,parkTime, lot) VALUES('+userID+','+ lat+','+ lon+',' +parkTime+','+lot+')';
+function addPickup(userID,lat,lng,time,lot){
+	var sql = 'INSERT into pickup(userid,lat,lng,time,lot) VALUES('+userID+','+ lat+','+ lng+',"' +time+'","'+lot+'")';
 	
 	userExistsInTable("pickup",userID,function(exists){
 		if(!exists){
@@ -110,7 +108,7 @@ function addPickup(userID,lat,lon,parkTime,lot){
 	});
 }
 function removePickup(userID){
-	var sql = 'DELETE from pickup where pickupid= '+userid;
+	var sql = 'DELETE from pickup where userid= '+userID;
 	userExistsInTable("pickup",userID,function(exists){
 		if(exists){
 			query(sql);
@@ -139,8 +137,7 @@ function getUserList(callback){
 	});
 }
 function getUser(email, password, callback){
-	//var sql = 'SELECT * from users where email="' + email + '" AND password="' + password + '";';
-	var sql = 'SELECT * from users where email="' + email + '";';
+	var sql = 'SELECT * from users where email="' + email + '" AND password="' + password + '";';
 	query(sql, callback);
 }
 function printPickupList(){
@@ -161,7 +158,6 @@ function printUserList(){
 function userExistsInTable(table,userID,callback){
 	var sql = 'SELECT * FROM ' + table + ' where userid= "'+userID + '";';
 	query(sql,function(x,y,z){
-		console.log(x);
 		callback(y.length != 0);
 	});
 }
@@ -176,6 +172,44 @@ function User(userid,name,email,phone, picture,socket){
 	this.email = email;
 	this.phone = phone;
 	this.picture = picture;
+}
+function User(){
+	this.socket = 0; 
+	this.userid = 0;
+	this.name = 0;
+	this.email = 0;
+	this.phone = 0;
+	this.picture = 0;
+}
+function userBuilder(){
+	user = new User();
+	this.withUserID = function(userid){
+		user.userid = userid;
+		return this;
+	};
+	this.withName = function(name){
+		user.name = name;
+		return this;
+	};
+	this.withEmail = function(email){
+		user.email = email;
+		return this;
+	};
+	this.withPhone = function(phone){
+		user.phone = phone;
+		return this;
+	};
+	this.withPicture = function(picture){
+		user.picture = picture;
+		return this;
+	};
+	this.withSocket = function(socket){
+		user.socket = socket;
+		return this;
+	}
+	this.getUser = function(){
+		return user;
+	}
 }
 function Passenger(userid,lat,lng,lot,time){
 	this.userid = userid;
@@ -241,13 +275,14 @@ function removeUserBySocket(socket){
 			console.log("#" + users[index].userid + " disconnected.");
 			users.splice(index,1);
 		}  else {
-			console.log("Unknown User disconnected.");
+			console.log("#??? disconnected.");
 		}
 }
 function removePassengerByID(userid){
 	var index = indexOfUserIDInPassengers(userid);
 	if(index != -1){
 			console.log("#" + passengers[index].userid + " removed from passengers.");
+			removePickup(userid);
 			passengers.splice(index,1);
 		} 
 }
@@ -255,6 +290,7 @@ function removeDriverByID(userid){
 	var index = indexOfUserIDInDrivers(userid);
 	if(index != -1){
 			console.log("#" + drivers[index].userid + " removed from drivers.");
+			removePark(userid);
 			drivers.splice(index,1);
 		} 
 }
@@ -280,6 +316,15 @@ function sendNewPassengerToSocket(socket,passenger){
 function sendNewDriverToSocket(socket,driver){
 	socket.emit("new-driver",driver);
 }
+function indexOfUserByEmail(email){
+	for(var i = 0; i < users.length; i++){
+		console.log(users[i].email);
+			if(users[i].email === email){
+				return i;
+			}
+		}
+		return -1;
+}
 
 var app = require('http').createServer();
 var io = require('socket.io')(app);
@@ -295,11 +340,19 @@ io.on('connection', function (socket) {
 	});
 	socket.on('login', function (data) {
 		//input format [username:hello,password;goodbye]
+		if(indexOfUserByEmail(data.email) != -1){
+			console.log(data.email + " already logged in.");
+			return;
+		}
 		getUser(data.email,data.password, function(x,y,z){
-			
 			if(y.length != 0){
 				var user = y[0];
-				users.push(new User(user.userid, user.name,user.phone,user.email,user.picture,socket));
+				users.push(new userBuilder().withUserID(user.userid)
+														.withName(user.name)
+														.withPhone(user.phone)
+														.withEmail(user.email)
+														.withPicture(user.picture)
+														.withSocket(user.socket).getUser());
 				socket.emit("login", user);
 				console.log("#" + user.userid + " logged in.");
 			}
@@ -316,15 +369,17 @@ io.on('connection', function (socket) {
 		if(indexOfPassenger == -1){
 			var user = getUserBySocket(socket); 
 			var passenger = new Passenger(user.userid,data.lat,data.lng,data.lot,data.time);
+			passengers.push(passenger);
 			users.forEach(function(usr){
 				sendNewPassengerToSocket(usr.socket,passenger);
 			});
 			addPickup(user.userid,data.lat,data.lng,data.time,data.lot);
+			console.log("#" + user.userid + " added to passengers.");
 		} else {
 			console.log("User already in pickup table.");
 		}
 	});
-	socket.on("park",function(){
+	socket.on("park",function(data){
 		//input format: [lat:14.415,lng:124241.124214,time:'23:41:44']
 		var indexOfUser = indexOfSocket(socket);
 		if(indexOfUser == -1) return;
@@ -332,10 +387,12 @@ io.on('connection', function (socket) {
 		if(indexOfDriver == -1){
 			var user = getUserBySocket(socket); 
 			var driver = new Driver(user.userid, new Car(data.lat,data.lng,user.model),data.time);
+			drivers.push(driver);
 			users.forEach(function(usr){
 				sendNewDriverToSocket(usr.socket,driver);
 			});
 			addPark(user.userid,data.lat,data.lng,data.time);
+			console.log("#" + user.userid + " added to drivers.");
 		} else {
 			console.log("User already in park table.");
 		}
