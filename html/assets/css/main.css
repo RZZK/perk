@@ -99,6 +99,8 @@
 
 #leftmenu {
 	color: #666666;
+	background-color: white;
+	box-shadow: 2px 2px 2px #888888;
 }
 
 div.blackbg {
