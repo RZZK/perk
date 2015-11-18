@@ -10,6 +10,8 @@
  */
 /*jslint browser: true*/
 /*global define, module, ender*/
+var touchToDrag;
+
 (function(win, doc) {
     'use strict';
     var Snap = Snap || function(userOpts) {
@@ -23,8 +25,8 @@
             flickThreshold: 50,
             transitionSpeed: 0.3,
             easing: 'ease',
-            maxPosition: 266,
-            minPosition: -266,
+            maxPosition: 262,
+            minPosition: -262,
             tapToClose: true,
             touchToDrag: false,
             slideIntent: 40, // degrees

@@ -47,6 +47,18 @@
 		position: relative
 	}
 
+	#bottomSlider {
+	 z-index: 2;
+    background: white;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 150px;
+	 padding-top: 1em;
+}
+
+
 	.lightbold{
 		text-decoration: none;
 		line-height: 2.5em;
@@ -87,6 +99,8 @@
 
 #leftmenu {
 	color: #666666;
+	background-color: white;
+	box-shadow: 5px 0 5px #888
 }
 
 div.blackbg {

@@ -22,6 +22,11 @@
 				<hr>
 
 				<p>
+					<a href="" ng-click="returnToMap()" onclick="removeBlur()" style="color: #666666;" snap-close>
+						<span class="glyphicon glyphicon-picture"></span>​ View map
+					</a>
+				</p>
+				<p>
 					<a href="" ng-click="displayAddDeparture()" onclick="addBlur()" style="color: #666666;" snap-close>
 						<span class="glyphicon glyphicon-map-marker"></span>​ Add departure time
 					</a>
@@ -44,7 +49,7 @@
 				<p><span class="glyphicon glyphicon-thumbs-up"></span>​ Feedback</p>
 				<hr>
 				<p>
-					<a href="" ng-click="toggleBottomSlider()" style="color: #666666;" snap-close>
+					<a href="" ng-click="logout()" onclick="addBlur()" style="color: #666666;" snap-close>
 						<span class="glyphicon glyphicon-off"></span>​ Log Out
 					</a>
 				</p>
@@ -84,6 +89,8 @@
 						$('#googlemaps').addClass('blackbg');
 						disableUserInput(MyMap);
 					}
+					function enableTouchToDrag() { touchToDrag = true; }
+					function disableTouchToDrag() { touchToDrag = false; }
 				</script>
 					<section id="blank" class="main style4">
 					<div id="googlemaps" class="blackbg"></div>
@@ -208,19 +215,21 @@
 											</tbody>
 										 </table>
 										</section>
-										<section id="white" class="main" style="padding-top: 2em; margin-top: 30em; height: 50%;">
-											<div id="bottomSlider">
-												<p>person 1</p>
-												<p>email: person1@cpp.edu</p>
-												<p>vehicle: magic carpet</p>
-											</div>
-										</section>
+
 									</section>
 
 							</section>
 						</div>
 						<!-- end of user logged in -->
-
+						<section id="bottomSlider" ng-show="displayBottomSlider" class="main">
+							<div>
+								<p>
+									person 1<br>
+									email: person1@cpp.edu<br>
+									vehicle: magic carpet<br>
+								</p>
+							</div>
+						</section>
 					</section>
 		</div><!-- end of snap-content -->
 
@@ -237,7 +246,6 @@
 			<script src="assets/js/main.js"></script>
 			<script src="assets/js/login.js"></script>
 			<script src="map.js"></script>
-			<script src="assets/js/scroll.js"></script> <!-- disables and enables scrolling on mobile -->
 			<script src="assets/js/snap.js"></script>
 			<script src="assets/js/angular-snap.js"></script>
 			<script src="https://maps.googleapis.com/maps/api/js"></script>

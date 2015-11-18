@@ -101,6 +101,15 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.$apply();
   }
 //---------------------------------------------------------------------------------------------------------------
+   $scope.returnToMap = function()
+   {
+      $scope.welcomeScreen = true;
+      $scope.showRiderList = false;
+      $scope.showDriverList = false;
+      $scope.showAddDeparture = false;
+      $scope.displayBottomSlider = false;
+   };
+//---------------------------------------------------------------------------------------------------------------
   $scope.login = function()
   {
      // should save username and email so they can be displayed on the left drawer
@@ -116,6 +125,8 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   {
      // should push data to database if username is not taken
   };
+ //---------------------------------------------------------------------------------------------------------------
+  $scope.logout = function() { $scope.loggedIn = false; };
 //---------------------------------------------------------------------------------------------------------------
   $scope.submitTime = function()
   {
