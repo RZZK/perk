@@ -1,3 +1,6 @@
+process.stdout.write("\u001b[2J\u001b[0;0H");
+console.log("--------------------------------SERVER STARTED--------------------------------")
+console.log("------------------------------------------------------------------------------")
 var mysql = require('mysql');
 
 var my_client = mysql.createConnection({
@@ -164,15 +167,6 @@ function userExistsInTable(table,userID,callback){
 
 //--------------------END SQL FUNCTIONS -----------------------------------------//
 
-
-function User(userid,name,email,phone, picture,socket){
-	this.socket = socket; 
-	this.userid = userid;
-	this.name = name;
-	this.email = email;
-	this.phone = phone;
-	this.picture = picture;
-}
 function User(){
 	this.socket = 0; 
 	this.userid = 0;
@@ -345,11 +339,11 @@ function userLogin(data,socket){
 function initiatePark(data,user){
 	//input format: [lat:14.415,lng:124241.124214,time:'23:41:44']
 	if(indexOfPassengerByID(user.userid) != -1){
-		user.socket.emit("park","Could not add to Drivers because user is in passengers.")
+		user.socket.emit("park",{success:false})
 		return;
 	}
 	if(indexOfDriverByID(user.userid) != -1){
-		user.socket.emit("park","Could not add to Drivers because user is already in drivers.")
+		user.socket.emit("park",{success:false})
 		return;
 	}
 	var driver = new driverBuilder().withUser(user)
@@ -357,12 +351,16 @@ function initiatePark(data,user){
 														.withLng(data.lng)
 														.withTime(data.time)
 														.getDriver();
+	var driverForClient = getClientFriendlyDriver(driver);
+	
+	driverForClient.success = true;
+	user.socket.emit("park",driverForClient);	
 	drivers.push(driver);
 	broadcastNewDriver(driver);
 	console.log("#" + user.userid + " added to drivers.");
-	
 	user.socket.on("location",function(data){
 		updateLocation(driver,data);
+		
 	});
 	user.socket.on("pair",function(data){
 		driverPair(driver,data);
@@ -371,11 +369,11 @@ function initiatePark(data,user){
 function initiatePickup(data,user){
 	//input format: [lat:14.415,lng:124241.124214,time:'23:41:44',lot: 'F']
 	if(indexOfPassengerByID(user.userid) != -1){
-		socket.emit("park","Could not add to Passengers because user is in passengers.")
+		socket.emit("pickup",{succes:false})
 		return;
 	}
 	if(indexOfDriverByID(user.userid) != -1){
-		socket.emit("park","Could not add to Passengers because user is already in drivers.")
+		socket.emit("pickup",{succes:false})
 		return;
 	}
 	var passenger = new passengerBuilder().withUser(user)
@@ -384,8 +382,13 @@ function initiatePickup(data,user){
 																	.withLng(data.lng)
 																	.withTime(data.time)
 																	.getPassenger();
-	passengers.push(passenger);
-	broadcastNewPassenger(passenger)
+	var passengerForClient = getClientFriendlyPassenger(passenger);
+	passengerForClient.success = true;
+	user.socket.emit("pickup",passengerForClient);		
+	
+	passengers.push(getClientFriendlyPassenger(passenger));
+	broadcastNewPassenger(passenger);
+	
 	console.log("#" + user.userid + " added to passengers.");
 	
 	user.socket.on("location",function(data){
@@ -395,25 +398,25 @@ function initiatePickup(data,user){
 		passengerPair(passenger,data);
 	});
 }
-function updateLocation(driver,data){
-	//data format: {lat:12323.34,lng:1244.5}
-	driver = data.lat;
-	driver = data.lng;
-	data.userid = driver.userid;
+function updateLocation(user,data){
+	user.lat = data.lat;
+	
+	user.lng = data.lng;
+	data.userid = user.user.userid;
 	users.forEach(function(elem){
-		elem.socket.emit("location",data);
+		if(user.socket !== elem.socket) elem.socket.emit("location",data);
 	});
 }
 function broadcastNewPassenger(passenger){
 	var pass = getClientFriendlyPassenger(passenger);
 	users.forEach(function(usr){
-		usr.socket.emit("newPassenger",pass);
+		if(passenger.user.socket !== usr.socket) usr.socket.emit("newPassenger",pass);
 	});
 }
 function broadcastNewDriver(driver){
 	var drive = getClientFriendlyDriver(driver);
 	users.forEach(function(usr){
-		usr.socket.emit("newDriver",drive);
+		if(driver.user.socket !== usr.socket) usr.socket.emit("newDriver",drive);
 	});
 }
 function driverPair(driver,data){
@@ -457,24 +460,29 @@ function getDriverByID(id){
 function removeUserBySocket(socket){
 	var disconnectionMessage = ""; 
 	if(users.length === 0 ) disconnectionMessage = "#??? disconnected";
-	drivers.forEach(function(d,i){
-		if(d.user.socket === socket) {
-			drivers.splice(i,1);
-			disconnectionMessage += "\nRemoving them from drivers.";
+	else{
+		drivers.forEach(function(d,i){
+			if(d.user.socket === socket) {
+				drivers.splice(i,1);
+				disconnectionMessage += "\nRemoving them from drivers.";
+			}
+		});
+		passengers.forEach(function(p,i){
+			if(p.user.socket === socket) passengers.splice(i,1);
+			disconnectionMessage += "\nRemoving them from passengers.";
+		});
+		for(var i = 0; i < users.length;i++){
+			var u = users[i]
+			if(u.socket === socket){
+					users.splice(i,1);
+					disconnectionMessage = "#" + u.userid + " disconnected" + disconnectionMessage;
+					break;
+				} 
+				if(i === users.length - 1 ) {
+					disconnectionMessage = "#??? disconnected" + disconnectionMessage;
+				}
 		}
-	});
-	passengers.forEach(function(p,i){
-		if(p.user.socket === socket) passengers.splice(i,1);
-		disconnectionMessage += "\nRemoving them from passengers.";
-	});
-	users.forEach(function(u,i){
-		if(u.socket === socket){
-			users.splice(i,1);
-			disconnectionMessage = "#" + u.userid + " disconnected" + disconnectionMessage;
-		} else if(i === users.length - 1 ) {
-			disconnectionMessage = "#??? disconnected" + disconnectionMessage;
-		}
-	});
+	}
 	console.log(disconnectionMessage);
 }
 function pairUsers(driver,passenger){
@@ -499,6 +507,8 @@ function getClientFriendlyUser(user){
 function getClientFriendlyPassenger(passenger){
 	var user = getClientFriendlyUser(passenger.user);
 	return new passengerBuilder().withUser(user)
+													.withLat(passenger.lat)
+													.withLng(passenger.lng)
 													.withLot(passenger.lot)
 													.withTime(passenger.time)
 													.getPassenger();
