@@ -2,20 +2,23 @@ var MyMap;
 var drivers = new Array();
 var lots = new Array();
 var showDrivers = true;
-var showLots = false;
+var showLots = true;
 var passengers = new Array();
 var drivers = new Array();
 var me = -1;
 var socket;
 
-initializeSocket();
-login("smashtilldawn.com","",function(data){});
-initiatePark("mytime");
+
+function tempLogin(){
+	var users =  ["smashtilldawn.com","smashlawn.com"]
+	var num = prompt("Test User Number (0,1,2,3,4......)", "");
+	login(users[num],"");
+}
 function initializeMap() {
 	var mapCanvas = document.getElementById('googlemaps');
 	var mapOptions = {
 		center: new google.maps.LatLng(34.0569172,-117.8217494),
-		zoom: 16,
+		zoom: 17,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		streetViewControl: false,
 		mapTypeControl: false,
@@ -32,6 +35,7 @@ function initializeMap() {
 		]
 	}
 	MyMap = new google.maps.Map(mapCanvas, mapOptions);
+	initializeLots();
 }
 function disableUserInput(map){
 	map.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true});
@@ -89,8 +93,79 @@ function updateLocationGoogleMaps(user,lat,lng){
 function loadSlider(){
 		angular.element(document.getElementById('controller')).scope().toggleBottomSlider();
 }
-
-
+function initializeLots(){
+	var data = getLotData();
+	for(var i = 0; i < data.length; i++){
+		var lot = new Lot(data[i].name,data[i].lat,data[i].lng);
+		lots.push(lot);
+	}
+}
+function getLotData(){
+	return [
+		{
+			name: "J Lot",
+			lat: 34.057220,
+			lng: -117.828868
+		},
+		{
+			name: "M Lot",
+			lat: 34.055495, 
+			lng: -117.828921
+		},
+		{
+			name: "C Lot",
+			lat: 34.058555, 
+			lng: -117.819128
+		},
+		{
+			name: "F8 Lot",
+			lat: 34.059124, 
+			lng: -117.817111
+		},
+		{
+			name: "F9 Lot",
+			lat: 34.060101, 
+			lng: -117.815481
+		},
+		{
+			name: "F5 Lot",
+			lat: 34.061577, 
+			lng: -117.815448
+		},
+		{
+			name: "F10 Lot",
+			lat: 34.060999, 
+			lng: -117.814622
+		},
+		
+		{
+			name: "F3 Lot",
+			lat: 34.062003, 
+			lng: -117.816296
+		},
+		{
+			name: "F1 Lot",
+			lat: 34.062261, 
+			lng: -117.816918
+		},
+		{
+			name: "F2 Lot",
+			lat: 34.061488, 
+			lng: -117.817680
+		},
+		{
+			name: "F4 Lot",
+			lat: 34.060990, 
+			lng: -117.817390
+		},
+		{
+			name: "Parking Structure",
+			lat: 34.060243, 
+			lng: -117.816940
+		}
+	];
+	
+}
 function Passenger(){
 	this.user = {userid:0};
 	this.lot = 0;
@@ -139,7 +214,7 @@ function Driver(){
 		position: new google.maps.LatLng(this.lat, this.lng),
 		icon: {
 			url: "assets/imgs/car.png",
-			scaledSize: new google.maps.Size(50, 50),
+			scaledSize: new google.maps.Size(40, 40),
 			origin: new google.maps.Point(0,0),
 			anchor: new google.maps.Point(0, 0)
 		},
@@ -148,9 +223,8 @@ function Driver(){
 	this.setLatLng = function(lat,lng){
 		this.lat = lat;
 		this.lng = lng;
-		var pos = new google.maps.LatLng(lat,lng);
-		console.log(pos);
-		this.marker.setPosition(pos);
+		// console.log(lat + ", " + lng);
+		this.marker.setPosition(new google.maps.LatLng(lat,lng));
 	};
 	this.setMap = function(map){
 		this.marker.setMap(map);
@@ -182,14 +256,40 @@ function driverBuilder(){
 		return driver;
 	}
 }
-
+function Lot(name,lat,lng){
+	passengers = new Array();
+	name = name;
+	marker = new google.maps.Marker({
+		map:MyMap,
+		position: new google.maps.LatLng(lat, lng),
+		icon: {
+			url: "assets/imgs/parking.png",
+			scaledSize: new google.maps.Size(40, 40),
+			origin: new google.maps.Point(0,0),
+			anchor: new google.maps.Point(20, 20)
+		}
+	});
+	marker.addListener('click', function(){
+		console.log(name);
+		console.log(passengers);
+	});
+	this.addPassenger = function(passenger){
+		passengers.push(passenger);
+	}
+	this.getPassengers = function(){
+		return passengers;
+	}
+	this.getName = function(){
+		return name;
+	}
+}
 
 
 
 //TEST COMMANDS
 /////////////////////////////////////////////////////////////////////////////////
-// login("smashtilldawn.com","");
-//login("smashlawn.com","");
+// login("smashtilldawn.com","");initiatePark("mytime");
+//login("smashlawn.com","");initiatePark("mytime");
 //initiatePark(14.24,124.44,"mytime");
 // initiatePassenger(14.24,124.44,"mytime","F");
 ///////////////////////////////////////////////////////////////////////////////////
@@ -218,7 +318,12 @@ function addDriver(data){
 function addPassenger(data){
 	var passenger = getPassengerFromData(data);
 	addPassengerToMap(passenger);
-	this.passengers.push(passenger);
+	var lot = getLotByName(data.lot);
+	if(lot === -1) {
+		console.log("Unable to find lot: " + lotName + ".")
+		return;
+	}
+	lot.addPassenger(passenger);
 }
 function initializeUsers(passengers,drivers){
 	passengers.forEach(function(passenger){
@@ -243,32 +348,44 @@ function getDriverFromData(driver){
 }
 function initiatePark(time){
 	getMyLocation(function(data){
+		
 		socket.emit("park", {lat:data.lat,lng:data.lng,time:time});
 	});
 	
 	socket.on("park",function(data){
 		if(data.success){
+			
 			me = new driverBuilder().withLat(data.lat)
 													.withLng(data.lng)
 													.withTime(data.time)
 													.getDriver();
 			me.user = {userid:data.user.userid};
 			drivers.push(me);
+			addDriverToMap(me);
 		}
 		socket.removeListener("park");
 	});
 };
-function initiatePassenger(lat,lng,time,lot){
-	socket.emit("pickup", {lat:lat,lng:lng,time:time,lot:lot});
+function initiatePickup(time,lotName){
+	var lot = getLotByName(lotName);
+	if(lot === -1) {
+		console.log("Unable to find lot: " + lotName + ".")
+		return;
+	}
+	getMyLocation(function(data){
+		socket.emit("pickup", {lat:data.lat,lng:data.lng,time:time,lot:lotName});
+	});
 	socket.on("pickup",function(data){
 		if(data.success){
-			me = new passengerBuilder().withLat(lat)
-													.withLng(lng)
-													.withTime(time)
-													.withLot(lot)
+			me = new passengerBuilder().withLat(data.lat)
+													.withLng(data.lng)
+													.withTime(data.time)
+													.withLot(data.lot)
 													.getPassenger();
 		}
-		passengers.push(me);
+		me.user = {userid: data.user.userid};
+		lot.addPassenger(me);
+		console.log(lot.getPassengers());
 		socket.removeListener("pickup");
 	});
 };
@@ -277,13 +394,13 @@ function login(email,password,callback){
 	socket.on("login", function(data){
 		socket.removeListener("login");
 		if(!data.success){
-			callback(false);
+			if(!!callback) callback(false);
 			console.log("Invalid login credentials provided.");
 			//TODO angular connection
 			
 			return; 
 		} else {
-			callback(true);
+			if(!!callback) callback(true);
 			//TODO angular connection
 			var intervalID = setInterval(function(){
 				updateMyLocation(intervalID);
@@ -296,6 +413,8 @@ function logout(){
 }
 function updateMyLocation(intervalID){
 	//for you when you are updating your location
+	if(me == -1) return;
+	
 	if(!navigator.geolocation){
 		alert('Please allow location sharing.');
 	}
@@ -307,21 +426,27 @@ function updateMyLocation(intervalID){
 			};
 			if(!!data){
 				socket.emit("location",data);
+				
 				updateLocationGoogleMaps(me,data.lat,data.lng);
 			} 
 			
 		},
 		function(error){
 			console.log(error);
-			//clearInterval(intervalID);
+			clearInterval(intervalID);
 		}, {
 			 enableHighAccuracy: true
 		}
 	);
 }
 function getPassengerByID(id){
-	for(var i = 0; i < passengers.length; i++){
-		if(passengers[i].user.userid == id) return passengers[i];
+	for(var lotIndex = 0; lotIndex < lots.length; lotIndex++){
+		var passengers = lots[lotIndex].getPassengers();
+		for(var passengerIndex = 0; passengerIndex < passengers.length;passengerIndex++){
+			if(passengers[passengerIndex].user.userid === id){
+				return passengers[passengerIndex];
+			}
+		}
 	}
 	return -1;
 }
@@ -342,10 +467,9 @@ function updateLocation(data){
 	} else if(driver != -1){
 		driver.lat = data.lat;
 		driver.lng = data.lng;
-		// updateLocationGoogleMaps(driver,data.lat,data.lng);
-		//TODO fix updateLocationGoogleMaps so it doesn't remove the icon
+		updateLocationGoogleMaps(driver,data.lat,data.lng);
 	} else {
-		console.log("User MIA for location update.");
+		console.log("User MIA for location update. (id = " + data.userid + ")");
 	}
 }
 function getMyLocation(callback){
@@ -369,12 +493,17 @@ function getMyLocation(callback){
 		}
 	);
 }
-
+function getLotByName(name){
+	for(var i = 0; i < lots.length; i++){
+		if(lots[i].getName() === name) return lots[i];
+	}
+	return -1;
+}
 
 //make updateLocation edit local user data not just  remote data
 //pair
 //removeListeners all over the place
 //updatePassengerLocationGoogleMaps(passenger,lat,lng);
 //updateDriverLocationGoogleMaps(driver,lat,lng);
-
+//TODO remove users when logout
 

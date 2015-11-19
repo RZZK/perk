@@ -461,16 +461,20 @@ function removeUserBySocket(socket){
 	var disconnectionMessage = ""; 
 	if(users.length === 0 ) disconnectionMessage = "#??? disconnected";
 	else{
-		drivers.forEach(function(d,i){
-			if(d.user.socket === socket) {
+		for(var i = 0; i < drivers.length; i++){
+			if(drivers[i].user.socket === socket) {
 				drivers.splice(i,1);
 				disconnectionMessage += "\nRemoving them from drivers.";
+				break;
 			}
-		});
-		passengers.forEach(function(p,i){
-			if(p.user.socket === socket) passengers.splice(i,1);
-			disconnectionMessage += "\nRemoving them from passengers.";
-		});
+		}
+		for(var i = 0; i < passengers.length; i++){
+			if(passengers[i].user.socket === socket) {
+				disconnectionMessage += "\nRemoving them from passengers.";
+				passengers.splice(i,1);
+				break;
+			}
+		}
 		for(var i = 0; i < users.length;i++){
 			var u = users[i]
 			if(u.socket === socket){
