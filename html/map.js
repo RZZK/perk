@@ -368,7 +368,9 @@ function initiatePark(time){
 		socket.removeListener("park");
 	});
 };
-function initiatePickup(time,lotName){
+function initiatePickup(){
+	var time = document.getElementById("time").value;
+	var lotName = document.getElementById("lot").value;
 	var lot = getLotByName(lotName);
 	if(lot === -1) {
 		console.log("Unable to find lot: " + lotName + ".")
