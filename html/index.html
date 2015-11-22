@@ -18,7 +18,7 @@
 		<!-- Left slide out page -->
 		<div id="leftmenu" style="padding-left: 12px; padding-top: 5px;" snap-drawer>
 				<h3>{{ currentUserName }}</h3>
-				<p>johndoe@cpp.edu</p>
+				<p>{{ currentUserEmail }}</p>
 				<hr>
 
 				<p>
@@ -108,8 +108,8 @@
 
 								<!-- if newUser = false, display login -->
 								<div ng-hide="displaySignUp" style="padding-top: 15em;" class="login">
-									<input type="text" ng-model="username" placeholder="username"><br>
-									<input type="password" ng-model="passw1" placeholder="password"><br>
+									<input type="text" id="username" placeholder="username"><br>
+									<input type="password" id="password" placeholder="password"><br>
 									<button class="btn btn-success" ng-click="login()" onclick="removeBlur();login();"
 												style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
 									<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
@@ -251,6 +251,5 @@
 			<script src="https://maps.googleapis.com/maps/api/js"></script>
 			<script> google.maps.event.addDomListener(window, 'load', initializeMap); </script>
 			<script> google.maps.event.addDomListener(window, 'load', initializeSocket); </script>
-			<script> google.maps.event.addDomListener(window, 'load', tempLogin); </script>
 	</body>
 </html>

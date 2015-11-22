@@ -12,15 +12,6 @@ database: 'perk'
 });
 my_client.connect();
 
-// printUserList();
-// addUser("Henry","broncor@yahoo.com","555-9696", "A effing Dragon");
-// removeUser(10006);
-// addPark("1000","2000","20000","11:28:50");
-// printParkList();
-// removePark('10000');
-// userExists("Tom ","nunyabizznes","525-999","camry ");
-// printPickupList();
-
 function query(sql,callback){
 	my_client.query(sql, function(x,y,z){
 		if(!!x){
@@ -57,7 +48,6 @@ function removeUser(userID){
 			else console.log("SQL: CAN'T DELETE: USER " + userID + " NOT IN users");
 		});
 }
-// DONE CHECK THIS
 function userExists(name,email,phone,car,callback){
 	var sql = 'SELECT * from users where email="'+email + '";';
 	query(sql,function(x,y,z){
@@ -120,7 +110,6 @@ function removePickup(userID){
 		}
 	});
 }
-
 function getPickupList(callback){ 
 	var sql = 'SELECT * from pickup'
 		return query(sql,function(x,y,z){
@@ -490,6 +479,15 @@ function removeUserBySocket(socket){
 	console.log(disconnectionMessage);
 }
 function pairUsers(driver,passenger){
+	if(driver.paired.indexOf(passenger.userid) == -1) return;
+	if(passenger.paired.indexOf(driver.userid) == -1) return;
+	console.log("#" + driver.user.userid + " and #" + passenger.user.userid + " paired.");
+	driver.user.socket.emit("pair",getPairedFriendlyPassenger(passenger));
+	passenger.user.socket.emit("pair",getPairedFriendlyDriver(driver))
+	
+	removeUserBySocket(driver.user.socket);
+	removeUserBySocket(passenger.user.socket);
+	
 }
 function indexOfPassengerByID(userid){
 	passengers.forEach(function(e,i){
@@ -538,4 +536,29 @@ function getClientFriendlyPassengerList(){
 		friendlyPassengers.push(getClientFriendlyPassenger(ele));
 	});
 	return friendlyPassengers;
+}
+function getPairedFriendlyDriver(passenger){
+	var user = getPairedFriendlyUser(driver.user);
+	return new driverBuilder().withUser(user)
+											.withLat(driver.lat)
+											.withLng(driver.lng)
+											.withTime(driver.time)
+											.getDriver();
+}
+function getPairedFriendlyPassenger(driver){
+	var user = getPairedFriendlyUser(passenger.user);
+	return new passengerBuilder().withUser(user)
+													.withLat(passenger.lat)
+													.withLng(passenger.lng)
+													.withLot(passenger.lot)
+													.withTime(passenger.time)
+													.getPassenger();
+}
+function getPairedFriendlyUser(user){
+		return new userBuilder().withName(user.name)
+										.withUserID(user.userid)
+										.withEmail(user.email)
+										.withPhone(user.phone)
+										.withPicture(user.picture)
+										.getUser();
 }

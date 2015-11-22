@@ -13,6 +13,8 @@ function tempLogin(){
 	var users =  ["smashtilldawn.com","smashlawn.com"]
 	var num = prompt("Test User Number (0,1,2,3,4......)", "");
 	login(users[num],"");
+	
+	
 }
 function initializeMap() {
 	var mapCanvas = document.getElementById('googlemaps');
@@ -389,7 +391,10 @@ function initiatePickup(time,lotName){
 		socket.removeListener("pickup");
 	});
 };
-function login(email,password,callback){
+function login(callback){
+	var email  = document.getElementById("username").value;
+	var password = document.getElementById("password").value;
+		console.log(" ' " + email + " ' " + " ' " + password + " ' ");
 	socket.emit("login", {email:email,password:password});
 	socket.on("login", function(data){
 		socket.removeListener("login");
