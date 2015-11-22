@@ -17,12 +17,7 @@
 
 		<!-- Left slide out page -->
 		<div id="leftmenu" style="padding-left: 12px; padding-top: 5px;" snap-drawer>
-<<<<<<< HEAD
-				<h3>{{ currentUserName }}</h3>
-				<p>{{ currentUserEmail }}</p>
-=======
 				<p><b><center>{{ currentUserEmail }}</center></b></p>
->>>>>>> 827992ac90c486a24241d6decfde529cb6df22fd
 				<hr>
 
 				<p>
@@ -112,11 +107,8 @@
 
 								<!-- if newUser = false, display login -->
 								<div ng-hide="displaySignUp" style="padding-top: 15em;" class="login">
-<<<<<<< HEAD
-									<input type="text" id="username" placeholder="username"><br>
-=======
 									<input type="text" ng-model="usernameEmail" id="username" placeholder="email"><br>
->>>>>>> 827992ac90c486a24241d6decfde529cb6df22fd
+
 									<input type="password" id="password" placeholder="password"><br>
 									<button class="btn btn-success" ng-click="login()" onclick="removeBlur();login();"
 												style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
