@@ -15,6 +15,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
 
   $scope.snapOpts = { disable: 'right' };
   $scope.username = '';
+  $scope.usernameEmail = '';
   $scope.passw1 = '';
   $scope.passw2 = '';
   $scope.email = '';
@@ -114,11 +115,8 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   {
      // should save username and email so they can be displayed on the left drawer
      // use username as key, and get first name, last name, and e-mail
-     $scope.currentUserName = $scope.username;
-     $scope.currentUserEmail = $scope.email;
-
+     $scope.currentUserEmail = $scope.usernameEmail;
      $scope.loggedIn = true;
-    //$scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
   };
 //---------------------------------------------------------------------------------------------------------------
   $scope.signup = function()
