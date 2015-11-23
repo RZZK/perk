@@ -39,7 +39,7 @@ function addUser(name,email,phone,car,password){
 	});
 }
 function removeUser(userID){
-	var sql ='DELETE from users where userid =' + userID;
+	var sql ='DELETE from users where userid =' + userID +';'
 		userExists(userID,function(exists){
 			if(exists){
 				console.log("SQL: REMOVING USER -- userid: " + userID);
@@ -148,11 +148,22 @@ function printUserList(){
 	});
 }
 function userExistsInTable(table,userID,callback){
-	var sql = 'SELECT * FROM ' + table + ' where userid= "'+userID + '";';
+	var sql = 'SELECT * FROM ' + table + ' where userid= "'+userID + '";'
 	query(sql,function(x,y,z){
 		callback(y.length != 0);
 	});
 }
+
+function listClients (callback){
+var sql ='SELECT name, userid FROM users'
+return query(sql,function(x,y,z){
+		callback(y);
+		
+	});
+
+}
+
+
 
 //--------------------END SQL FUNCTIONS -----------------------------------------//
 

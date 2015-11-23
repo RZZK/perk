@@ -35,11 +35,6 @@
 						<span class="glyphicon glyphicon-user"></span>​ Look for passengers
 					</a>
 				</p>
-				<p>
-					<a href="" ng-click="showDrivers()" style="color: #666666;" snap-close>
-						<span class="glyphicon glyphicon-screenshot"></span>​ Look for drivers
-					</a>
-				</p>
 				<hr>
 				<p><span class="glyphicon glyphicon-pencil"></span>​ Edit Profile</p>
 				<p><span class="glyphicon glyphicon-cog"></span>​ Settings</p>
@@ -108,8 +103,7 @@
 								<!-- if newUser = false, display login -->
 								<div ng-hide="displaySignUp" style="padding-top: 15em;" class="login">
 									<input type="text" ng-model="usernameEmail" id="username" placeholder="email"><br>
-
-									<input type="password" id="password" placeholder="password"><br>
+									<input type="password" id="password" ng-model="password" placeholder="password"><br>
 									<button class="btn btn-success" ng-click="login()" onclick="removeBlur();login();"
 												style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
 									<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
@@ -147,7 +141,7 @@
 
 									</section>
 									<section ng-hide="welcomeScreen">
-										<section id="blank" ng-show="showAddDeparture">
+										<section ng-show="showAddDeparture" class="main">
 									  		<div class="content container 100%" align="center" style="color: white; padding-top: 16em;">
 													 <h3>Add departure time</h3>
 													 <form class="form-horizontal">
@@ -156,6 +150,24 @@
 														  <div class="col-sm-12">
 															 <input type="text" id="lot" ng-model="lot" placeholder="Lot">
 														  </div>
+														</div>
+
+														<div class="form-group">
+															<select>
+																<option>Choose a lot</option>
+																<option value="J Lot">J Lot</option>
+																<option value="M Lot">M Lot</option>
+																<option value="C Lot">C Lot</option>
+																<option value="F8 Lot">F8 Lot</option>
+																<option value="F9 Lot">F9 Lot</option>
+																<option value="F5 Lot">F5 Lot</option>
+																<option value="F10 Lot">F10 Lot</option>
+																<option value="F3 Lot">F3 Lot</option>
+																<option value="F1 Lot">F1 Lot</option>
+																<option value="F2 Lot">F2 Lot</option>
+																<option value="F4 Lot">F4 Lot</option>
+																<option value="Parking Structure">Parking Structure</option>
+															</select>
 														</div>
 
 														<div class="form-group">
@@ -172,6 +184,7 @@
 											  </div>
 										</section>
 										<section id="white" ng-show="showRiderList" class="main fullscreen" style="padding-top: 2em;">
+
 										 <!--table data-->
 										 <table class="table table-striped">
 											<thead>
@@ -193,29 +206,6 @@
 											</tbody>
 										 </table>
 										</section>
-										<section id="white" ng-show="showDriverList" class="main fullscreen" style="padding-top: 2em;">
-										 <!--table data-->
-										 <table class="table table-striped">
-											<thead>
-											  <tr>
-												 <th><span class="lightbold">Name</span></th>
-												 <th><span class="lightbold">E-mail</span></th>
-												 <th><span class="lightbold">Location</span></th>
-											  </tr>
-											</thead>
-											<tbody>
-											  <tr ng-repeat="user in users">
-												 <td>{{ user.fName }}</td>
-												 <td>{{ user.email }}</td>
-												 <td>{{ user.departTime }}</td>
-												 <td>
-													<button class="btn" ng-click="editEntry(user.id)"> Request </button>
-												 </td>
-											  </tr>
-											</tbody>
-										 </table>
-										</section>
-
 									</section>
 
 							</section>
