@@ -155,9 +155,10 @@ function userExistsInTable(table,userID,callback){
 }
 
 function listClients (callback){
-var sql = 'SELECT name, userid FROM users ;'
+var sql ='SELECT name, userid FROM users ;'
 return query(sql,function(x,y,z){
 		callback(y);
+		
 	});
 
 }
