@@ -177,7 +177,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
     }
 
     //if fields are empty during add phase
-    if ($scope.lot.length && $scope.departTime.length) { $scope.incomplete = false; }
+    if ($scope.departTime.length) { $scope.incomplete = false; }
   };
 //---------------------------------------------------------------------------------------------------------------
 });
