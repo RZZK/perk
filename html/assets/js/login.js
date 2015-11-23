@@ -136,6 +136,11 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      // takes the data from "Add departure time" and saves it to the table
      // should use the info of the user that is logged in (name, email, phone number?)
      // should take the "Lot" and "Time" that the user typed in the two fields
+     $scope.welcomeScreen = true;
+     $scope.showRiderList = false;
+     $scope.showDriverList = false;
+     $scope.showAddDeparture = false;
+     $scope.displayBottomSlider = false;
   };
   $scope.refresh = function() { $scope.$apply(); };
 //---------------------------------------------------------------------------------------------------------------
