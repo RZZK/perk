@@ -8,8 +8,6 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   */
   $scope.currentUserName = '';
   $scope.currentUserEmail = '';
-  $scope.fName = '';
-  $scope.lName = '';
   $scope.departTime = '';
   $scope.lot = '';
 
@@ -124,7 +122,14 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      // should push data to database if username is not taken
   };
  //---------------------------------------------------------------------------------------------------------------
-  $scope.logout = function() { $scope.loggedIn = false; };
+  $scope.logout = function()
+  {
+    $scope.showRiderList = false;
+    $scope.showDriverList = false;
+    $scope.showAddDeparture = false;
+    $scope.displayBottomSlider = false;
+    $scope.loggedIn = false;
+  };
 //---------------------------------------------------------------------------------------------------------------
   $scope.submitTime = function()
   {
@@ -150,8 +155,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
     else { $scope.error = false; } // no error
 
     $scope.incomplete = false;
-
-    // if all fields are still empty
+    // if all fields are still empty during create account
     if (!$scope.username.length || !$scope.passw1.length || !$scope.passw2.length
       || !$scope.email.length || !$scope.number.length || !$scope.vehicle.length
       || !$scope.vcolor.length )
