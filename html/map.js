@@ -376,7 +376,7 @@ function initiatePark(time){
 };
 function initiatePickup(){
 	var time = document.getElementById("time").value;
-	var lotName = document.getElementById("lot").value;
+	var lotName = document.getElementById("lot").options[document.getElementById("lot").selectedIndex].value;
 	var lot = getLotByName(lotName);
 	if(lot === -1) {
 		console.log("Unable to find lot: " + lotName + ".")
