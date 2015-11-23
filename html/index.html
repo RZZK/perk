@@ -35,11 +35,6 @@
 						<span class="glyphicon glyphicon-user"></span>​ Look for passengers
 					</a>
 				</p>
-				<p>
-					<a href="" ng-click="showDrivers()" style="color: #666666;" snap-close>
-						<span class="glyphicon glyphicon-screenshot"></span>​ Look for drivers
-					</a>
-				</p>
 				<hr>
 				<p><span class="glyphicon glyphicon-pencil"></span>​ Edit Profile</p>
 				<p><span class="glyphicon glyphicon-cog"></span>​ Settings</p>
@@ -108,7 +103,6 @@
 								<!-- if newUser = false, display login -->
 								<div ng-hide="displaySignUp" style="padding-top: 15em;" class="login">
 									<input type="text" ng-model="usernameEmail" id="username" placeholder="email"><br>
-
 									<input type="password" id="password" ng-model="password" placeholder="password"><br>
 									<button class="btn btn-success" ng-click="login()" onclick="removeBlur();login();"
 												style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
@@ -193,29 +187,6 @@
 											</tbody>
 										 </table>
 										</section>
-										<section id="white" ng-show="showDriverList" class="main fullscreen" style="padding-top: 2em;">
-										 <!--table data-->
-										 <table class="table table-striped">
-											<thead>
-											  <tr>
-												 <th><span class="lightbold">Name</span></th>
-												 <th><span class="lightbold">E-mail</span></th>
-												 <th><span class="lightbold">Location</span></th>
-											  </tr>
-											</thead>
-											<tbody>
-											  <tr ng-repeat="user in users">
-												 <td>{{ user.fName }}</td>
-												 <td>{{ user.email }}</td>
-												 <td>{{ user.departTime }}</td>
-												 <td>
-													<button class="btn" ng-click="editEntry(user.id)"> Request </button>
-												 </td>
-											  </tr>
-											</tbody>
-										 </table>
-										</section>
-
 									</section>
 
 							</section>
