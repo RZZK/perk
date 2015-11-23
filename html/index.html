@@ -109,7 +109,7 @@
 								<div ng-hide="displaySignUp" style="padding-top: 15em;" class="login">
 									<input type="text" ng-model="usernameEmail" id="username" placeholder="email"><br>
 
-									<input type="password" id="password" placeholder="password"><br>
+									<input type="password" id="password" ng-model="password" placeholder="password"><br>
 									<button class="btn btn-success" ng-click="login()" onclick="removeBlur();login();"
 												style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
 									<p><a href="" ng-click="newUser('signup')">Create an account</a></p>

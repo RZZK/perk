@@ -14,6 +14,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.snapOpts = { disable: 'right' };
   $scope.username = '';
   $scope.usernameEmail = '';
+  $scope.password = '';
   $scope.passw1 = '';
   $scope.passw2 = '';
   $scope.email = '';
@@ -129,6 +130,10 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
     $scope.showAddDeparture = false;
     $scope.displayBottomSlider = false;
     $scope.loggedIn = false;
+
+    $scope.currentUserEmail = '';
+    $scope.usernameEmail = '';
+    $scope.password = '';
   };
 //---------------------------------------------------------------------------------------------------------------
   $scope.submitTime = function()
@@ -141,6 +146,9 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.showDriverList = false;
      $scope.showAddDeparture = false;
      $scope.displayBottomSlider = false;
+
+     $scope.departTime = '';
+     $scope.lot = '';
   };
   $scope.refresh = function() { $scope.$apply(); };
 //---------------------------------------------------------------------------------------------------------------
