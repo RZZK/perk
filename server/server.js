@@ -275,7 +275,7 @@ var users = new Array();
 var passengers = new Array();
 var drivers = new Array();
 io.on('connection', function (socket) {
-	console.log("socket " + socket.id + " opened.")
+	console.log("socket " + socket.id + " opened.");
 	socket.on("login", function(data){
 		userLogin(data,socket);
 	});

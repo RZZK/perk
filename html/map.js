@@ -396,19 +396,15 @@ function initiatePickup(){
 function login(callback){
 	var email  = document.getElementById("username").value;
 	var password = document.getElementById("password").value;
-		console.log(" ' " + email + " ' " + " ' " + password + " ' ");
 	socket.emit("login", {email:email,password:password});
 	socket.on("login", function(data){
 		socket.removeListener("login");
 		if(!data.success){
 			if(!!callback) callback(false);
 			console.log("Invalid login credentials provided.");
-			//TODO angular connection
-			
 			return; 
 		} else {
 			if(!!callback) callback(true);
-			//TODO angular connection
 			var intervalID = setInterval(function(){
 				updateMyLocation(intervalID);
 			},1000);
