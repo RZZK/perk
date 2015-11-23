@@ -259,9 +259,9 @@ function driverBuilder(){
 	}
 }
 function Lot(name,lat,lng){
-	passengers = new Array();
-	name = name;
-	marker = new google.maps.Marker({
+	var passengers = new Array();
+	var name = name;
+	var marker = new google.maps.Marker({
 		map:MyMap,
 		position: new google.maps.LatLng(lat, lng),
 		icon: {
@@ -314,11 +314,17 @@ function initializeSocket(){
 }
 function addDriver(data){
 	var driver = getDriverFromData(data);
+	if(!!me.user && driver.user.userid === me.user.userid){
+		return;
+	}
 	addDriverToMap(driver);
 	this.drivers.push(driver);
 }
 function addPassenger(data){
 	var passenger = getPassengerFromData(data);
+	if(!!me.user && passenger.user.userid === me.user.userid){
+		return;
+	}
 	addPassengerToMap(passenger);
 	var lot = getLotByName(data.lot);
 	if(lot === -1) {
@@ -389,7 +395,6 @@ function initiatePickup(){
 		}
 		me.user = {userid: data.user.userid};
 		lot.addPassenger(me);
-		console.log(lot.getPassengers());
 		socket.removeListener("pickup");
 	});
 };

@@ -275,7 +275,7 @@ var users = new Array();
 var passengers = new Array();
 var drivers = new Array();
 io.on('connection', function (socket) {
-	console.log("socket " + socket.id + " opened.");
+	console.log("socket " + socket.id + " opened.")
 	socket.on("login", function(data){
 		userLogin(data,socket);
 	});
@@ -375,8 +375,8 @@ function initiatePickup(data,user){
 	passengerForClient.success = true;
 	user.socket.emit("pickup",passengerForClient);		
 	
-	passengers.push(getClientFriendlyPassenger(passenger));
-	broadcastNewPassenger(passenger);
+	passengers.push(passenger);
+	broadcastNewPassenger(getClientFriendlyPassenger(passenger));
 	
 	console.log("#" + user.userid + " added to passengers.");
 	
@@ -457,8 +457,10 @@ function removeUserBySocket(socket){
 				break;
 			}
 		}
+		console.log("plength" + passengers.length);
 		for(var i = 0; i < passengers.length; i++){
 			if(passengers[i].user.socket === socket) {
+				
 				disconnectionMessage += "\nRemoving them from passengers.";
 				passengers.splice(i,1);
 				break;
