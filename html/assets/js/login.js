@@ -8,13 +8,13 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   */
   $scope.currentUserName = '';
   $scope.currentUserEmail = '';
-  $scope.fName = '';
-  $scope.lName = '';
   $scope.departTime = '';
   $scope.lot = '';
 
   $scope.snapOpts = { disable: 'right' };
   $scope.username = '';
+  $scope.usernameEmail = '';
+  $scope.password = '';
   $scope.passw1 = '';
   $scope.passw2 = '';
   $scope.email = '';
@@ -114,11 +114,8 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   {
      // should save username and email so they can be displayed on the left drawer
      // use username as key, and get first name, last name, and e-mail
-     $scope.currentUserName = $scope.username;
-     $scope.currentUserEmail = $scope.email;
-
+     $scope.currentUserEmail = $scope.usernameEmail;
      $scope.loggedIn = true;
-    //$scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
   };
 //---------------------------------------------------------------------------------------------------------------
   $scope.signup = function()
@@ -126,13 +123,32 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      // should push data to database if username is not taken
   };
  //---------------------------------------------------------------------------------------------------------------
-  $scope.logout = function() { $scope.loggedIn = false; };
+  $scope.logout = function()
+  {
+    $scope.showRiderList = false;
+    $scope.showDriverList = false;
+    $scope.showAddDeparture = false;
+    $scope.displayBottomSlider = false;
+    $scope.loggedIn = false;
+
+    $scope.currentUserEmail = '';
+    $scope.usernameEmail = '';
+    $scope.password = '';
+  };
 //---------------------------------------------------------------------------------------------------------------
   $scope.submitTime = function()
   {
      // takes the data from "Add departure time" and saves it to the table
      // should use the info of the user that is logged in (name, email, phone number?)
      // should take the "Lot" and "Time" that the user typed in the two fields
+     $scope.welcomeScreen = true;
+     $scope.showRiderList = false;
+     $scope.showDriverList = false;
+     $scope.showAddDeparture = false;
+     $scope.displayBottomSlider = false;
+
+     $scope.departTime = '';
+     $scope.lot = '';
   };
   $scope.refresh = function() { $scope.$apply(); };
 //---------------------------------------------------------------------------------------------------------------
@@ -152,8 +168,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
     else { $scope.error = false; } // no error
 
     $scope.incomplete = false;
-
-    // if all fields are still empty
+    // if all fields are still empty during create account
     if (!$scope.username.length || !$scope.passw1.length || !$scope.passw2.length
       || !$scope.email.length || !$scope.number.length || !$scope.vehicle.length
       || !$scope.vcolor.length )

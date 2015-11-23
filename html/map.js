@@ -13,6 +13,8 @@ function tempLogin(){
 	var users =  ["smashtilldawn.com","smashlawn.com"]
 	var num = prompt("Test User Number (0,1,2,3,4......)", "");
 	login(users[num],"");
+	
+	
 }
 function initializeMap() {
 	var mapCanvas = document.getElementById('googlemaps');
@@ -366,7 +368,9 @@ function initiatePark(time){
 		socket.removeListener("park");
 	});
 };
-function initiatePickup(time,lotName){
+function initiatePickup(){
+	var time = document.getElementById("time").value;
+	var lotName = document.getElementById("lot").value;
 	var lot = getLotByName(lotName);
 	if(lot === -1) {
 		console.log("Unable to find lot: " + lotName + ".")
@@ -389,19 +393,18 @@ function initiatePickup(time,lotName){
 		socket.removeListener("pickup");
 	});
 };
-function login(email,password,callback){
+function login(callback){
+	var email  = document.getElementById("username").value;
+	var password = document.getElementById("password").value;
 	socket.emit("login", {email:email,password:password});
 	socket.on("login", function(data){
 		socket.removeListener("login");
 		if(!data.success){
 			if(!!callback) callback(false);
 			console.log("Invalid login credentials provided.");
-			//TODO angular connection
-			
 			return; 
 		} else {
 			if(!!callback) callback(true);
-			//TODO angular connection
 			var intervalID = setInterval(function(){
 				updateMyLocation(intervalID);
 			},1000);
