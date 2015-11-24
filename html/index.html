@@ -231,10 +231,10 @@
 											  </tr>
 											</thead>
 											<tbody>
-											  <tr ng-repeat="user in users">
-												 <td>{{ user.fName }}</td>
-												 <td>{{ user.lot }}</td>
-												 <td>{{ user.departTime }}</td>
+											  <tr ng-repeat="passenger in passengers">
+												 <td>{{ passenger.fName }}</td>
+												 <td>{{ passenger.lot }}</td>
+												 <td>{{ passenger.departTime }}</td>
 												 <td>
 													<button class="btn" ng-click="editEntry(user.id)"> Request </button>
 												 </td>
@@ -253,9 +253,9 @@
 											  </tr>
 											</thead>
 											<tbody>
-											  <tr ng-repeat="user in users">
-												 <td>{{ user.fName }}</td>
-												 <td>{{ user.departTime }}</td>
+											  <tr ng-repeat="driver in drivers">
+												 <td>{{ driver.fName }}</td>
+												 <td>{{ driver.arrivalTime }}</td>
 												 <td>
 													<button class="btn" ng-click="editEntry(user.id)"> Request </button>
 												 </td>

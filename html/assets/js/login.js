@@ -9,6 +9,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.currentUserName = '';
   $scope.currentUserEmail = '';
   $scope.departTime = '';
+  $scope.arrivalTime = '';
   $scope.lot = '';
 
   $scope.snapOpts = { disable: 'right' };
@@ -22,15 +23,18 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.vehicle = '';
   $scope.vcolor = '';
 
-  $scope.users =
+  $scope.drivers =
   [
-    {id:1, fName:'Hege',   email:'demo@cpp.edu', lot: "F", departTime:"5:00pm" },
-    {id:2, fName:'Kim',    email:'demo@cpp.edu', lot: "Structure", departTime:"5:30pm" },
-    {id:3, fName:'Sal',    email:'demo@cpp.edu', lot: "Structure", departTime:"8:15pm" },
-    {id:4, fName:'Jack',   email:'demo@cpp.edu', lot: "Structure", departTime:"9:00pm" },
-    {id:5, fName:'John',   email:'demo@cpp.edu', lot: "Overflow", departTime:"9:05pm" },
-    {id:6, fName:'Peter',  email:'demo@cpp.edu', lot: "F", departTime:"10:00pm" },
-    {id:7, fName:'Lollerskates', email:'demo@cpp.edu', lot: "F", departTime:"11:59pm" }
+    {id:1, fName:'Hege',  lot: "F",          arrivalTime:"5:00pm" },
+    {id:2, fName:'Kim',   lot: "Structure",  arrivalTime:"5:30pm" },
+    {id:3, fName:'Sal',   lot: "Structure",  arrivalTime:"8:15pm" },
+  ];
+
+  $scope.passengers =
+  [
+    {id:5, fName:'John',   lot: "Overflow",  departTime:"9:05pm" },
+    {id:6, fName:'Peter',  lot: "F",         departTime:"10:00pm" },
+    {id:7, fName:'OhHai',  lot: "F",         departTime:"11:59pm" }
   ];
 
   $scope.displaySignUp = false;
@@ -44,6 +48,14 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.error = false;
   $scope.incomplete = false;
   $scope.loggedIn = false;
+  $scope.addPassenger = function()
+  {
+
+  }
+  $scope.addDriver = function()
+  {
+
+  }
 //---------------------------------------------------------------------------------------------------------------
   $scope.newUser = function(id)
   {
