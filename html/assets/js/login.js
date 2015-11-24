@@ -202,6 +202,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.$watch('vcolor', function() {$scope.test();});
   $scope.$watch('lot', function() {$scope.test();});
   $scope.$watch('departTime', function() {$scope.test();});
+  $scope.$watch('arrivalTime', function() {$scope.test();});
 //---------------------------------------------------------------------------------------------------------------
   $scope.test = function()
   {
