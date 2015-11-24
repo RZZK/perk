@@ -510,8 +510,8 @@ function getLotByName(name){
 function getPassengerList(){
 	var passengers = new Array();
 	lots.forEach(function(e){
-		if(e.passengers.length != 0){
-			e.passengers.forEach(function(e){
+		if(e.getPassengers().length != 0){
+			e.getPassengers().forEach(function(e){
 				passengers.push(e);
 			});
 		}
