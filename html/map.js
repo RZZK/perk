@@ -519,7 +519,7 @@ function getPassengerList(){
 	return passengers;
 }
 function getDriverListHTML(){
-	var htmlArray= new Arrary();
+	var htmlArray= new Array();
 	drivers.foreach(function(e){
 		htmlArray.push({
 			fname: e.user.name,
@@ -529,7 +529,7 @@ function getDriverListHTML(){
 	return htmlArray;
 }
 function getPassengerListHTML(){
-	var htmlArray= new Arrary();
+	var htmlArray= new Array();
 		getPassengerList().foreach(function(e){
 			htmlArray.push({
 				fname: e.user.name,
