@@ -55,10 +55,14 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
                             departTime:$scope.departTime})
   }
   $scope.addDriver = function()
-  {
+  {}
     $scope.drivers.push({fName:$scope.fName,
                         lot:$scope.lot,
                         departTime:$scope.departTime})
+  }
+  $scope.initializeUsers = function(){
+	  $scope.drivers = getDriversListHTML();
+	  $scope.passengers = getPassengersListHTML();
   }
 //---------------------------------------------------------------------------------------------------------------
   $scope.newUser = function(id)

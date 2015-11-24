@@ -340,6 +340,7 @@ function initializeUsers(passengers,drivers){
 	drivers.forEach(function(driver){
 		addDriver(driver);
 	});
+	angular.element(document.getElementById('controller')).scope().initializeUsers();
 };
 function getPassengerFromData(passenger){
 	return new passengerBuilder().withUserID(passenger.user.userid)
