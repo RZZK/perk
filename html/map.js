@@ -509,7 +509,7 @@ function getLotByName(name){
 }
 function getPassengerList(){
 	var passengers = new Array();
-	lots.foreach(function(e){
+	lots.forEach(function(e){
 		if(e.passengers.length != 0){
 			e.passengers.forEach(function(e){
 				passengers.push(e);
@@ -520,7 +520,7 @@ function getPassengerList(){
 }
 function getDriverListHTML(){
 	var htmlArray= new Array();
-	drivers.foreach(function(e){
+	drivers.forEach(function(e){
 		htmlArray.push({
 			fname: e.user.name,
 			departTime: e.time
@@ -530,7 +530,7 @@ function getDriverListHTML(){
 }
 function getPassengerListHTML(){
 	var htmlArray= new Array();
-		getPassengerList().foreach(function(e){
+		getPassengerList().forEach(function(e){
 			htmlArray.push({
 				fname: e.user.name,
 				departTime: e.time,
@@ -539,6 +539,19 @@ function getPassengerListHTML(){
 		});
 	return htmlArray;
 }
+
+
+getDriverListHTML()
+
+array = [
+	{
+		fname: "asasdsad",
+		departTime: "asdasd"
+	}
+]
+
+
+
 
 //make updateLocation edit local user data not just  remote data
 //pair
