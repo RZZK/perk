@@ -50,11 +50,15 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.loggedIn = false;
   $scope.addPassenger = function()
   {
-
+    $scope.passengers.push({fName:$scope.fName,
+                            lot:$scope.lot,
+                            departTime:$scope.departTime})
   }
   $scope.addDriver = function()
   {
-
+    $scope.drivers.push({fName:$scope.fName,
+                        lot:$scope.lot,
+                        departTime:$scope.departTime})
   }
 //---------------------------------------------------------------------------------------------------------------
   $scope.newUser = function(id)
@@ -113,6 +117,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.showDriverList = false;
      $scope.showAddParkingRequest = false;
      $scope.displayBottomSlider = false;
+     $scope.showAddDeparture = false;
 
      $scope.showAddParkingRequest = true;
   }
