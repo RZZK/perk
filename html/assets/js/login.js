@@ -1,6 +1,6 @@
 angular.module('app', ['snap']).controller('loginController', function($scope, $http)
 {
-	
+
   /*
     // this method is currently not loading data from json correctly
     $http.get('users.json')
@@ -218,7 +218,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
     }
 
     //if fields are empty during add phase
-    if ($scope.departTime.length) { $scope.incomplete = false; }
+    if ($scope.departTime.length || $scope.arrivalTime.length) { $scope.incomplete = false; }
   };
 //---------------------------------------------------------------------------------------------------------------
 });
