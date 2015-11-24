@@ -1,5 +1,6 @@
 angular.module('app', ['snap']).controller('loginController', function($scope, $http)
 {
+	
   /*
     // this method is currently not loading data from json correctly
     $http.get('users.json')
@@ -55,14 +56,15 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
                             departTime:$scope.departTime})
   }
   $scope.addDriver = function()
-  {}
+  {
     $scope.drivers.push({fName:$scope.fName,
                         lot:$scope.lot,
                         departTime:$scope.departTime})
   }
   $scope.initializeUsers = function(){
-	  $scope.drivers = getDriversListHTML();
-	  $scope.passengers = getPassengersListHTML();
+	  $scope.drivers = getDriverListHTML();
+	  console.log(getDriverListHTML());
+	  $scope.passengers = getPassengerListHTML();
   }
 //---------------------------------------------------------------------------------------------------------------
   $scope.newUser = function(id)

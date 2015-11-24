@@ -38,12 +38,12 @@
 				</p>
 				<p>
 				<p>
-					<a href="" ng-click="showDrivers()" style="color: #666666;" snap-close>
+					<a href="" ng-click="showDrivers(); initializeUsers();" style="color: #666666;" snap-close>
 						<span class="glyphicon glyphicon-road"></span>​ List Available Drivers
 					</a>
 				</p>
 				<p>
-					<a href="" ng-click="showRiders()" style="color: #666666;" snap-close>
+					<a href="" ng-click="showRiders();  initializeUsers() " style="color: #666666;" snap-close>
 						<span class="glyphicon glyphicon-user"></span>​ List Available Parking
 					</a>
 				</p>
@@ -289,9 +289,9 @@
 			<script src="assets/js/util.js"></script>
 			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="map.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script src="assets/js/login.js"></script>
-			<script src="map.js"></script>
 			<script src="assets/js/snap.js"></script>
 			<script src="assets/js/angular-snap.js"></script>
 			<script src="https://maps.googleapis.com/maps/api/js"></script>
