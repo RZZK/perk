@@ -205,6 +205,10 @@ function passengerBuilder(){
 	this.getPassenger = function(){
 		return passenger;
 	};
+	this.withName = function(name){
+		passenger.user.name = name;
+		return this;
+	}
 }
 function Driver(){
 	this.user = {userid:0};
@@ -256,6 +260,10 @@ function driverBuilder(){
 	}
 	this.getDriver = function(){
 		return driver;
+	}
+	this.withName = function(name){
+		driver.user.name = name;
+		return this;
 	}
 }
 function Lot(name,lat,lng){
@@ -345,6 +353,7 @@ function getPassengerFromData(passenger){
 	return new passengerBuilder().withUserID(passenger.user.userid)
 											.withLot(passenger.lot)
 											.withTime(passenger.time)
+											.withName(passenger.user.name)
 											.getPassenger();
 }
 function getDriverFromData(driver){
@@ -352,6 +361,7 @@ function getDriverFromData(driver){
 											.withTime(driver.time)
 											.withLat(driver.lat)
 											.withLng(driver.lng)
+											.withName(driver.user.name)
 											.getDriver();
 }
 function initiatePark(time){
@@ -367,7 +377,10 @@ function initiatePark(time){
 													.withLng(data.lng)
 													.withTime(data.time)
 													.getDriver();
-			me.user = {userid:data.user.userid};
+			me.user = {
+				userid:data.user.userid,
+				name:data.user.name
+			};
 			drivers.push(me);
 			addDriverToMap(me);
 		}
@@ -393,7 +406,10 @@ function initiatePickup(){
 													.withLot(data.lot)
 													.getPassenger();
 		}
-		me.user = {userid: data.user.userid};
+		me.user = {
+				userid:data.user.userid,
+				name:data.user.name
+			};
 		lot.addPassenger(me);
 		socket.removeListener("pickup");
 	});
@@ -522,7 +538,7 @@ function getDriverListHTML(){
 	var htmlArray= new Array();
 	drivers.forEach(function(e){
 		htmlArray.push({
-			fname: e.user.name,
+			fName: e.user.name,
 			departTime: e.time
 		});
 	});
@@ -532,7 +548,7 @@ function getPassengerListHTML(){
 	var htmlArray= new Array();
 		getPassengerList().forEach(function(e){
 			htmlArray.push({
-				fname: e.user.name,
+				fName: e.user.name,
 				departTime: e.time,
 				lot: e.lot
 			});

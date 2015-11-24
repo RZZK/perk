@@ -63,7 +63,6 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   }
   $scope.initializeUsers = function(){
 	  $scope.drivers = getDriverListHTML();
-	  console.log(getDriverListHTML());
 	  $scope.passengers = getPassengerListHTML();
   }
 //---------------------------------------------------------------------------------------------------------------
