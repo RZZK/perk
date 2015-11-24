@@ -507,6 +507,38 @@ function getLotByName(name){
 	}
 	return -1;
 }
+function getPassengerList(){
+	var passengers = new Array();
+	lots.foreach(function(e){
+		if(e.passengers.length != 0){
+			e.passengers.forEach(function(e){
+				passengers.push(e);
+			});
+		}
+	});
+	return passengers;
+}
+function getDriverListHTML(){
+	var htmlArray= new Arrary();
+	drivers.foreach(function(e){
+		htmlArray.push({
+			fname: e.user.name,
+			departTime: e.time
+		});
+	});
+	return htmlArray;
+}
+function getPassengerListHTML(){
+	var htmlArray= new Arrary();
+		getPassengerList().foreach(function(e){
+			htmlArray.push({
+				fname: e.user.name,
+				departTime: e.time,
+				lot: e.lot
+			});
+		});
+	return htmlArray;
+}
 
 //make updateLocation edit local user data not just  remote data
 //pair
