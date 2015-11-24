@@ -117,6 +117,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.showDriverList = false;
      $scope.showAddParkingRequest = false;
      $scope.displayBottomSlider = false;
+     $scope.showAddDeparture = false;
 
      $scope.showAddParkingRequest = true;
   }
