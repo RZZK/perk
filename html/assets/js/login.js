@@ -37,6 +37,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.showRiderList = false;
   $scope.showDriverList = false;
   $scope.showAddDeparture = false;
+  $scope.showAddParkingRequest = false;
   $scope.displayBottomSlider = false;
   $scope.welcomeScreen = true;
 
@@ -64,6 +65,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   {
      $scope.welcomeScreen = false;
      $scope.showAddDeparture = false;
+     $scope.showAddParkingRequest = false;
      $scope.showDriverList = false;
      $scope.displayBottomSlider = false;
 
@@ -74,20 +76,33 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   {
      $scope.welcomeScreen = false;
      $scope.showAddDeparture = false;
+     $scope.showAddParkingRequest = false;
      $scope.showRiderList = false;
      $scope.displayBottomSlider = false;
 
      $scope.showDriverList = true;
   }
 //---------------------------------------------------------------------------------------------------------------
-  $scope.displayAddDeparture = function ()
+  $scope.displayRequestPickup = function ()
   {
      $scope.welcomeScreen = false;
      $scope.showRiderList = false;
      $scope.showDriverList = false;
+     $scope.showAddParkingRequest = false;
      $scope.displayBottomSlider = false;
 
      $scope.showAddDeparture = true;
+  }
+//---------------------------------------------------------------------------------------------------------------
+  $scope.displayRequestParking = function ()
+  {
+     $scope.welcomeScreen = false;
+     $scope.showRiderList = false;
+     $scope.showDriverList = false;
+     $scope.showAddParkingRequest = false;
+     $scope.displayBottomSlider = false;
+
+     $scope.showAddParkingRequest = true;
   }
 //---------------------------------------------------------------------------------------------------------------
   $scope.toggleBottomSlider = function ()
@@ -96,6 +111,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.showRiderList = false;
      $scope.showDriverList = false;
      $scope.showAddDeparture = false;
+     $scope.showAddParkingRequest = false;
 
      $scope.displayBottomSlider = true;
      $scope.$apply();
@@ -107,6 +123,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
       $scope.showRiderList = false;
       $scope.showDriverList = false;
       $scope.showAddDeparture = false;
+      $scope.showAddParkingRequest = false;
       $scope.displayBottomSlider = false;
    };
 //---------------------------------------------------------------------------------------------------------------
@@ -128,6 +145,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
     $scope.showRiderList = false;
     $scope.showDriverList = false;
     $scope.showAddDeparture = false;
+    $scope.showAddParkingRequest = false;
     $scope.displayBottomSlider = false;
     $scope.loggedIn = false;
 

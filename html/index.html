@@ -26,13 +26,25 @@
 					</a>
 				</p>
 				<p>
-					<a href="" ng-click="displayAddDeparture()" onclick="addBlur()" style="color: #666666;" snap-close>
+					<a href="" ng-click="displayRequestPickup()" onclick="addBlur()" style="color: #666666;" snap-close>
 						<span class="glyphicon glyphicon-map-marker"></span>​ Request Pickup
 					</a>
 				</p>
 				<p>
+				<p>
+					<a href="" ng-click="displayRequestParking()" onclick="addBlur()" style="color: #666666;" snap-close>
+						<span class="glyphicon glyphicon-map-marker"></span>​ Request Parking
+					</a>
+				</p>
+				<p>
+				<p>
+					<a href="" ng-click="showDrivers()" style="color: #666666;" snap-close>
+						<span class="glyphicon glyphicon-road"></span>​ List Available Drivers
+					</a>
+				</p>
+				<p>
 					<a href="" ng-click="showRiders()" style="color: #666666;" snap-close>
-						<span class="glyphicon glyphicon-user"></span>​ Look for parking
+						<span class="glyphicon glyphicon-user"></span>​ List Available Parking
 					</a>
 				</p>
 				<hr>
@@ -174,6 +186,39 @@
 
 											  </div>
 										</section>
+										<section ng-show="showAddParkingRequest" class="main">
+											<div class="content container 100%" align="center" style="color: white; padding-top: 16em;">
+													 <h3>Request Parking</h3>
+													 <form class="form-horizontal">
+															<select id="lot">
+																<option value="C Lot">C Lot</option>
+																<option value="F1 Lot">F1 Lot</option>
+																<option value="F2 Lot">F2 Lot</option>
+																<option value="F3 Lot">F3 Lot</option>
+																<option value="F4 Lot">F4 Lot</option>
+																<option value="F5 Lot">F5 Lot</option>
+																<option value="F8 Lot">F8 Lot</option>
+																<option value="F9 Lot">F9 Lot</option>
+																<option value="F10 Lot">F10 Lot</option>
+																<option value="J Lot">J Lot</option>
+																<option value="M Lot">M Lot</option>
+																<option value="Parking Structure">Parking Structure</option>
+															</select>
+															<br>
+
+														<div class="form-group">
+														  <div class="col-sm-12">
+															 <input type="text" id="time" ng-model="arrivalTime" placeholder="12:00am/pm">
+														  </div>
+														</div>
+														</form>
+
+													 <button class="btn btn-success" ng-disabled="incomplete" ng-click="submitTime()" onclick="initiatePickup();removeBlur();">
+														<span class="glyphicon glyphicon-save"></span> Submit
+													 </button>
+
+											  </div>
+										</section>
 										<section id="white" ng-show="showRiderList" class="main fullscreen" style="padding-top: 2em;">
 
 										 <!--table data-->
@@ -197,7 +242,30 @@
 											</tbody>
 										 </table>
 										</section>
+										<section id="white" ng-show="showDriverList" class="main fullscreen" style="padding-top: 2em;">
+
+										 <!--table data-->
+										 <table class="table table-striped">
+											<thead>
+											  <tr>
+												 <th><span class="lightbold">Name</span></th>
+												 <th><span class="lightbold">Arrival</span></th>
+											  </tr>
+											</thead>
+											<tbody>
+											  <tr ng-repeat="user in users">
+												 <td>{{ user.fName }}</td>
+												 <td>{{ user.departTime }}</td>
+												 <td>
+													<button class="btn" ng-click="editEntry(user.id)"> Request </button>
+												 </td>
+											  </tr>
+											</tbody>
+										 </table>
+										</section>
 									</section>
+									</section>
+
 
 							</section>
 						</div>
