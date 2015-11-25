@@ -22,6 +22,7 @@ function initializeMap() {
 		zoomControl: false,
 		scrollwheel: false,
 		disableDoubleClickZoom: true,
+		minZoom: 16,
 		styles: [
 			{
 			elementType: "labels.icon",
@@ -92,9 +93,7 @@ function updateLocationGoogleMaps(user,lat,lng){
 	user.setLatLng(lat,lng);
 }
 function loadSlider(){
-	angular.element(document.getElementById('controller')).scope().toggleBottomSlider();
-}
-function unloadSlider(){
+	
 }
 function initializeLots(){
 	var data = getLotData();
@@ -239,7 +238,9 @@ function Driver(){
 	this.removeMap = function(){
 		marker.setMap(null);
 	}
-	this.marker.addListener('click', loadSlider);
+	this.marker.addListener('click', function(){
+		angular.element(document.getElementById('controller')).scope().toggleBottomSlider();
+	});
 }
 function driverBuilder(){
 	driver = new Driver();
@@ -275,14 +276,17 @@ function Lot(name,lat,lng){
 		position: new google.maps.LatLng(lat, lng),
 		icon: {
 			url: "assets/imgs/parking.png",
-			//scaledSize: new google.maps.Size(40, 40),
+			scaledSize: new google.maps.Size(40, 40),
 			origin: new google.maps.Point(0,0),
 			anchor: new google.maps.Point(20, 20)
 		}
 	});
 	marker.addListener('click', function(){
-		console.log(name);
-		console.log(passengers);
+		angular.element(document.getElementById('controller')).scope().toggleBottomSlider();
+		$(bottomSlider1).html(name);
+		$(bottomSlider2).html(passengers.length + " users seeking pickup");
+		$(bottomSlider3).html("<button class='buttons'>Get a ride to " + name + "</button>")
+		
 	});
 	this.addPassenger = function(passenger){
 		passengers.push(passenger);
@@ -427,7 +431,7 @@ function login(callback){
 	socket.on("login", function(data){
 		socket.removeListener("login");
 		if(!data.success){
-			alert("Invalid login credentials provided.");
+			alert("Unable to Login (Password Incorrect or User Already Logged In.)");
 			if(!!callback) callback(false);
 			console.log("Invalid login credentials provided.");
 			return; 

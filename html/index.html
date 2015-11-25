@@ -79,8 +79,6 @@
 					}
 					.login {
 						animation: flyin .5s ease forwards;
-						opacity: 0;
-						transform: scale(.5);
 						filter: blur(4px);
 					}
 				</style>
@@ -110,16 +108,17 @@
 								</div>
 							</header>
 
-							<div class="content container 100%">
+							<div class="content container 100%" >
 
 								<!-- if newUser = false, display login -->
-								<form ng-hide="displaySignUp" style="padding-top: 15em; display: inline-block; text-align: center;" class="login">
-										<input type="text" ng-model="usernameEmail" id="username" placeholder="email">
-										<input type="password" id="password" ng-model="password" placeholder="password"><br>
-										<button class="btn btn-success" onclick="login();"
-													style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
-										<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
-								</form>
+								<div ng-hide="displaySignUp" style="padding-top: 15em;" class="login">
+									<input type="text" ng-model="usernameEmail" id="username" placeholder="email"><br>
+									<input type="password" id="password" ng-model="password" placeholder="password"><br>
+									<button class="btn btn-success" onclick="login();"
+												style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
+									<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
+								</div>
+
 								<!-- if newUser = true, display signup -->
 								<div ng-show="displaySignUp" style="padding-top: 5em;" class="login">
 									<input type="text" ng-model="username" placeholder="username"><br>
@@ -251,13 +250,9 @@
 						</div>
 						<!-- end of user logged in -->
 						<section id="bottomSlider" ng-show="displayBottomSlider" class="main">
-							<div>
-								<p>
-									person 1<br>
-									email: person1@cpp.edu<br>
-									vehicle: magic carpet<br>
-								</p>
-							</div>
+									<div id="bottomSlider1">person 1</div>
+									<div id="bottomSlider2">email: person1@cpp.edu</div>
+									<div id="bottomSlider3">vehicle: magic carpet</div>
 						</section>
 					</section>
 		</div><!-- end of snap-content -->

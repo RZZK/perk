@@ -308,6 +308,7 @@ io.on('connection', function (socket) {
 function userLogin(data,socket){
 	var user;
 	if(indexOfUserByEmail(data.email) != -1){
+		socket.emit("login",{success:false});
 		console.log(data.email + " already logged in.");
 		return;
 	}
@@ -325,6 +326,7 @@ function userLogin(data,socket){
 														.withEmail(userData.email)
 														.withPicture(userData.picture)
 														.withSocket(socket).getUser();
+		
 		users.push(user);
 		console.log("#" + user.userid + " logged in.");
 		
@@ -447,13 +449,19 @@ function passengerPair(passenger,data){
 }
 function getPassengerByID(id){
 	passengers.forEach(function(p,i){
-		if(p.user.userid === id) return i;
+		if(p.user.userid === id) return p;
 	});
 	return -1;
 }
 function getDriverByID(id){
 	drivers.forEach(function(p,i){
-		if(p.user.userid === id) return i;
+		if(p.user.userid === id) return p;
+	});
+	return -1;
+}
+function getUserByID(id){
+	users.forEach(function(p,i){
+		if(p.userid === id) return p;
 	});
 	return -1;
 }
