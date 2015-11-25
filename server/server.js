@@ -29,7 +29,7 @@ function disconnect(){
 	my_client.end();
 }
 function addUser(name,email,phone,car,password){ 
-	var sql = 'INSERT into users(name, email, phone, car, password) VALUES("'+name+'", "'+email+'", "'+phone+'","'+ car+'"," '+password+'")';
+	var sql = 'INSERT into users(name, email, phone, car, password) VALUES("'+name+'", "'+email+'", "'+phone+'","'+ car+'"," md5('+password+')")';
 	userExists(name,email,phone,car,function(exists){
 		if(!exists){
 			console.log("SQL: ADDING USER -- name: " + name + " email: " + email);
