@@ -113,13 +113,13 @@
 							<div class="content container 100%">
 
 								<!-- if newUser = false, display login -->
-								<div ng-hide="displaySignUp" style="padding-top: 15em;" class="login">
-									<input type="text" ng-model="usernameEmail" id="username" placeholder="email"><br>
-									<input type="password" id="password" ng-model="password" placeholder="password"><br>
-									<button class="btn btn-success" ng-click="login()" onclick="removeBlur();login();"
-												style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
-									<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
-								</div>
+								<form ng-hide="displaySignUp" style="padding-top: 15em; display: inline-block; text-align: center;" class="login">
+										<input type="text" ng-model="usernameEmail" id="username" placeholder="email">
+										<input type="password" id="password" ng-model="password" placeholder="password"><br>
+										<button class="btn btn-success" onclick="login();"
+													style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
+										<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
+								</form>
 								<!-- if newUser = true, display signup -->
 								<div ng-show="displaySignUp" style="padding-top: 5em;" class="login">
 									<input type="text" ng-model="username" placeholder="username"><br>
@@ -190,30 +190,13 @@
 											<div class="content container 100%" align="center" style="color: white; padding-top: 16em;">
 													 <h3>Request Parking</h3>
 													 <form class="form-horizontal">
-															<select id="lot">
-																<option value="C Lot">C Lot</option>
-																<option value="F1 Lot">F1 Lot</option>
-																<option value="F2 Lot">F2 Lot</option>
-																<option value="F3 Lot">F3 Lot</option>
-																<option value="F4 Lot">F4 Lot</option>
-																<option value="F5 Lot">F5 Lot</option>
-																<option value="F8 Lot">F8 Lot</option>
-																<option value="F9 Lot">F9 Lot</option>
-																<option value="F10 Lot">F10 Lot</option>
-																<option value="J Lot">J Lot</option>
-																<option value="M Lot">M Lot</option>
-																<option value="Parking Structure">Parking Structure</option>
-															</select>
-															<br>
-
 														<div class="form-group">
 														  <div class="col-sm-12">
 															 <input type="text" id="time" ng-model="arrivalTime" placeholder="12:00am/pm">
 														  </div>
 														</div>
 														</form>
-
-													 <button class="btn btn-success" ng-disabled="incomplete" ng-click="submitTime()" onclick="initiatePickup();removeBlur();">
+													 <button class="btn btn-success" ng-disabled="incomplete" ng-click="submitTime()" onclick="initiatePark();removeBlur();">
 														<span class="glyphicon glyphicon-save"></span> Submit
 													 </button>
 

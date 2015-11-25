@@ -7,15 +7,8 @@ var passengers = new Array();
 var drivers = new Array();
 var me = -1;
 var socket;
+var connected = false;
 
-
-function tempLogin(){
-	var users =  ["smashtilldawn.com","smashlawn.com"]
-	var num = prompt("Test User Number (0,1,2,3,4......)", "");
-	login(users[num],"");
-	
-	
-}
 function initializeMap() {
 	var mapCanvas = document.getElementById('googlemaps');
 	var mapOptions = {
@@ -37,6 +30,12 @@ function initializeMap() {
 		]
 	}
 	MyMap = new google.maps.Map(mapCanvas, mapOptions);
+	MyMap.addListener("click",function(){
+		angular.element(document.getElementById('controller')).scope().disableBottomSlider();
+	});
+	MyMap.addListener("dragstart",function(){
+		angular.element(document.getElementById('controller')).scope().disableBottomSlider();
+	});
 	initializeLots();
 }
 function disableUserInput(map){
@@ -93,7 +92,9 @@ function updateLocationGoogleMaps(user,lat,lng){
 	user.setLatLng(lat,lng);
 }
 function loadSlider(){
-		angular.element(document.getElementById('controller')).scope().toggleBottomSlider();
+	angular.element(document.getElementById('controller')).scope().toggleBottomSlider();
+}
+function unloadSlider(){
 }
 function initializeLots(){
 	var data = getLotData();
@@ -274,7 +275,7 @@ function Lot(name,lat,lng){
 		position: new google.maps.LatLng(lat, lng),
 		icon: {
 			url: "assets/imgs/parking.png",
-			scaledSize: new google.maps.Size(40, 40),
+			//scaledSize: new google.maps.Size(40, 40),
 			origin: new google.maps.Point(0,0),
 			anchor: new google.maps.Point(20, 20)
 		}
@@ -307,6 +308,7 @@ function Lot(name,lat,lng){
 function initializeSocket(){
 	socket = io.connect('http://www.p3rk.net:8001');
 	socket.on('data', function(data){
+		connected = true;
 		initializeUsers(data.passengers,data.drivers);
 		socket.removeListener("data");
 	});
@@ -417,15 +419,22 @@ function initiatePickup(){
 function login(callback){
 	var email  = document.getElementById("username").value;
 	var password = document.getElementById("password").value;
+	if(!connected) {
+		alert("Unable to find server.");
+		return;
+	}
 	socket.emit("login", {email:email,password:password});
 	socket.on("login", function(data){
 		socket.removeListener("login");
 		if(!data.success){
+			alert("Invalid login credentials provided.");
 			if(!!callback) callback(false);
 			console.log("Invalid login credentials provided.");
 			return; 
 		} else {
 			if(!!callback) callback(true);
+			removeBlur();
+			angular.element(document.getElementById('controller')).scope().login();
 			var intervalID = setInterval(function(){
 				updateMyLocation(intervalID);
 			},1000);
