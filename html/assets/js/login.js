@@ -138,6 +138,18 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.displayBottomSlider = true;
      $scope.$apply();
   }
+  //---------------------------------------------------------------------------------------------------------------
+  $scope.disableBottomSlider = function ()
+  {
+     $scope.welcomeScreen = true;
+     $scope.showRiderList = false;
+     $scope.showDriverList = false;
+     $scope.showAddDeparture = false;
+     $scope.showAddParkingRequest = false;
+
+     $scope.displayBottomSlider = false;
+     $scope.$apply();
+  }
 //---------------------------------------------------------------------------------------------------------------
    $scope.returnToMap = function()
    {
@@ -155,6 +167,8 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      // use username as key, and get first name, last name, and e-mail
      $scope.currentUserEmail = $scope.usernameEmail;
      $scope.loggedIn = true;
+	 $scope.$apply();
+	 
   };
 //---------------------------------------------------------------------------------------------------------------
   $scope.signup = function()
