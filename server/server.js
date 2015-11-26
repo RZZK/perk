@@ -367,6 +367,9 @@ function initiatePark(data,user){
 	user.socket.on("pair",function(data){
 		driverPair(driver,data);
 	});
+	user.socket.on("cancel",function(){
+		removeDriver(driver);
+	});
 }
 function initiatePickup(data,user){
 	//input format: [lat:14.415,lng:124241.124214,time:'23:41:44',lot: 'F']
@@ -398,6 +401,9 @@ function initiatePickup(data,user){
 	});
 	user.socket.on("pair",function(data){
 		passengerPair(passenger,data);
+	});
+	user.socket.on("cancel",function(){
+		removePassenger(passenger);
 	});
 }
 function updateLocation(user,data){
@@ -576,6 +582,7 @@ function getPairedFriendlyPassenger(driver){
 													.getPassenger();
 }
 function getPairedFriendlyUser(user){
+	
 		return new userBuilder().withName(user.name)
 										.withUserID(user.userid)
 										.withEmail(user.email)
@@ -583,3 +590,30 @@ function getPairedFriendlyUser(user){
 										.withPicture(user.picture)
 										.getUser();
 }
+function removeDriver(driver){
+	var index = getDriverByID(driver.user.userid);
+	if(index != -1){
+		drivers.splice(i,1);
+		broadcastRemoveDriver(driver.user.userid);
+		console.log("#" + driver.user.userid +" unlisted from drivers.");
+	}
+}
+function removePassenger(passenger){
+	var index = getPassengerByID(passenger.user.userid);
+	if(index != -1){
+		passengers.splice(i,1);
+		broadcastRemovePassenger(passenger.user.userid);
+		console.log("#" + passenger.user.userid +" unlisted from passengers.");
+	}
+}
+function broadcastRemoveDriver(userid){
+	users.forEach(function(usr){
+		usr.socket.emit("removeDriver",userid);
+	});
+}
+function broadcastRemovePassenger(userid){
+	users.forEach(function(usr){
+		usr.socket.emit("removePassenger",userid);
+	});
+}
+

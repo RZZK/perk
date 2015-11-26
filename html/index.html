@@ -26,13 +26,13 @@
 					</a>
 				</p>
 				<p>
-					<a href="" ng-click="displayRequestPickup()" onclick="addBlur()" style="color: #666666;" snap-close>
+					<a href="" ng-click="displayRequestPickup()" style="color: #666666;" snap-close>
 						<span class="glyphicon glyphicon-map-marker"></span>​ Request Pickup
 					</a>
 				</p>
 				<p>
 				<p>
-					<a href="" ng-click="displayRequestParking()" onclick="addBlur()" style="color: #666666;" snap-close>
+					<a href="" ng-click="displayRequestParking()"style="color: #666666;" snap-close>
 						<span class="glyphicon glyphicon-map-marker"></span>​ Request Parking
 					</a>
 				</p>
@@ -200,6 +200,17 @@
 													 </button>
 
 											  </div>
+										</section>
+										<section ng-show="cancelRequest" class="main">
+											<div class="content container 100%" align="center" style="color: white; padding-top: 16em;">
+												 <form class="form-horizontal">
+													<div class="form-group">
+													  <div class="col-sm-12">
+														 <button class="btn btn-success" onclick="cancelRequest()">Cancel Current Request?</button>
+													  </div>
+													</div>
+												</form>
+											</div>
 										</section>
 										<section id="white" ng-show="showRiderList" class="main fullscreen" style="padding-top: 2em;">
 
