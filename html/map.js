@@ -94,9 +94,6 @@ function addPassengerToMap(passenger){
 function updateLocationGoogleMaps(user,lat,lng){
 	user.setLatLng(lat,lng);
 }
-function loadSlider(){
-	
-}
 function initializeLots(){
 	var data = getLotData();
 	for(var i = 0; i < data.length; i++){
@@ -171,44 +168,87 @@ function getLotData(){
 	
 }
 function Passenger(){
-	this.user = {userid:0};
-	this.lot = 0;
-	this.lat = 0;
-	this.lng = 0;
-	this.time = 0;
-	this.paired = new Array();
-	this.setLatLng = function(lat,lng){
-		this.lat = lat;
-		this.lng = lng;
+	var user = {userid:0};
+	var lot = 0;
+	var lat = 0;
+	var lng = 0;
+	var time = 0;
+	var paired = new Array();
+	this.setLatLng = function(newLat,newLng){
+		lat = newLat;
+		lng = newLng;
 	};
+	this.setName = function(name){
+		user.name = name;
+	}
+	this.getName = function(){
+		return user.name;
+	}
+	this.setTime = function(newTime){
+		time = newTime;
+	}
+	this.getTime = function(){
+		return time;
+	}
+	this.addPaired = function(passenger){
+		paired.push(passenger);
+	}
+	this.removePaired = function(driver){
+		paired.forEach(function(e,i){
+			if(e.getID() === driver.getID()){
+				paired.splice(i,1);
+			}
+		})
+	}
+	this.getPaired = function(){
+		return paired;
+	};
+	this.getLat = function(){
+		return lat;
+	}
+	this.getLng = function(){
+		return lng;
+	}
+	this.setID = function(userid){
+		user.userid = userid;
+	}
+	this.getID = function(){
+		return user.userid;
+	}
+	this.setLot = function(newLot){
+		lot = newLot;
+	}
+	this.getLot = function(){
+		return lot;
+	}
 }
 function passengerBuilder(){
 	passenger = new Passenger();
 	this.withUserID = function(userid){
-		passenger.user.userid = userid;
+		passenger.setID(userid);
 		return this;
 	};
 	this.withTime = function(time){
-		passenger.time = time;
+		passenger.setTime(time);
 		return this;
 	};
 	this.withLat = function(lat){
-		passenger.lat = lat;
+		passenger.setLatLng(lat,passenger.getLng())
 		return this; 
 	};
 	this.withLng = function(lng){
-		passenger.lng = lng;
+		passenger.setLatLng(passenger.getLat(),lng);
 		return this; 
 	};
 	this.withLot = function(lot){
-		passenger.lot = lot;
+		passenger.setLot(lot);
 		return this;
 	};
 	this.getPassenger = function(){
 		return passenger;
 	};
 	this.withName = function(name){
-		passenger.user.name = name;
+		passenger.setName(name);
 		return this;
 	}
 }
@@ -245,6 +285,7 @@ function Driver(){
 		$(bottomSlider1).html(user.name);
 		$(bottomSlider2).html("Seeking parking at: " + time);
 		$(bottomSlider3).html("<button onclick='carClick()'> Pair with " + user.name+ "</button>")
+		$(bottomSlider4).html(user.userid);
 	});
 	this.setName = function(name){
 		user.name = name;
@@ -263,7 +304,7 @@ function Driver(){
 	}
 	this.removePaired = function(passenger){
 		paired.forEach(function(e,i){
-			if(e.user.userid === passenger.user.userid){
+			if(e.getID() === passenger.getID()){
 				passengers.splice(i,1);
 			}
 		})
@@ -355,7 +396,10 @@ function parkingLotClick(){
 	addBlur();
 	document.getElementById("lot").value = name;
 }
-
+function carClick(){
+	var userid = $(bottomSlider4).html();
+	console.log(userid)
+}
 
 
 //TEST COMMANDS
@@ -381,7 +425,7 @@ function initializeSocket(){
 }
 function addDriver(data){
 	var driver = getDriverFromData(data);
-	if(!!me.user && driver.user.userid === me.user.userid){
+	if(!!me.user && driver.getID() === me.user.userid){
 		return;
 	}
 	addDriverToMap(driver);
@@ -389,7 +433,7 @@ function addDriver(data){
 }
 function addPassenger(data){
 	var passenger = getPassengerFromData(data);
-	if(!!me.user && passenger.user.userid === me.user.userid){
+	if(!!me.user && passenger.getID() === me.user.userid){
 		return;
 	}
 	addPassengerToMap(passenger);
@@ -463,12 +507,10 @@ function initiatePickup(){
 													.withLng(data.lng)
 													.withTime(data.time)
 													.withLot(data.lot)
+													.withName(data.user.name)
+													.withUserID(data.user.userid)
 													.getPassenger();
 		}
-		me.user = {
-				userid:data.user.userid,
-				name:data.user.name
-			};
 		lot.addPassenger(me);
 		socket.removeListener("pickup");
 	});
@@ -532,7 +574,7 @@ function getPassengerByID(id){
 	for(var lotIndex = 0; lotIndex < lots.length; lotIndex++){
 		var passengers = lots[lotIndex].getPassengers();
 		for(var passengerIndex = 0; passengerIndex < passengers.length;passengerIndex++){
-			if(passengers[passengerIndex].user.userid === id){
+			if(passengers[passengerIndex].getID() === id){
 				return passengers[passengerIndex];
 			}
 		}
@@ -550,12 +592,11 @@ function updateLocation(data){
 	var passenger = getPassengerByID(data.userid);
 	var driver = getDriverByID(data.userid);
 	if(passenger != -1){
-		passenger.lat = data.lat;
-		passenger.lng = data.lng;
+		passenger.setLatLng(data.lat,data.lng);
 		// updateLocationGoogleMaps(passenger,data.lat,data.lng);
 	} else if(driver != -1){
-		driver.lat = data.lat;
-		driver.lng = data.lng;
+		driver.setLat(data.lat);
+		driver.setlng(data.lng);
 		updateLocationGoogleMaps(driver,data.lat,data.lng);
 	} else {
 		console.log("User MIA for location update. (id = " + data.userid + ")");
@@ -603,8 +644,8 @@ function getDriverListHTML(){
 	var htmlArray= new Array();
 	drivers.forEach(function(e){
 		htmlArray.push({
-			fName: e.user.name,
-			departTime: e.time
+			fName: e.getName(),
+			departTime: e.getTime()
 		});
 	});
 	return htmlArray;
@@ -613,23 +654,23 @@ function getPassengerListHTML(){
 	var htmlArray= new Array();
 		getPassengerList().forEach(function(e){
 			htmlArray.push({
-				fName: e.user.name,
-				departTime: e.time,
-				lot: e.lot
+				fName: e.getName(),
+				departTime: e.getTime(),
+				lot: e.getLot()
 			});
 		});
 	return htmlArray;
 }
 function currentlyRequesting(){
-	if(!me.user || (getPassengerByID(me.user.userid) == -1 && getDriverByID(me.user.userid) == -1))
+	if(me == -1 || (getPassengerByID(me.getID()) == -1 && getDriverByID(me.getID()) == -1))
 		return false;
 	return true;
 }
 function cancelRequest(){
 	angular.element(document.getElementById('controller')).scope().returnToMap();
 	clearInterval(locationIntervalID);
-	removeDriver(me.user.userid);
-	removePassenger(me.user.userid);
+	removeDriver(me.getID());
+	removePassenger(me.getID());
 	socket.emit("cancel");
 	me = -1;
 	
@@ -643,7 +684,6 @@ function removeDriver(userid){
 	}
 }
 function removePassenger(userid){
-	
 	var passenger = getPassengerByID(userid);
 	var lotIndex = getPassengerLotIndexByID(userid);
 	if(lotIndex != -1){
@@ -652,7 +692,7 @@ function removePassenger(userid){
 }
 function getDriverIndexByID(id){
 	for(var i = 0; i < drivers.length; i++){
-		if(drivers[i].user.userid == id) return i;
+		if(drivers[i].getID() == id) return i;
 	}
 	return -1;
 }
@@ -660,7 +700,7 @@ function getPassengerIndexByID(id){
 	for(var lotIndex = 0; lotIndex < lots.length; lotIndex++){
 		var passengers = lots[lotIndex].getPassengers();
 		for(var passengerIndex = 0; passengerIndex < passengers.length;passengerIndex++){
-			if(passengers[passengerIndex].user.userid === id){
+			if(passengers[passengerIndex].getID() === id){
 				return passengerIndex;
 			}
 		}
@@ -671,14 +711,13 @@ function getPassengerLotIndexByID(id){
 	for(var lotIndex = 0; lotIndex < lots.length; lotIndex++){
 		var passengers = lots[lotIndex].getPassengers();
 		for(var passengerIndex = 0; passengerIndex < passengers.length;passengerIndex++){
-			if(passengers[passengerIndex].user.userid === id){
+			if(passengers[passengerIndex].getID() === id){
 				return lotIndex;
 			}
 		}
 	}
 	return -1;
 }
-
 
 
 //make updateLocation edit local user data not just  remote data
