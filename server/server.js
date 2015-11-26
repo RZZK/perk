@@ -454,21 +454,21 @@ function passengerPair(passenger,data){
 	}
 }
 function getPassengerByID(id){
-	passengers.forEach(function(p,i){
-		if(p.user.userid === id) return p;
-	});
+	for(var i = 0; i < passengers.length; i++){
+		if(passengers[i].user.userid === id) return passengers[i];
+	}
 	return -1;
 }
 function getDriverByID(id){
-	drivers.forEach(function(p,i){
-		if(p.user.userid === id) return p;
-	});
+	for(var i = 0; i < drivers.length; i++){
+		if(drivers[i].user.userid === id) return drivers[i];
+	}
 	return -1;
 }
 function getUserByID(id){
-	users.forEach(function(p,i){
-		if(p.userid === id) return p;
-	});
+	for(var i = 0; i < users.length; i++){
+		if(users[i].userid === id) return users[i];
+	}
 	return -1;
 }
 function removeUserBySocket(socket){
@@ -477,15 +477,15 @@ function removeUserBySocket(socket){
 	else{
 		for(var i = 0; i < drivers.length; i++){
 			if(drivers[i].user.socket === socket) {
+				broadcastRemoveDriver(drivers[i].user.userid);
 				drivers.splice(i,1);
 				disconnectionMessage += "\nRemoving them from drivers.";
 				break;
 			}
 		}
-		console.log("plength" + passengers.length);
 		for(var i = 0; i < passengers.length; i++){
 			if(passengers[i].user.socket === socket) {
-				
+				broadcastRemovePassenger(passengers[i].user.userid);
 				disconnectionMessage += "\nRemoving them from passengers.";
 				passengers.splice(i,1);
 				break;
@@ -518,13 +518,13 @@ function pairUsers(driver,passenger){
 }
 function indexOfPassengerByID(userid){
 	passengers.forEach(function(e,i){
-		if(e.userid === userid) return i;
+		if(e.user.userid === userid) return i;
 	});
 	return -1;
 }
 function indexOfDriverByID(userid){
 	drivers.forEach(function(e,i){
-		if(e.userid === userid) return i;
+		if(e.user.userid === userid) return i;
 	});
 	return -1;	
 }
@@ -601,7 +601,7 @@ function removeDriver(driver){
 function removePassenger(passenger){
 	var index = getPassengerByID(passenger.user.userid);
 	if(index != -1){
-		passengers.splice(i,1);
+		passengers.splice(index,1);
 		broadcastRemovePassenger(passenger.user.userid);
 		console.log("#" + passenger.user.userid +" unlisted from passengers.");
 	}
@@ -616,4 +616,3 @@ function broadcastRemovePassenger(userid){
 		usr.socket.emit("removePassenger",userid);
 	});
 }
-

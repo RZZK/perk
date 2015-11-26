@@ -142,10 +142,11 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
 //---------------------------------------------------------------------------------------------------------------
   $scope.displayRequestParking = function ()
   {
-	 if(me.time != 0) {
+	 if(currentlyRequesting()) {
 		 $scope.displayCancelRequest();
 		 return;
 	 }
+	 addBlur();
      $scope.welcomeScreen = false;
      $scope.showRiderList = false;
      $scope.showDriverList = false;

@@ -213,12 +213,12 @@ function passengerBuilder(){
 	}
 }
 function Driver(){
-	this.user = {userid:0};
-	this.time = 0;
-	this.lat = 0;
-	this.lng = 0;
-	this.paired = new Array();
-	this.marker = new google.maps.Marker({
+	var user = {userid:0};
+	var time = 0;
+	var lat = 0;
+	var lng = 0;
+	var paired = new Array();
+	var marker = new google.maps.Marker({
 		position: new google.maps.LatLng(this.lat, this.lng),
 		icon: {
 			url: "assets/imgs/car.png",
@@ -229,44 +229,84 @@ function Driver(){
 		animation: google.maps.Animation.DROP
 	});
 	this.setLatLng = function(lat,lng){
-		this.lat = lat;
-		this.lng = lng;
+		lat = lat;
+		lng = lng;
 		// console.log(lat + ", " + lng);
-		this.marker.setPosition(new google.maps.LatLng(lat,lng));
+		marker.setPosition(new google.maps.LatLng(lat,lng));
 	};
 	this.setMap = function(map){
-		this.marker.setMap(map);
+		marker.setMap(map);
 	};
 	this.removeMap = function(){
 		marker.setMap(null);
 	}
-	this.marker.addListener('click', function(){
+	marker.addListener('click', function(){
 		angular.element(document.getElementById('controller')).scope().toggleBottomSlider();
+		$(bottomSlider1).html(user.name);
+		$(bottomSlider2).html("Seeking parking at: " + time);
+		$(bottomSlider3).html("<button onclick='carClick()'> Pair with " + user.name+ "</button>")
 	});
+	this.setName = function(name){
+		user.name = name;
+	}
+	this.getName = function(){
+		return user.name;
+	}
+	this.setTime = function(newTime){
+		time = newTime;
+	}
+	this.getTime = function(){
+		return time;
+	}
+	this.addPaired = function(passenger){
+		paired.push(passenger);
+	}
+	this.removePaired = function(passenger){
+		paired.forEach(function(e,i){
+			if(e.user.userid === passenger.user.userid){
+				passengers.splice(i,1);
+			}
+		})
+	}
+	this.getPaired = function(){
+		return paired;
+	};
+	this.getLat = function(){
+		return lat;
+	}
+	this.getLng = function(){
+		return lng;
+	}
+	this.setID = function(userid){
+		user.userid = userid;
+	}
+	this.getID = function(){
+		return user.userid;
+	}
 }
 function driverBuilder(){
 	driver = new Driver();
 	this.withUserID = function(userid){
-		driver.user.userid = userid;
+		driver.setID(userid);
 		return this;
 	}
 	this.withTime = function(time){
-		driver.time = time; 
+		driver.setTime(time);
 		return this;
 	}
 	this.withLat = function(lat){
-		driver.setLatLng(lat,driver.lng);
+		driver.setLatLng(lat,driver.getLng());
 		return this;
 	}
 	this.withLng = function(lng){
-		driver.setLatLng(driver.lat,lng);
+		driver.setLatLng(driver.getLat(),lng);
 		return this;
 	}
 	this.getDriver = function(){
 		return driver;
 	}
 	this.withName = function(name){
-		driver.user.name = name;
+		driver.setName(name);
 		return this;
 	}
 }
@@ -286,7 +326,9 @@ function Lot(name,lat,lng){
 	marker.addListener('click', function(){
 		angular.element(document.getElementById('controller')).scope().toggleBottomSlider();
 		$(bottomSlider1).html(name);
-		$(bottomSlider2).html(passengers.length + " users seeking pickup");
+		var s = "";
+		if(passengers.length != 1) s+="s"
+		$(bottomSlider2).html(passengers.length + " user" + s + " seeking pickup");
 		$(bottomSlider3).html("<button onclick='parkingLotClick()'> Get a ride to " + name + "</button>")
 	});
 	this.addPassenger = function(passenger){
@@ -335,7 +377,7 @@ function initializeSocket(){
 	socket.on("newPassenger",addPassenger);
 	socket.on("newDriver",addDriver);
 	socket.on("removeDriver",removeDriver);
-	socket.on("removePassenger",removeDriver);
+	socket.on("removePassenger",removePassenger);
 }
 function addDriver(data){
 	var driver = getDriverFromData(data);
@@ -381,7 +423,9 @@ function getDriverFromData(driver){
 											.withName(driver.user.name)
 											.getDriver();
 }
-function initiatePark(time){
+function initiatePark(){
+	var time = document.getElementById("time2").value;
+	console.log(time);
 	getMyLocation(function(data){
 		
 		socket.emit("park", {lat:data.lat,lng:data.lng,time:time});
@@ -393,11 +437,9 @@ function initiatePark(time){
 			me = new driverBuilder().withLat(data.lat)
 													.withLng(data.lng)
 													.withTime(data.time)
+													.withUserID(data.user.userid)
+													.withName(data.user.name)
 													.getDriver();
-			me.user = {
-				userid:data.user.userid,
-				name:data.user.name
-			};
 			drivers.push(me);
 			addDriverToMap(me);
 		}
@@ -499,7 +541,7 @@ function getPassengerByID(id){
 }
 function getDriverByID(id){
 	for(var i = 0; i < drivers.length; i++){
-		if(drivers[i].user.userid == id) return drivers[i];
+		if(drivers[i].getID() == id) return drivers[i];
 	}
 	return -1;
 }
@@ -597,10 +639,11 @@ function removeDriver(userid){
 	var index = getDriverIndexByID(userid);
 	if(index != -1){
 		drivers.splice(index,1);
-		driver.removeDriverFromMap();
+		removeDriverFromMap(driver);
 	}
 }
 function removePassenger(userid){
+	
 	var passenger = getPassengerByID(userid);
 	var lotIndex = getPassengerLotIndexByID(userid);
 	if(lotIndex != -1){
