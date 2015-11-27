@@ -247,10 +247,11 @@
 											</thead>
 											<tbody>
 											  <tr ng-repeat="driver in drivers">
-												 <td>{{ driver.fName }}</td>
+												 <td >{{ driver.fName }}</td>
 												 <td>{{ driver.arrivalTime }}</td>
-												 <td>
-													<button class="btn" ng-click="editEntry(user.id)"> Request </button>
+												 <td ng-switch="driver.status">
+													<button ng-switch-when="false" class="btn" ng-click="editEntry(user.id)">Request</button>
+													<button ng-switch-when="true" class="btn" ng-click="editEntry(user.id)">Cancel Request</button>
 												 </td>
 											  </tr>
 											</tbody>
@@ -261,9 +262,10 @@
 						</div>
 						<!-- end of user logged in -->
 						<section id="bottomSlider" ng-show="displayBottomSlider" class="main">
-									<div id="bottomSlider1">person 1</div>
-									<div id="bottomSlider2">email: person1@cpp.edu</div>
-									<div id="bottomSlider3">vehicle: magic carpet</div>
+									<div id="bottomSlider1"></div>
+									<div id="bottomSlider2"></div>
+									<div id="bottomSlider3"></div>
+									<div style="display:none" id="bottomSlider4"></div>
 						</section>
 					</section>
 		</div><!-- end of snap-content -->
