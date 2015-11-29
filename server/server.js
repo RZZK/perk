@@ -420,40 +420,42 @@ function broadcastNewDriver(driver){
 }
 function driverPair(driver,data){
 	//data format: {userid:userid}
-	
+	console.log(driver.user.userid + " -> " + data);
 	var passenger = getPassengerByID(data);
-	if(passenger === -1){
+	if(passenger == -1){
 		console.log("Tried to add passenger that doesn't exist.")
 		return; 
 	}
 	driver.paired.push(data);
 	var index = passenger.paired.indexOf(driver.user.userid);
+	console.log(index + " " + passenger.paired);
 	if(index != -1){
 		pairUsers(driver,passenger);
 	}
 }
 function passengerPair(passenger,data){
-	console.log(passenger.user.id + " trying to pair with " + data);
+	console.log(passenger.user.userid + " -> " + data);
 	var driver = getDriverByID(data);
-	if(driver === -1){
-		console.log("Tried to add passenger that doesn't exist.")
+	if(driver == -1){
+		console.log("Tried to add driver that doesn't exist.");
 		return; 
 	}
 	passenger.paired.push(data);
 	var index = driver.paired.indexOf(passenger.user.userid);
+	console.log(index + " " + driver.paired);
 	if(index != -1){
 		pairUsers(driver,passenger);
 	}
 }
 function getPassengerByID(id){
 	for(var i = 0; i < passengers.length; i++){
-		if(passengers[i].user.userid === id) return passengers[i];
+		if(passengers[i].user.userid == id) return passengers[i];
 	}
 	return -1;
 }
 function getDriverByID(id){
 	for(var i = 0; i < drivers.length; i++){
-		if(drivers[i].user.userid === id) return drivers[i];
+		if(drivers[i].user.userid == id) return drivers[i];
 	}
 	return -1;
 }
@@ -588,7 +590,7 @@ function getPairedFriendlyUser(user){
 										.getUser();
 }
 function removeDriver(driver){
-	var index = getDriverByID(driver.user.userid);
+	var index = getDriverIndexByID(driver.user.userid);
 	if(index != -1){
 		drivers.splice(index,1);
 		broadcastRemoveDriver(driver.user.userid);
@@ -596,7 +598,7 @@ function removeDriver(driver){
 	}
 }
 function removePassenger(passenger){
-	var index = getPassengerByID(passenger.user.userid);
+	var index = getPassengerIndexByID(passenger.user.userid);
 	if(index != -1){
 		passengers.splice(index,1);
 		broadcastRemovePassenger(passenger.user.userid);
@@ -612,4 +614,16 @@ function broadcastRemovePassenger(userid){
 	users.forEach(function(usr){
 		usr.socket.emit("removePassenger",userid);
 	});
+}
+function getDriverIndexByID(userid){
+	for(var i = 0; i < drivers.length; i++){
+		if(drivers[i].user.userid == userid) return i; 
+	}
+	return -1;
+}
+function getPassengerIndexByID(userid){
+	for(var i = 0; i < passengers.length; i++){
+		if(passengers[i].user.userid == userid) return i; 
+	}
+	return -1;
 }

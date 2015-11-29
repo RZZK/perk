@@ -29,6 +29,11 @@ function initializeMap() {
 			{
 			elementType: "labels.icon",
 			stylers: [{visibility: "off"}]
+			},
+			{
+				featureType: "poi",
+				elementType: "labels.text",
+				stylers: [{visibility: "off"}]
 			}
 		]
 	}
@@ -190,12 +195,13 @@ function Passenger(){
 	this.getTime = function(){
 		return this.time;
 	};
-	this.addPaired = function(passenger){
-		if(this.isAwaitingPairFrom(passenger)) return;
-		if(this.getID() == passenger) return; 
-		if(getDriverIndexByID(passenger) == -1) return;
-		this.paired.push(passenger);
-		socket.emit("pair",passenger);
+	this.addPaired = function(driverid){
+		console.log(this);
+		if(this.isAwaitingPairFrom(driverid)) return;
+		if(this.getID() == driverid) return; 
+		if(getDriverIndexByID(driverid) == -1) return;
+		this.paired.push(driverid);
+		socket.emit("pair",driverid);
 	}
 	this.removePaired = function(passenger){
 		this.paired.forEach(function(e,i){
@@ -325,7 +331,7 @@ function Driver(){
 	}
 	this.removePaired = function(passenger){
 		this.paired.forEach(function(e,i){
-			if(e.getID() === passenger){
+			if(e == passenger){
 				socket.emit("unpair",passenger);
 				paired.splice(i,1);
 			}
@@ -349,7 +355,7 @@ function Driver(){
 	}
 	this.isAwaitingPairFrom = function(userid){
 		for(var i = 0; i < this.paired.length; i++){
-			if(this.paired[i].getID() == userid) return true;
+			if(this.paired[i] == userid) return true;
 		}
 		return false;
 	}
@@ -480,14 +486,12 @@ function carClick(){
 	}
 	if(paired){
 		$(bottomSlider3).html("<button class='btn' onclick='carClick()'> Pair with " + driver.getName()+ "</button>")
-		me.removePaired(getDriverByID(userid));
 		return;
 	} 
 	$(bottomSlider3).html("<button class='btn btn-warning' onclick='carClick()'>Cancel Request</button>")
-	me.addPaired(getDriverByID(userid));
+	carClickList(userid);
 }
 function parkingLotClickList(id){
-	console.log(me);
 	var paired = me.isAwaitingPairFrom(id);
 	if(paired) {
 		me.removePaired(id);
