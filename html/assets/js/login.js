@@ -46,6 +46,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.displayBottomSlider = false;
   $scope.welcomeScreen = true;
   $scope.cancelRequest = false;
+  $scope.displayChatSlider = false;
 
   $scope.error = false;
   $scope.incomplete = false;
@@ -104,7 +105,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.showRiderList = false;
      $scope.displayBottomSlider = false;
 	 $scope.cancelRequest = false;
-	 
+	 $scope.displayChatSlider = false;
 
      $scope.showDriverList = true;
   }
@@ -118,6 +119,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.showRiderList = false;
      $scope.displayBottomSlider = false;
      $scope.showDriverList = false;
+	 $scope.displayChatSlider = false;
 	 
 	 $scope.cancelRequest = true;
 	 $scope.$apply();
@@ -134,6 +136,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.showAddParkingRequest = false;
      $scope.displayBottomSlider = false;
 	 $scope.cancelRequest = false;
+	 $scope.displayChatSlider = false;
 	 
 	addBlur();
 	
@@ -154,6 +157,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.displayBottomSlider = false;
      $scope.showAddDeparture = false;
 	 $scope.cancelRequest = false;
+	 $scope.displayChatSlider = false;
 	 
      $scope.showAddParkingRequest = true;
   }
@@ -166,7 +170,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.showAddDeparture = false;
      $scope.showAddParkingRequest = false;
 	 $scope.cancelRequest = false;
-	 
+	 $scope.displayChatSlider = false;
 
      $scope.displayBottomSlider = true;
      $scope.$apply();
@@ -180,7 +184,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.showAddDeparture = false;
      $scope.showAddParkingRequest = false;
 	 $scope.cancelRequest = false;
-	 
+	 $scope.displayChatSlider = false;
 
      $scope.displayBottomSlider = false;
      $scope.$apply();
@@ -195,9 +199,24 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
       $scope.showAddDeparture = false;
       $scope.showAddParkingRequest = false;
       $scope.displayBottomSlider = false;
+	  $scope.cancelRequest = false;
+	  $scope.displayChatSlider = false;
+	 
+   }
+//---------------------------------------------------------------------------------------------------------------
+  $scope.showChatSlider = function()
+   {
+	  removeBlur();
+      $scope.welcomeScreen = false;
+      $scope.showRiderList = false;
+      $scope.showDriverList = false;
+      $scope.showAddDeparture = false;
+      $scope.showAddParkingRequest = false;
+      $scope.displayBottomSlider = false;
+	  $scope.displayChatSlider = true;
 	 $scope.cancelRequest = false;
 	 
-   };
+   }
 //---------------------------------------------------------------------------------------------------------------
   $scope.login = function()
   {
@@ -205,12 +224,14 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      // use username as key, and get first name, last name, and e-mail
      $scope.currentUserEmail = $scope.usernameEmail;
      $scope.loggedIn = true;
+	 $scope.returnToMap();
 	 $scope.$apply();
 	 
   };
 //---------------------------------------------------------------------------------------------------------------
   $scope.signup = function()
   {
+	  console.log("signup");
      // should push data to database if username is not taken
   };
  //---------------------------------------------------------------------------------------------------------------
@@ -243,6 +264,15 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.lot = '';
   };
   $scope.refresh = function() { $scope.$apply(); };
+  
+//---------------------------------------------------------------------------------------------------------------
+	$scope.carClickList = function(id){
+		carClickList(id);
+	}
+//---------------------------------------------------------------------------------------------------------------
+	$scope.parkingLotClickList = function(id){
+		parkingLotClickList(id);
+	}
 //---------------------------------------------------------------------------------------------------------------
   $scope.$watch('passw1',function() {$scope.test();});
   $scope.$watch('passw2',function() {$scope.test();});

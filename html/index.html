@@ -228,8 +228,9 @@
 												 <td>{{ passenger.fName }}</td>
 												 <td>{{ passenger.lot }}</td>
 												 <td>{{ passenger.departTime }}</td>
-												 <td>
-													<button class="btn" ng-click="editEntry(user.id)"> Request </button>
+												 <td ng-switch="passenger.status">
+													<button ng-switch-when="false" class="btn" ng-click="parkingLotClickList(passenger.userid)">Request</button>
+													<button ng-switch-when="true" class="btn btn-warning" ng-click="parkingLotClickList(passenger.userid)">Cancel Request</button>
 												 </td>
 											  </tr>
 											</tbody>
@@ -250,24 +251,33 @@
 												 <td >{{ driver.fName }}</td>
 												 <td>{{ driver.arrivalTime }}</td>
 												 <td ng-switch="driver.status">
-													<button ng-switch-when="false" class="btn" ng-click="editEntry(user.id)">Request</button>
-													<button ng-switch-when="true" class="btn" ng-click="editEntry(user.id)">Cancel Request</button>
+													<button ng-switch-when="false" class="btn" ng-click="carClickList(driver.userid)">Request</button>
+													<button ng-switch-when="true" class="btn btn-warning" ng-click="carClickList(driver.userid)">Cancel Request</button>
 												 </td>
 											  </tr>
 											</tbody>
 										 </table>
 										</section>
+										<section id="bottomSlider" ng-show="displayBottomSlider" class="main">
+											<div id="bottomSlider1"></div>
+											<div id="bottomSlider2"></div>
+											<div id="bottomSlider3"></div>
+											<div style="display:none" id="bottomSlider4"></div>
+										</section>
+										<section id="chatSlider" ng-show="displayChatSlider" class="main">
+											<textarea rows="4" cols="50" id="chatBox"></textarea>
+												<form onsubmit="sendMessage()">
+													<input type="text" placeholder="Type Message"></input>
+													<input type ="submit" value="send"></input>
+												</form>
+											</textarea>
 									</section>
 							</section>
 						</div>
 						<!-- end of user logged in -->
-						<section id="bottomSlider" ng-show="displayBottomSlider" class="main">
-									<div id="bottomSlider1"></div>
-									<div id="bottomSlider2"></div>
-									<div id="bottomSlider3"></div>
-									<div style="display:none" id="bottomSlider4"></div>
-						</section>
+						
 					</section>
+					
 		</div><!-- end of snap-content -->
 
 		<!-- Scripts -->

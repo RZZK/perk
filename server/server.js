@@ -296,14 +296,6 @@ io.on('connection', function (socket) {
 	});
 	socket.emit("data",{passengers:getClientFriendlyPassengerList(),drivers:getClientFriendlyDriverList()});
 });
-//pairUsers(driver,passenger)
-
-//client on login,success
-//client on login,fail
-//client emit login
-//client emit park
-//client emit pickup
-//client emit location
 
 function userLogin(data,socket){
 	var user;
@@ -362,7 +354,6 @@ function initiatePark(data,user){
 	console.log("#" + user.userid + " added to drivers.");
 	user.socket.on("location",function(data){
 		updateLocation(driver,data);
-		
 	});
 	user.socket.on("pair",function(data){
 		driverPair(driver,data);
@@ -429,25 +420,26 @@ function broadcastNewDriver(driver){
 }
 function driverPair(driver,data){
 	//data format: {userid:userid}
-	var passenger = getPassengerByID(data.userid);
+	
+	var passenger = getPassengerByID(data);
 	if(passenger === -1){
-		console.log("Tried to add passenger that doesn't exist.'")
+		console.log("Tried to add passenger that doesn't exist.")
 		return; 
 	}
-	driver.paired.push(data.userid);
+	driver.paired.push(data);
 	var index = passenger.paired.indexOf(driver.user.userid);
 	if(index != -1){
 		pairUsers(driver,passenger);
 	}
 }
 function passengerPair(passenger,data){
-	//data format: {userid:userid}
-	var driver = getDriverByID(data.userid);
+	console.log(passenger.user.id + " trying to pair with " + data);
+	var driver = getDriverByID(data);
 	if(driver === -1){
-		console.log("Tried to add passenger that doesn't exist.'")
+		console.log("Tried to add passenger that doesn't exist.")
 		return; 
 	}
-	passenger.paired.push(data.userid);
+	passenger.paired.push(data);
 	var index = driver.paired.indexOf(passenger.user.userid);
 	if(index != -1){
 		pairUsers(driver,passenger);
@@ -506,14 +498,19 @@ function removeUserBySocket(socket){
 	console.log(disconnectionMessage);
 }
 function pairUsers(driver,passenger){
-	if(driver.paired.indexOf(passenger.userid) == -1) return;
-	if(passenger.paired.indexOf(driver.userid) == -1) return;
+	if(driver.paired.indexOf(passenger.user.userid) == -1) return;
+	if(passenger.paired.indexOf(driver.user.userid) == -1) return;
 	console.log("#" + driver.user.userid + " and #" + passenger.user.userid + " paired.");
 	driver.user.socket.emit("pair",getPairedFriendlyPassenger(passenger));
-	passenger.user.socket.emit("pair",getPairedFriendlyDriver(driver))
-	
-	removeUserBySocket(driver.user.socket);
-	removeUserBySocket(passenger.user.socket);
+	passenger.user.socket.emit("pair",getPairedFriendlyDriver(driver));
+	driver.user.socket.on("chat",function(e){
+		passenger.user.socket.emit("chat",e);
+	});
+	passenger.user.socket.on("chat",function(e){
+		driver.user.socket.emit("chat",e);
+	});
+	removeDriver(driver);
+	removePassenger(passenger);
 	
 }
 function indexOfPassengerByID(userid){
@@ -564,7 +561,7 @@ function getClientFriendlyPassengerList(){
 	});
 	return friendlyPassengers;
 }
-function getPairedFriendlyDriver(passenger){
+function getPairedFriendlyDriver(driver){
 	var user = getPairedFriendlyUser(driver.user);
 	return new driverBuilder().withUser(user)
 											.withLat(driver.lat)
@@ -572,7 +569,7 @@ function getPairedFriendlyDriver(passenger){
 											.withTime(driver.time)
 											.getDriver();
 }
-function getPairedFriendlyPassenger(driver){
+function getPairedFriendlyPassenger(passenger){
 	var user = getPairedFriendlyUser(passenger.user);
 	return new passengerBuilder().withUser(user)
 													.withLat(passenger.lat)
@@ -593,7 +590,7 @@ function getPairedFriendlyUser(user){
 function removeDriver(driver){
 	var index = getDriverByID(driver.user.userid);
 	if(index != -1){
-		drivers.splice(i,1);
+		drivers.splice(index,1);
 		broadcastRemoveDriver(driver.user.userid);
 		console.log("#" + driver.user.userid +" unlisted from drivers.");
 	}
