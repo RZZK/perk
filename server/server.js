@@ -331,7 +331,6 @@ function userLogin(data,socket){
 	});
 }
 function initiatePark(data,user){
-	//input format: [lat:14.415,lng:124241.124214,time:'23:41:44']
 	if(indexOfPassengerByID(user.userid) != -1){
 		user.socket.emit("park",{success:false})
 		return;
@@ -666,4 +665,26 @@ function getPassengerIndexByID(userid){
 		if(passengers[i].user.userid == userid) return i; 
 	}
 	return -1;
+}
+function currentTime(){
+	var date = new Date();
+	var hours = date.getHours();
+	var min = date.getMinutes();
+	var time = hours + ":" + min;
+	return time;
+}
+function convertTime(time){
+	var hour = time.split(":")[0];
+	var min = parseInt(time.split(":")[1].substring(0,2));
+	var index = time.indexOf("PM");
+	if(hour == 12 && index == -1){
+		return "00:" + min;
+	} 
+	if (hour == 12){
+		return "12:" + min;
+	}
+	if (index == -1){
+		return hour + ":" + min;
+	}
+	return (hour + 12) + ":" + min;
 }

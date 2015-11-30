@@ -175,7 +175,8 @@
 															 <input type="time" id="time" style="line-height: 1.35em;" ng-model="departTime" placeholder="12:00am/pm">
 															</div>
 														</form>
-													 <button class="btn btn-success" ng-click="submitTime()" onclick="initiatePickup();removeBlur();">
+														<button class="btn" style="display:inline" onclick="currentTime()">Current Time</button>
+													 <button style="display:inline" class="btn btn-success" ng-click="submitTime()" onclick="initiatePickup();removeBlur();">
 														<span class="glyphicon glyphicon-save"></span> Submit
 													 </button>
 											  </div>
@@ -190,7 +191,8 @@
 														  </div>
 														</div>
 														</form>
-													 <button class="btn btn-success" ng-click="submitTime()" onclick="initiatePark();removeBlur();">
+													<button class="btn" style="display:inline" onclick="currentTime()">Current Time</button>
+													 <button class="btn btn-success" style="display:inline" ng-click="submitTime()" onclick="initiatePark();removeBlur();">
 														<span class="glyphicon glyphicon-save"></span> Submit
 													 </button>
 
@@ -253,20 +255,20 @@
 											</tbody>
 										 </table>
 										</section>
+										<section id="white" ng-show="displayChatSlider" class="main fullscreen" style="padding-top: 2em;">
+											<textarea rows="4" cols="50" id="chatBox"></textarea>
+												<form onsubmit="sendMessage()">
+													<input type="text" placeholder="Type Message">asdasdads</input>
+													<input type ="submit" value="send"></input>
+												</form>
+											</textarea>
+										</section>
 										<section id="bottomSlider" ng-show="displayBottomSlider" class="main">
 											<div id="bottomSlider1"></div>
 											<div id="bottomSlider2"></div>
 											<div id="bottomSlider3"></div>
 											<div style="display:none" id="bottomSlider4"></div>
 										</section>
-										<section id="chatSlider" ng-show="displayChatSlider" class="main">
-											<textarea rows="4" cols="50" id="chatBox"></textarea>
-												<form onsubmit="sendMessage()">
-													<input type="text" placeholder="Type Message"></input>
-													<input type ="submit" value="send"></input>
-												</form>
-											</textarea>
-									</section>
 							</section>
 						</div>
 						<!-- end of user logged in -->

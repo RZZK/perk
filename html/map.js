@@ -409,7 +409,7 @@ function Lot(name,lat,lng){
 		if(typeof me.getLot === "function" && me.getLot() === name){
 			$(bottomSlider3).html("<button class='btn btn-danger' onclick='parkingLotClick()'>Cancel Request</button>")
 		} else {
-			$(bottomSlider3).html("<button class='btn' onclick='parkingLotClick()'> Get a ride to " + name + "</button>")
+			$(bottomSlider3).html("<button class='btn' onclick='parkingLotClick()'> Get a ride to the " + name + "</button>")
 		}
 	});
 	this.addPassenger = function(passenger){
@@ -849,6 +849,7 @@ function pairWith(pair){
 	angular.element(document.getElementById('controller')).scope().returnToMap();
 	angular.element(document.getElementById('controller')).scope().toggleBottomSlider();
 	angular.element(document.getElementById('controller')).scope().refresh();
+	
 	$(bottomSlider1).html("Name: " + pair.user.name);
 	$(bottomSlider2).html("Phone: " + pair.user.phone);
 	if(driver){
@@ -856,6 +857,8 @@ function pairWith(pair){
 	} else {
 		$(bottomSlider3).html("Please call " + pair.user.name + " at " + pair.user.time + " to organize the pickup.");
 	}
+	$(bottomSlider4).html("<button ng-click='showChatSlider()'>chat</button>");
+	//$(bottomSlider4).css("display","inline");
 	MyMap.panTo(new google.maps.LatLng(pair.lat,pair.lng));
 	setShowLots(false);
 	google.maps.event.clearListeners(MyMap, 'dragstart');
@@ -907,7 +910,20 @@ function convertTime(time){
 	}
 	return time;
 }
-
+function currentTime(){
+	var date = new Date();
+	var hours = date.getHours();
+	var min = date.getMinutes();
+	var time = hours + ":" + min;
+	if(min < 10){ 
+		time = hours + ":0" + min;
+	} 
+	if ( hours < 10) {
+		time = "0" + time;
+	}
+	document.getElementById("time2").value = time;
+	document.getElementById("time").value = time;
+}
 //make updateLocation edit local user data not just  remote data
 //pair
 //removeListeners all over the place
