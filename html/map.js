@@ -10,6 +10,7 @@ var socket;
 var connected = false;
 var requesting = false;
 var locationIntervalID = -1;
+var pairedMarker = -1;
 
 function initializeMap() {
 	var mapCanvas = document.getElementById('googlemaps');
@@ -204,12 +205,12 @@ function Passenger(){
 		socket.emit("pair",driverid);
 	}
 	this.removePaired = function(passenger){
-		this.paired.forEach(function(e,i){
-			if(e.getID() === passenger){
+		for(var i = 0; i < this.paired.length; i++){
+			if(this.paired[i] == passenger){
 				socket.emit("unpair",passenger);
-				paired.splice(i,1);
+				this.paired.splice(i,1);
 			}
-		})
+		}
 	}
 	this.getPaired = function(){
 		return this.paired;
@@ -234,7 +235,7 @@ function Passenger(){
 	};
 	this.isAwaitingPairFrom = function(userid){
 		for(var i = 0; i < this.paired.length; i++){
-			if(this.paired[i].getID() == userid) return true;
+			if(this.paired[i] == userid) return true;
 		}
 		return false;
 	};
@@ -330,12 +331,12 @@ function Driver(){
 		socket.emit("pair",passenger);
 	}
 	this.removePaired = function(passenger){
-		this.paired.forEach(function(e,i){
-			if(e == passenger){
+		for(var i = 0; i < this.paired.length; i++){
+			if(this.paired[i] == passenger){
 				socket.emit("unpair",passenger);
-				paired.splice(i,1);
+				this.paired.splice(i,1);
 			}
-		})
+		}
 	}
 	this.getPaired = function(){
 		return this.paired;
@@ -486,9 +487,9 @@ function carClick(){
 	}
 	if(paired){
 		$(bottomSlider3).html("<button class='btn' onclick='carClick()'> Pair with " + driver.getName()+ "</button>")
-		return;
-	} 
-	$(bottomSlider3).html("<button class='btn btn-warning' onclick='carClick()'>Cancel Request</button>")
+	} else {
+		$(bottomSlider3).html("<button class='btn btn-warning' onclick='carClick()'>Cancel Request</button>")
+	}
 	carClickList(userid);
 }
 function parkingLotClickList(id){
@@ -498,6 +499,7 @@ function parkingLotClickList(id){
 	} else {
 		me.addPaired(id);
 	}
+	angular.element(document.getElementById('controller')).scope().initializeUsers();
 }
 function carClickList(id){
 	var paired = me.isAwaitingPairFrom(id);
@@ -506,6 +508,7 @@ function carClickList(id){
 	} else {
 		me.addPaired(id);
 	}
+	angular.element(document.getElementById('controller')).scope().initializeUsers();
 }
 //TEST COMMANDS
 /////////////////////////////////////////////////////////////////////////////////
@@ -573,7 +576,7 @@ function getDriverFromData(driver){
 											.getDriver();
 }
 function initiatePark(){
-	var time = document.getElementById("time2").value;
+	var time = convertTime(document.getElementById("time2").value);
 	getMyLocation(function(data){
 		socket.emit("park", {lat:data.lat,lng:data.lng,time:time});
 	});
@@ -596,7 +599,7 @@ function initiatePark(){
 	});
 };
 function initiatePickup(){
-	var time = document.getElementById("time").value;
+	var time = convertTime(document.getElementById("time").value);
 	var lotName = document.getElementById("lot").options[document.getElementById("lot").selectedIndex].value;
 	var lot = getLotByName(lotName);
 	if(lot === -1) {
@@ -709,7 +712,11 @@ function updateLocation(data){
 		driver.lat = data.lat;
 		driver.lng = data.lng;
 		updateLocationGoogleMaps(driver,data.lat,data.lng);
-	} else {
+	} else if(pariedMarker != -1){
+		if(data.userid == pairedMarker.user){
+ 			pairedMarker.setPosition(new google.maps.LatLng(data.lat,data.lng));
+		} 
+	} else{
 		console.log("User MIA for location update. (id = " + data.userid + ")");
 	}
 }
@@ -757,7 +764,7 @@ function getDriverListHTML(){
 		var pair = me.isAwaitingPairFrom(e.getID());
 		htmlArray.push({
 			fName: e.user.name,
-			departTime: e.time,
+			arrivalTime: e.time,
 			status: pair,
 			userid: e.user.userid
 		});
@@ -857,7 +864,7 @@ function pairWith(pair){
 			drivers[i].removeMap();
 	}
 	if(driver){
-		new google.maps.Marker({
+		pariedMarker = new google.maps.Marker({
 			position: new google.maps.LatLng(pair.lat, pair.lng),
 			icon: {
 				url: "assets/imgs/passenger.png",
@@ -866,10 +873,11 @@ function pairWith(pair){
 				anchor: new google.maps.Point(0, 0)
 			},
 			map: MyMap,
+			user: pair.user.userid,
 			animation: google.maps.Animation.DROP
 		});
 	} else {
-		new google.maps.Marker({
+		pariedMarker = new google.maps.Marker({
 			position: new google.maps.LatLng(pair.lat, pair.lng),
 			icon: {
 				url: "assets/imgs/car.png",
@@ -878,12 +886,27 @@ function pairWith(pair){
 				anchor: new google.maps.Point(0, 0)
 			},
 			map: MyMap,
+			user: pair.user.userid,
 			animation: google.maps.Animation.DROP
 		});
 	}
 	//if i am a driver add user to map 
 }
-
+function convertTime(time){
+	hour = parseInt(time.substring(0,2));
+	if(hour > 12) {
+		time = (hour - 12) + time.substring(2,5) + " PM";
+	} else if(hour < 1) {
+		time = 12 + time.substring(2,5) + " AM";
+	} else if(hour < 10){
+		time = time.substring(1) + " AM";
+	} else if (hour == 12){
+		time = 12 + time.substring(2,5) + " PM";
+	}else {
+		time = time + " AM"
+	}
+	return time;
+}
 
 //make updateLocation edit local user data not just  remote data
 //pair

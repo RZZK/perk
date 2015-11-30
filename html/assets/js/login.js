@@ -298,10 +298,6 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
     {
        $scope.incomplete = true;
     }
-
-    //if fields are empty during add phase
-	 if ($scope.arrivalTime.length) { $scope.incomplete = false; }
-    if ($scope.departTime.length) { $scope.incomplete = false; }
   };
 //---------------------------------------------------------------------------------------------------------------
 });

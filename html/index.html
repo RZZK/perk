@@ -154,8 +154,9 @@
 									<section ng-hide="welcomeScreen">
 										<section ng-show="showAddDeparture" class="main">
 									  		<div class="content container 100%" align="center" style="color: white; padding-top: 16em;">
-													 <h3>Request Pickup</h3>
 													 <form class="form-horizontal">
+														<div class="form-group">
+															<h3>Request Pickup</h3>
 															<select id="lot">
 																<option value="C Lot">C Lot</option>
 																<option value="F1 Lot">F1 Lot</option>
@@ -171,18 +172,12 @@
 																<option value="Parking Structure">Parking Structure</option>
 															</select>
 															<br>
-
-														<div class="form-group">
-														  <div class="col-sm-12">
-															 <input type="text" id="time" ng-model="departTime" placeholder="12:00am/pm">
-														  </div>
-														</div>
+															 <input type="time" id="time" style="line-height: 1.35em;" ng-model="departTime" placeholder="12:00am/pm">
+															</div>
 														</form>
-
-													 <button class="btn btn-success" ng-disabled="incomplete" ng-click="submitTime()" onclick="initiatePickup();removeBlur();">
+													 <button class="btn btn-success" ng-click="submitTime()" onclick="initiatePickup();removeBlur();">
 														<span class="glyphicon glyphicon-save"></span> Submit
 													 </button>
-
 											  </div>
 										</section>
 										<section ng-show="showAddParkingRequest" class="main">
@@ -191,11 +186,11 @@
 													 <form class="form-horizontal">
 														<div class="form-group">
 														  <div class="col-sm-12">
-															 <input type="text" id="time2" ng-model="arrivalTime" placeholder="12:00am/pm">
+															 <input type="time" id="time2" style="line-height: 1.35em;" ng-model="arrivalTime" placeholder="12:00am/pm">
 														  </div>
 														</div>
 														</form>
-													 <button class="btn btn-success" ng-disabled="incomplete" ng-click="submitTime()" onclick="initiatePark();removeBlur();">
+													 <button class="btn btn-success" ng-click="submitTime()" onclick="initiatePark();removeBlur();">
 														<span class="glyphicon glyphicon-save"></span> Submit
 													 </button>
 
@@ -225,12 +220,12 @@
 											</thead>
 											<tbody>
 											  <tr ng-repeat="passenger in passengers">
-												 <td>{{ passenger.fName }}</td>
-												 <td>{{ passenger.lot }}</td>
-												 <td>{{ passenger.departTime }}</td>
-												 <td ng-switch="passenger.status">
+												 <td width="25%">{{ passenger.fName }}</td>
+												 <td width="25%">{{ passenger.lot }}</td>
+												 <td width="25%">{{ passenger.departTime }}</td>
+												 <td width="25%" ng-switch="passenger.status">
 													<button ng-switch-when="false" class="btn" ng-click="parkingLotClickList(passenger.userid)">Request</button>
-													<button ng-switch-when="true" class="btn btn-warning" ng-click="parkingLotClickList(passenger.userid)">Cancel Request</button>
+													<button ng-switch-when="true" class="btn btn-warning" ng-click="parkingLotClickList(n.userid)">Cancel Request</button>
 												 </td>
 											  </tr>
 											</tbody>
@@ -248,9 +243,9 @@
 											</thead>
 											<tbody>
 											  <tr ng-repeat="driver in drivers">
-												 <td >{{ driver.fName }}</td>
-												 <td>{{ driver.arrivalTime }}</td>
-												 <td ng-switch="driver.status">
+												 <td width="33%">{{ driver.fName }}</td>
+												 <td width="33%">{{ driver.arrivalTime }}</td>
+												 <td width="33%" ng-switch="driver.status">
 													<button ng-switch-when="false" class="btn" ng-click="carClickList(driver.userid)">Request</button>
 													<button ng-switch-when="true" class="btn btn-warning" ng-click="carClickList(driver.userid)">Cancel Request</button>
 												 </td>

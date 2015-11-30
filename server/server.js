@@ -361,6 +361,14 @@ function initiatePark(data,user){
 	user.socket.on("cancel",function(){
 		removeDriver(driver);
 	});
+	user.socket.on("unpair",function(e){
+		console.log("#" + user.userid + " unpairing from #" + e + ".")
+		for(var i = 0; i < driver.paired.length; i++){
+			if(driver.paired[i] == e){
+				driver.paired.splice(i,1);
+			}
+		}
+	});
 }
 function initiatePickup(data,user){
 	//input format: [lat:14.415,lng:124241.124214,time:'23:41:44',lot: 'F']
@@ -396,6 +404,14 @@ function initiatePickup(data,user){
 	user.socket.on("cancel",function(){
 		removePassenger(passenger);
 	});
+	user.socket.on("unpair",function(e){
+		console.log("#" + user.userid + " unpairing from #" + e + ".")
+		for(var i = 0; i < passenger.paired.length; i++){
+			if(passenger.paired[i] == e){
+				passenger.paired.splice(i,1);
+			}
+		}
+	});
 }
 function updateLocation(user,data){
 	user.lat = data.lat;
@@ -427,8 +443,13 @@ function driverPair(driver,data){
 		return; 
 	}
 	driver.paired.push(data);
-	var index = passenger.paired.indexOf(driver.user.userid);
-	console.log(index + " " + passenger.paired);
+	var index = -1;
+	for(var i = 0; i < passenger.paired.length; i++){
+		if(passenger.paired[i] == driver.user.userid){
+			index = i;
+			break;
+		}
+	}
 	if(index != -1){
 		pairUsers(driver,passenger);
 	}
@@ -441,8 +462,13 @@ function passengerPair(passenger,data){
 		return; 
 	}
 	passenger.paired.push(data);
-	var index = driver.paired.indexOf(passenger.user.userid);
-	console.log(index + " " + driver.paired);
+	var index = -1;
+	for(var i = 0; i < driver.paired.length; i++){
+		if(driver.paired[i] == passenger.user.userid){
+			index = i;
+			break;
+		}
+	}
 	if(index != -1){
 		pairUsers(driver,passenger);
 	}
@@ -500,8 +526,22 @@ function removeUserBySocket(socket){
 	console.log(disconnectionMessage);
 }
 function pairUsers(driver,passenger){
-	if(driver.paired.indexOf(passenger.user.userid) == -1) return;
-	if(passenger.paired.indexOf(driver.user.userid) == -1) return;
+	var driverIndex = -1;
+	for(var i = 0; i < passenger.paired.length; i++){
+		if(passenger.paired[i] == driver.user.userid){
+			driverIndex = i;
+			break;
+		}
+	}
+	var passengerIndex = -1;
+	for(var i = 0; i < driver.paired.length; i++){
+		if(driver.paired[i] == passenger.user.userid){
+			passengerIndex = i;
+			break;
+		}
+	}
+	if(passengerIndex == -1) return;
+	if(driverIndex == -1) return;
 	console.log("#" + driver.user.userid + " and #" + passenger.user.userid + " paired.");
 	driver.user.socket.emit("pair",getPairedFriendlyPassenger(passenger));
 	passenger.user.socket.emit("pair",getPairedFriendlyDriver(driver));
