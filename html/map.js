@@ -874,7 +874,7 @@ function pairWith(pair){
 	if(driver){
 		$(bottomSlider3).html("Please wait for " + pair.user.name + " to call you with further information.");
 	} else {
-		$(bottomSlider3).html("Please call " + pair.user.name + " at " + pair.user.time + " to organize the pickup.");
+		$(bottomSlider3).html("Please call " + pair.user.name + " at " + pair.time + " to organize the pickup.");
 	}
 	// $(bottomSlider3).html("<form onsubmit='chat()'><input id='chat' type='text' style='display:inline; width:50%' placeholder='Enter Message'></input><div style='display:inline'>  </div><input class='btn' type='submit' style='display:inline'></input></form>");
 	// $(bottomSlider4).css("display","inline");
