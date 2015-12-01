@@ -282,11 +282,13 @@ var app = require('http').createServer();
 var io = require('socket.io')(app);
 app.listen(8001);
 
+var nonusers = new Array();
 var users = new Array();
 var passengers = new Array();
 var drivers = new Array();
 io.on('connection', function (socket) {
 	console.log("socket " + socket.id + " opened.")
+	nonusers.push(socket);
 	socket.on("login", function(data){
 		userLogin(data,socket);
 	});
@@ -310,7 +312,7 @@ function userLogin(data,socket){
 			return;
 		}
 		socket.emit("login",{success:true});
-		
+		removeFromNonUsers(socket);
 		var userData = y[0];
 		user = new userBuilder().withUserID(userData.userid)
 														.withName(userData.name)
@@ -426,11 +428,17 @@ function broadcastNewPassenger(passenger){
 	users.forEach(function(usr){
 		if(passenger.user.socket !== usr.socket) usr.socket.emit("newPassenger",pass);
 	});
+	nonusers.forEach(function(usr){
+		if(passenger.user.socket !== usr) usr.emit("newPassenger",pass);
+	});
 }
 function broadcastNewDriver(driver){
 	var drive = getClientFriendlyDriver(driver);
 	users.forEach(function(usr){
 		if(driver.user.socket !== usr.socket) usr.socket.emit("newDriver",drive);
+	});
+	nonusers.forEach(function(usr){
+		if(driver.user.socket !== usr) usr.emit("newDriver",drive);
 	});
 }
 function driverPair(driver,data){
@@ -491,6 +499,7 @@ function getUserByID(id){
 	return -1;
 }
 function removeUserBySocket(socket){
+	removeFromNonUsers(socket);
 	var disconnectionMessage = ""; 
 	if(users.length === 0 ) disconnectionMessage = "#??? disconnected";
 	else{
@@ -648,10 +657,16 @@ function broadcastRemoveDriver(userid){
 	users.forEach(function(usr){
 		usr.socket.emit("removeDriver",userid);
 	});
+	nonusers.forEach(function(usr){
+		usr.emit("removeDriver",userid);
+	});
 }
 function broadcastRemovePassenger(userid){
 	users.forEach(function(usr){
 		usr.socket.emit("removePassenger",userid);
+	});
+	nonusers.forEach(function(usr){
+		usr.emit("removePassenger",userid);
 	});
 }
 function getDriverIndexByID(userid){
@@ -687,4 +702,11 @@ function convertTime(time){
 		return hour + ":" + min;
 	}
 	return (hour + 12) + ":" + min;
+}
+function removeFromNonUsers(socket){
+	for(var i = 0; i < nonusers.length; i++){
+		if(nonusers[i] === socket){
+			nonusers.splice(i,1);
+		}
+	}
 }

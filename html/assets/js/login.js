@@ -126,6 +126,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   }
   $scope.displayRequestPickup = function ()
   {
+	  document.getElementById("time").value = "";
 	 if(currentlyRequesting()) {
 		 $scope.displayCancelRequest();
 		 return;
@@ -145,6 +146,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
 //---------------------------------------------------------------------------------------------------------------
   $scope.displayRequestParking = function ()
   {
+	 document.getElementById("time2").value = "";
 	 if(currentlyRequesting()) {
 		 $scope.displayCancelRequest();
 		 return;
@@ -164,6 +166,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
 //---------------------------------------------------------------------------------------------------------------
   $scope.toggleBottomSlider = function ()
   {
+	 
      $scope.welcomeScreen = false;
      $scope.showRiderList = false;
      $scope.showDriverList = false;
@@ -171,9 +174,10 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
      $scope.showAddParkingRequest = false;
 	 $scope.cancelRequest = false;
 	 $scope.displayChatSlider = false;
-
+	  // if(!$scope.displayBottomSlider) animateBottomSlider();
      $scope.displayBottomSlider = true;
      $scope.$apply();
+	 
   }
   //---------------------------------------------------------------------------------------------------------------
   $scope.disableBottomSlider = function ()

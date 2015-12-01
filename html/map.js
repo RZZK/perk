@@ -304,7 +304,9 @@ function Driver(){
 		angular.element(document.getElementById('controller')).scope().toggleBottomSlider();
 		$(bottomSlider1).html(driver.getName());
 		$(bottomSlider2).html("Seeking parking at: " + driver.getTime());
-		if(!me.isAwaitingPairFrom(driver.getID())){
+		if(me.getID() == driver.getID()){
+			$(bottomSlider3).html("You are currently awaiting passengers.");
+		} else if(!me.isAwaitingPairFrom(driver.getID())){
 			$(bottomSlider3).html("<button class='btn' onclick='carClick()'> Pair with " + driver.getName()+ "</button>")
 		} else {
 			$(bottomSlider3).html("<button class='btn btn-warning' onclick='carClick()'>Cancel Request</button>")
@@ -493,6 +495,13 @@ function carClick(){
 	carClickList(userid);
 }
 function parkingLotClickList(id){
+	if(getDriverIndexByID(me.getID()) == -1){
+		alert("You must first request parking first.");
+		addBlur();
+		angular.element(document.getElementById('controller')).scope().displayRequestParking();
+		angular.element(document.getElementById('controller')).scope().refresh();
+	return;
+	}
 	var paired = me.isAwaitingPairFrom(id);
 	if(paired) {
 		me.removePaired(id);
@@ -502,6 +511,13 @@ function parkingLotClickList(id){
 	angular.element(document.getElementById('controller')).scope().initializeUsers();
 }
 function carClickList(id){
+	if(getPassengerIndexByID(me.getID()) === -1){
+		alert("You must first request a pickup.");
+		addBlur();
+		angular.element(document.getElementById('controller')).scope().displayRequestPickup();
+		angular.element(document.getElementById('controller')).scope().refresh();
+		return;
+	}
 	var paired = me.isAwaitingPairFrom(id);
 	if(paired) {
 		me.removePaired(id);
@@ -557,6 +573,7 @@ function initializeUsers(passengers,drivers){
 		addPassenger(passenger);
 	});
 	drivers.forEach(function(driver){
+		console.log(driver);
 		addDriver(driver);
 	});
 };
@@ -761,6 +778,7 @@ function getPassengerList(){
 function getDriverListHTML(){
 	var htmlArray= new Array();
 	drivers.forEach(function(e){
+		if(e.getID() == me.getID()) return;
 		var pair = me.isAwaitingPairFrom(e.getID());
 		htmlArray.push({
 			fName: e.user.name,
@@ -774,6 +792,7 @@ function getDriverListHTML(){
 function getPassengerListHTML(){
 	var htmlArray= new Array();
 		getPassengerList().forEach(function(e){
+		if(e.getID() == me.getID()) return;
 			var pair = me.isAwaitingPairFrom(e.getID());
 			htmlArray.push({
 				fName: e.getName(),
@@ -857,8 +876,8 @@ function pairWith(pair){
 	} else {
 		$(bottomSlider3).html("Please call " + pair.user.name + " at " + pair.user.time + " to organize the pickup.");
 	}
-	$(bottomSlider4).html("<button ng-click='showChatSlider()'>chat</button>");
-	//$(bottomSlider4).css("display","inline");
+	// $(bottomSlider3).html("<form onsubmit='chat()'><input id='chat' type='text' style='display:inline; width:50%' placeholder='Enter Message'></input><div style='display:inline'>  </div><input class='btn' type='submit' style='display:inline'></input></form>");
+	// $(bottomSlider4).css("display","inline");
 	MyMap.panTo(new google.maps.LatLng(pair.lat,pair.lng));
 	setShowLots(false);
 	google.maps.event.clearListeners(MyMap, 'dragstart');
@@ -924,10 +943,40 @@ function currentTime(){
 	document.getElementById("time2").value = time;
 	document.getElementById("time").value = time;
 }
-//make updateLocation edit local user data not just  remote data
-//pair
+function chat(){
+	var message = document.getElementById("chat").value;
+	document.getElementById("chat").value = "";
+	socket.emit("chat",message);
+	console.log(message);
+}
+function animateBottomSlider(){
+	for(var i = -150; i < 0; i++){
+		document.getElementById("bottomSlider").style.bottom = i + "px"
+	}
+	// document.getElementById("bottomSlider").classList.remove("bottomSliderDown");
+	// document.getElementById("bottomSlider").classList.add("bottomSliderUp");
+	
+}
+function animateBottomSlider(){
+	var bottom = -150;
+	document.getElementById("bottomSlider").style.bottom = bottom + "px";
+	var myInverval = setInterval(function(){
+		document.getElementById("bottomSlider").style.bottom = bottom + "px";
+		bottom+=2;
+		if(bottom > -3) clearInterval(myInverval);
+	},1);
+	var myInverval2= setInterval(function(){
+		document.getElementById("bottomSlider").style.bottom = bottom + "px";
+		bottom+=2;
+		if(bottom > -2) clearInterval(myInverval2);
+	},1);
+	var myInverval3 = setInterval(function(){
+		document.getElementById("bottomSlider").style.bottom = bottom + "px";
+		document.getElementById("bottomSlider").style.boxShadow = "0px -" + parseInt((150 + bottom) / 30) + "px 5px rgba(0, 0, 0, 0.3)"
+		bottom+=2;
+		if(bottom > -1) clearInterval(myInverval3);
+	},1);
+	
+}
 //removeListeners all over the place
-//updatePassengerLocationGoogleMaps(passenger,lat,lng);
-//updateDriverLocationGoogleMaps(driver,lat,lng);
-//TODO remove users when logout
 
