@@ -11,31 +11,40 @@
 		<link rel="stylesheet" href="assets/css/angular-snap-only.css">
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-
-
 	</head>
-	<body ng-app="app" ng-controller="loginController" style="overflow: hidden;">
+	<body id="controller" ng-app="app" ng-controller="loginController" style="overflow: hidden;">
 	<!-- <body ng-app="app" ng-controller="loginController" -->
 
 		<!-- Left slide out page -->
 		<div id="leftmenu" style="padding-left: 12px; padding-top: 5px;" snap-drawer>
-				<h3>John Doe</h3>
-				<p>johndoe@cpp.edu</p>
+				<p><b><center>{{ currentUserEmail }}</center></b></p>
 				<hr>
 
 				<p>
-					<a href="" ng-click="displayAddDeparture()" onclick="addBlur()" style="color: #666666;" snap-close>
-						<span class="glyphicon glyphicon-map-marker"></span>​ Add departure time
+					<a href="" ng-click="returnToMap()" onclick="removeBlur()" style="color: #666666;" snap-close>
+						<span class="glyphicon glyphicon-picture"></span>​ View map
 					</a>
 				</p>
 				<p>
-					<a href="" ng-click="showRiders()" style="color: #666666;" snap-close>
-						<span class="glyphicon glyphicon-user"></span>​ View riders
+					<a href="" ng-click="displayRequestPickup()" style="color: #666666;" snap-close>
+						<span class="glyphicon glyphicon-map-marker"></span>​ Request Pickup
 					</a>
 				</p>
 				<p>
-					<a href="" ng-click="" style="color: #666666;" snap-close>
-						<span class="glyphicon glyphicon-screenshot"></span>​ Look for parking
+				<p>
+					<a href="" ng-click="displayRequestParking()"style="color: #666666;" snap-close>
+						<span class="glyphicon glyphicon-map-marker"></span>​ Request Parking
+					</a>
+				</p>
+				<p>
+				<p>
+					<a href="" ng-click="showDrivers(); initializeUsers();" style="color: #666666;" snap-close>
+						<span class="glyphicon glyphicon-road"></span>​ List Available Drivers
+					</a>
+				</p>
+				<p>
+					<a href="" ng-click="showRiders();  initializeUsers() " style="color: #666666;" snap-close>
+						<span class="glyphicon glyphicon-user"></span>​ List Available Parking
 					</a>
 				</p>
 				<hr>
@@ -45,7 +54,11 @@
 				<p><span class="glyphicon glyphicon-info-sign"></span>​ Help</p>
 				<p><span class="glyphicon glyphicon-thumbs-up"></span>​ Feedback</p>
 				<hr>
-				<p><span class="glyphicon glyphicon-off"></span>​ Log Out</p>
+				<p>
+					<a href="" ng-click="logout()" onclick="addBlur()" style="color: #666666;" snap-close>
+						<span class="glyphicon glyphicon-off"></span>​ Log Out
+					</a>
+				</p>
 		</div>
 
 		<div id="content" snap-content snap-options="snapOpts">
@@ -66,8 +79,6 @@
 					}
 					.login {
 						animation: flyin .5s ease forwards;
-						opacity: 0;
-						transform: scale(.5);
 						filter: blur(4px);
 					}
 				</style>
@@ -82,6 +93,8 @@
 						$('#googlemaps').addClass('blackbg');
 						disableUserInput(MyMap);
 					}
+					function enableTouchToDrag() { touchToDrag = true; }
+					function disableTouchToDrag() { touchToDrag = false; }
 				</script>
 					<section id="blank" class="main style4">
 					<div id="googlemaps" class="blackbg"></div>
@@ -95,18 +108,19 @@
 								</div>
 							</header>
 
-							<div class="content container 100%" style="padding-top: 16em;">
+							<div class="content container 100%" >
 
 								<!-- if newUser = false, display login -->
-								<div ng-hide="displaySignUp" class="login">
-									<input type="text" placeholder="username"><br>
-									<input type="password" placeholder="password"><br>
-									<button class="btn btn-success" ng-click="login()" onclick="removeBlur()"
+								<div ng-hide="displaySignUp" style="padding-top: 15em;" class="login">
+									<input type="text" ng-model="usernameEmail" id="username" placeholder="email"><br>
+									<input type="password" id="password" ng-model="password" placeholder="password"><br>
+									<button class="btn btn-success" onclick="login();"
 												style="padding-left: 106px; padding-right: 106px; margin-top: 10px;">Log-in</button>
 									<p><a href="" ng-click="newUser('signup')">Create an account</a></p>
 								</div>
+
 								<!-- if newUser = true, display signup -->
-								<div ng-show="displaySignUp" class="login">
+								<div ng-show="displaySignUp" style="padding-top: 5em;" class="login">
 									<input type="text" ng-model="username" placeholder="username"><br>
 									<input type="password" ng-model="passw1" placeholder="password"><br>
 									<input type="password" ng-model="passw2" placeholder="confirm password"><br>
@@ -122,49 +136,80 @@
 
 					</div>
 					<!-- end of user not logged in -->
-
 						<!-- user is logged in -->
 						<div ng-show="loggedIn">
 								<header id="header">
 									<!-- Logo and Nav -->
 									<div align="center">
 										<a href="" snap-toggle="left" ng-click="displayMenu()"><span class="glyphicon glyphicon-th-list left"></span></a>
-										<a href="" onclick="initSecondMap()"><span class="glyphicon glyphicon-refresh right"></span></a>
+										<a href="" ng-click="refresh()"><span class="glyphicon glyphicon-refresh right"></span></a>
 										<a href="#"><img src="images/perk2.png" style="align:center"></a>
 									</div>
 								</header>
 							<section>
 									<section ng-show="welcomeScreen" style="padding-top: 16em;">
-											<h3>WELCOME</h3>
+
 									</section>
-
 									<section ng-hide="welcomeScreen">
-										<section id="blank" ng-show="showAddDeparture">
-
+										<section ng-show="showAddDeparture" class="main">
 									  		<div class="content container 100%" align="center" style="color: white; padding-top: 16em;">
-													 <h3>Add departure time</h3>
 													 <form class="form-horizontal">
-
+														<div class="form-group">
+															<h3>Request Pickup</h3>
+															<select id="lot">
+																<option value="C Lot">C Lot</option>
+																<option value="F1 Lot">F1 Lot</option>
+																<option value="F2 Lot">F2 Lot</option>
+																<option value="F3 Lot">F3 Lot</option>
+																<option value="F4 Lot">F4 Lot</option>
+																<option value="F5 Lot">F5 Lot</option>
+																<option value="F8 Lot">F8 Lot</option>
+																<option value="F9 Lot">F9 Lot</option>
+																<option value="F10 Lot">F10 Lot</option>
+																<option value="J Lot">J Lot</option>
+																<option value="M Lot">M Lot</option>
+																<option value="Parking Structure">Parking Structure</option>
+															</select>
+															<br>
+															 <input type="time" id="time" style="line-height: 1.35em;" ng-model="departTime" placeholder="12:00am/pm">
+															</div>
+														</form>
+														<button class="btn" style="display:inline" onclick="currentTime()">Current Time</button>
+													 <button style="display:inline" class="btn btn-success" ng-click="submitTime()" onclick="initiatePickup();removeBlur();">
+														<span class="glyphicon glyphicon-save"></span> Submit
+													 </button>
+											  </div>
+										</section>
+										<section ng-show="showAddParkingRequest" class="main">
+											<div class="content container 100%" align="center" style="color: white; padding-top: 16em;">
+													 <h3>Request Parking</h3>
+													 <form class="form-horizontal">
 														<div class="form-group">
 														  <div class="col-sm-12">
-															 <input type="text" ng-model="lot" placeholder="Lot">
-														  </div>
-														</div>
-
-														<div class="form-group">
-														  <div class="col-sm-12">
-															 <input type="text" ng-model="departTime" placeholder="12:00am/pm">
+															 <input type="time" id="time2" style="line-height: 1.35em;" ng-model="arrivalTime" placeholder="12:00am/pm">
 														  </div>
 														</div>
 														</form>
-
-													 <button class="btn btn-success" ng-disabled="incomplete" ng-click="submitTime()">
+													<button class="btn" style="display:inline" onclick="currentTime()">Current Time</button>
+													 <button class="btn btn-success" style="display:inline" ng-click="submitTime()" onclick="initiatePark();removeBlur();">
 														<span class="glyphicon glyphicon-save"></span> Submit
 													 </button>
 
 											  </div>
 										</section>
+										<section ng-show="cancelRequest" class="main">
+											<div class="content container 100%" align="center" style="color: white; padding-top: 16em;">
+												 <form class="form-horizontal">
+													<div class="form-group">
+													  <div class="col-sm-12">
+														 <button class="btn btn-success" onclick="cancelRequest()">Cancel Current Request?</button>
+													  </div>
+													</div>
+												</form>
+											</div>
+										</section>
 										<section id="white" ng-show="showRiderList" class="main fullscreen" style="padding-top: 2em;">
+
 										 <!--table data-->
 										 <table class="table table-striped">
 											<thead>
@@ -175,27 +220,64 @@
 											  </tr>
 											</thead>
 											<tbody>
-											  <tr ng-repeat="user in users">
-												 <td>{{ user.fName }}</td>
-												 <td>{{ user.lot }}</td>
-												 <td>{{ user.departTime }}</td>
-												 <td>
-													<button class="btn" ng-click="editEntry(user.id)"> Request </button>
+											  <tr ng-repeat="passenger in passengers">
+												 <td width="25%">{{ passenger.fName }}</td>
+												 <td width="25%">{{ passenger.lot }}</td>
+												 <td width="25%">{{ passenger.departTime }}</td>
+												 <td width="25%" ng-switch="passenger.status">
+													<button ng-switch-when="false" class="btn" ng-click="parkingLotClickList(passenger.userid)">Request</button>
+													<button ng-switch-when="true" class="btn btn-warning" ng-click="parkingLotClickList(n.userid)">Cancel Request</button>
 												 </td>
 											  </tr>
 											</tbody>
 										 </table>
 										</section>
-									</section>
+										<section id="white" ng-show="showDriverList" class="main fullscreen" style="padding-top: 2em;">
 
+										 <!--table data-->
+										 <table class="table table-striped">
+											<thead>
+											  <tr>
+												 <th><span class="lightbold">Name</span></th>
+												 <th><span class="lightbold">Arrival</span></th>
+											  </tr>
+											</thead>
+											<tbody>
+											  <tr ng-repeat="driver in drivers">
+												 <td width="33%">{{ driver.fName }}</td>
+												 <td width="33%">{{ driver.arrivalTime }}</td>
+												 <td width="33%" ng-switch="driver.status">
+													<button ng-switch-when="false" class="btn" ng-click="carClickList(driver.userid)">Request</button>
+													<button ng-switch-when="true" class="btn btn-warning" ng-click="carClickList(driver.userid)">Cancel Request</button>
+												 </td>
+											  </tr>
+											</tbody>
+										 </table>
+										</section>
+										<section id="white" ng-show="displayChatSlider" class="main fullscreen" style="padding-top: 2em;">
+											<textarea rows="4" cols="50" id="chatBox"></textarea>
+												<form onsubmit="sendMessage()">
+													<input type="text" placeholder="Type Message">asdasdads</input>
+													<input type ="submit" value="send"></input>
+												</form>
+											</textarea>
+										</section>
+										<section id="bottomSlider" ng-show="displayBottomSlider" class="main">
+											<div id="bottomSlider1"></div>
+											<div id="bottomSlider2"></div>
+											<div id="bottomSlider3"></div>
+											<div style="display:none" id="bottomSlider4"></div>
+										</section>
 							</section>
 						</div>
 						<!-- end of user logged in -->
-
+						
 					</section>
+					
 		</div><!-- end of snap-content -->
 
 		<!-- Scripts -->
+			<script src="assets/js/socket.io/socket.io.js"></script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.poptrox.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
@@ -204,47 +286,13 @@
 			<script src="assets/js/util.js"></script>
 			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="map.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script src="assets/js/login.js"></script>
-			<script>$('body').bind('touchmove', function(e){e.preventDefault()})</script>
 			<script src="assets/js/snap.js"></script>
 			<script src="assets/js/angular-snap.js"></script>
-
 			<script src="https://maps.googleapis.com/maps/api/js"></script>
-
-			<script>
-			var MyMap;
-				function initialize() {
-				  var mapCanvas = document.getElementById('googlemaps');
-				  var mapOptions = {
-					 center: new google.maps.LatLng(34.0569172,-117.8217494),
-					 zoom: 16,
-					 mapTypeId: google.maps.MapTypeId.ROADMAP,
-					streetViewControl: false,
-					mapTypeControl: false,
-					disableDefaultUI: true,
-					draggable: false,
-					zoomControl: false, 
-					scrollwheel: false,
-					disableDoubleClickZoom: true,
-					styles: [
-						{
-						elementType: "labels.icon",
-						stylers: [{visibility: "off"}]
-						}
-					]
-				  }
-				var m = new google.maps.Map(mapCanvas, mapOptions);
-				MyMap = m;
-				}
-				
-				function disableUserInput(map){
-					map.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true});
-				}
-				function enableUserInput(map){
-					map.setOptions({draggable: true, zoomControl: true, scrollwheel: true, disableDoubleClickZoom: false});
-				}
-				google.maps.event.addDomListener(window, 'load', initialize);
-			</script>
+			<script> google.maps.event.addDomListener(window, 'load', initializeMap); </script>
+			<script> google.maps.event.addDomListener(window, 'load', initializeSocket); </script>
 	</body>
 </html>

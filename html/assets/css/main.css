@@ -47,6 +47,39 @@
 		position: relative
 	}
 
+#bottomSlider {
+	 z-index: 2;
+    background: white;
+    left: 0;
+    right: 0;
+	bottom: 0;
+    height: 150px;
+	padding-top: 1em;
+	position:fixed;
+	box-shadow: 0px -5px 5px rgba(0,0,0,0.3);
+}
+
+#chatSlider {
+	 z-index: 2;
+    background: white;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 150px;
+	 padding-top: 1em;
+}
+#chatBox {
+	width:100%;
+	height:100%; 
+	box-sizing: border-box;         /* For IE and modern versions of Chrome */
+	-moz-box-sizing: border-box;    /* For Firefox                          */
+	-webkit-box-sizing: border-box; 
+}
+option {
+   background-color: #666666;
+}
+
 	.lightbold{
 		text-decoration: none;
 		line-height: 2.5em;
@@ -85,16 +118,11 @@
   text-decoration: none;
 }
 
-#secondMap {
-  height: 100%;
-  width: 100%;
-}
-
 #leftmenu {
 	color: #666666;
+	background-color: white;
+	box-shadow: 5px 0 5px #888
 }
-
-
 
 div.blackbg {
 	z-index: 1;
@@ -129,6 +157,22 @@ div.blackbg {
 	font-size: 20px;
 	font-weight: 400;
 	padding: 4px;
+}
+
+input[type="time"]::-webkit-outer-spin-button,
+input[type="time"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+::-ms-clear { display: none; }
+
+input[type="time"]::-webkit-clear-button {
+ -webkit-appearance: none;
+  display: none;
+}
+input[type="time"] {
+    -moz-appearance: textfield;
 }
 
 .login input[type=password]{
@@ -2249,6 +2293,7 @@ div.blackbg {
 	form input[type="text"],
 	form input[type="email"],
 	form input[type="password"],
+	form input[type="time"],
 	form select,
 	form textarea {
 		-moz-appearance: none;
@@ -2601,11 +2646,11 @@ div.blackbg {
 		}
 
 		.main.style6 {
+			position: auto;
+			margin-top: 30%;
+		  	height: 200px;
 			text-align: center;
-			padding: 0 0 2em 0;
-			line-height: 30px;
 			letter-spacing: -1px;
-			height: 100%;
 			}
 		}
 

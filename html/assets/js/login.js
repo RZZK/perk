@@ -1,28 +1,22 @@
 angular.module('app', ['snap']).controller('loginController', function($scope, $http)
 {
+
   /*
     // this method is currently not loading data from json correctly
     $http.get('users.json')
     .success(function (data){ $scope.users = data; })
     .error(function (data){ $scope.users = [{id:0, fName:'Error', lName:'Could not load data'}]; });
   */
-  $scope.fName = '';
-  $scope.lName = '';
+  $scope.currentUserName = '';
+  $scope.currentUserEmail = '';
   $scope.departTime = '';
+  $scope.arrivalTime = '';
   $scope.lot = '';
-  $scope.users =
-  [
-    {id:1, fName:'Hege', lot: "F", departTime:"5:00pm" },
-    {id:2, fName:'Kim', lot: "Structure", departTime:"5:30pm" },
-    {id:3, fName:'Sal', lot: "Structure", departTime:"8:15pm" },
-    {id:4, fName:'Jack', lot: "Structure", departTime:"9:00pm" },
-    {id:5, fName:'John', lot: "Overflow", departTime:"9:05pm" },
-    {id:6, fName:'Peter', lot: "F", departTime:"10:00pm" },
-    {id:7, fName:'Lollerskates', lot: "F", departTime:"11:59pm" }
-  ];
 
   $scope.snapOpts = { disable: 'right' };
   $scope.username = '';
+  $scope.usernameEmail = '';
+  $scope.password = '';
   $scope.passw1 = '';
   $scope.passw2 = '';
   $scope.email = '';
@@ -30,13 +24,49 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.vehicle = '';
   $scope.vcolor = '';
 
+  $scope.drivers =
+  [
+    {id:1, fName:'Hege',  lot: "F",          arrivalTime:"5:00pm" },
+    {id:2, fName:'Kim',   lot: "Structure",  arrivalTime:"5:30pm" },
+    {id:3, fName:'Sal',   lot: "Structure",  arrivalTime:"8:15pm" },
+  ];
+
+  $scope.passengers =
+  [
+    {id:5, fName:'John',   lot: "Overflow",  departTime:"9:05pm" },
+    {id:6, fName:'Peter',  lot: "F",         departTime:"10:00pm" },
+    {id:7, fName:'OhHai',  lot: "F",         departTime:"11:59pm" }
+  ];
+
   $scope.displaySignUp = false;
   $scope.showRiderList = false;
+  $scope.showDriverList = false;
   $scope.showAddDeparture = false;
+  $scope.showAddParkingRequest = false;
+  $scope.displayBottomSlider = false;
   $scope.welcomeScreen = true;
+  $scope.cancelRequest = false;
+  $scope.displayChatSlider = false;
+
   $scope.error = false;
   $scope.incomplete = false;
   $scope.loggedIn = false;
+  $scope.addPassenger = function()
+  {
+    $scope.passengers.push({fName:$scope.fName,
+                            lot:$scope.lot,
+                            departTime:$scope.departTime})
+  }
+  $scope.addDriver = function()
+  {
+    $scope.drivers.push({fName:$scope.fName,
+                        lot:$scope.lot,
+                        departTime:$scope.departTime})
+  }
+  $scope.initializeUsers = function(){
+	  $scope.drivers = getDriverListHTML();
+	  $scope.passengers = getPassengerListHTML();
+  }
 //---------------------------------------------------------------------------------------------------------------
   $scope.newUser = function(id)
   {
@@ -58,43 +88,195 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   {
      $scope.welcomeScreen = false;
      $scope.showAddDeparture = false;
+     $scope.showAddParkingRequest = false;
+     $scope.showDriverList = false;
+     $scope.displayBottomSlider = false;
+	 $scope.cancelRequest = false;
+	 
+
      $scope.showRiderList = true;
   }
 //---------------------------------------------------------------------------------------------------------------
-  $scope.displayAddDeparture = function ()
+  $scope.showDrivers = function ()
   {
      $scope.welcomeScreen = false;
+     $scope.showAddDeparture = false;
+     $scope.showAddParkingRequest = false;
      $scope.showRiderList = false;
+     $scope.displayBottomSlider = false;
+	 $scope.cancelRequest = false;
+	 $scope.displayChatSlider = false;
+
+     $scope.showDriverList = true;
+  }
+//---------------------------------------------------------------------------------------------------------------
+  $scope.displayCancelRequest = function ()
+  {
+	 addBlur();
+	 $scope.welcomeScreen = false;
+     $scope.showAddDeparture = false;
+     $scope.showAddParkingRequest = false;
+     $scope.showRiderList = false;
+     $scope.displayBottomSlider = false;
+     $scope.showDriverList = false;
+	 $scope.displayChatSlider = false;
+	 
+	 $scope.cancelRequest = true;
+	 $scope.$apply();
+  }
+  $scope.displayRequestPickup = function ()
+  {
+	  document.getElementById("time").value = "";
+	 if(currentlyRequesting()) {
+		 $scope.displayCancelRequest();
+		 return;
+	 }
+     $scope.welcomeScreen = false;
+     $scope.showRiderList = false;
+     $scope.showDriverList = false;
+     $scope.showAddParkingRequest = false;
+     $scope.displayBottomSlider = false;
+	 $scope.cancelRequest = false;
+	 $scope.displayChatSlider = false;
+	 
+	addBlur();
+	
      $scope.showAddDeparture = true;
   }
 //---------------------------------------------------------------------------------------------------------------
+  $scope.displayRequestParking = function ()
+  {
+	 document.getElementById("time2").value = "";
+	 if(currentlyRequesting()) {
+		 $scope.displayCancelRequest();
+		 return;
+	 }
+	 addBlur();
+     $scope.welcomeScreen = false;
+     $scope.showRiderList = false;
+     $scope.showDriverList = false;
+     $scope.showAddParkingRequest = false;
+     $scope.displayBottomSlider = false;
+     $scope.showAddDeparture = false;
+	 $scope.cancelRequest = false;
+	 $scope.displayChatSlider = false;
+	 
+     $scope.showAddParkingRequest = true;
+  }
+//---------------------------------------------------------------------------------------------------------------
+  $scope.toggleBottomSlider = function ()
+  {
+	 
+     $scope.welcomeScreen = false;
+     $scope.showRiderList = false;
+     $scope.showDriverList = false;
+     $scope.showAddDeparture = false;
+     $scope.showAddParkingRequest = false;
+	 $scope.cancelRequest = false;
+	 $scope.displayChatSlider = false;
+	  // if(!$scope.displayBottomSlider) animateBottomSlider();
+     $scope.displayBottomSlider = true;
+     $scope.$apply();
+	 
+  }
+  //---------------------------------------------------------------------------------------------------------------
+  $scope.disableBottomSlider = function ()
+  {
+     $scope.welcomeScreen = true;
+     $scope.showRiderList = false;
+     $scope.showDriverList = false;
+     $scope.showAddDeparture = false;
+     $scope.showAddParkingRequest = false;
+	 $scope.cancelRequest = false;
+	 $scope.displayChatSlider = false;
+
+     $scope.displayBottomSlider = false;
+     $scope.$apply();
+  }
+//---------------------------------------------------------------------------------------------------------------
+   $scope.returnToMap = function()
+   {
+	  removeBlur();
+      $scope.welcomeScreen = true;
+      $scope.showRiderList = false;
+      $scope.showDriverList = false;
+      $scope.showAddDeparture = false;
+      $scope.showAddParkingRequest = false;
+      $scope.displayBottomSlider = false;
+	  $scope.cancelRequest = false;
+	  $scope.displayChatSlider = false;
+	 
+   }
+//---------------------------------------------------------------------------------------------------------------
+  $scope.showChatSlider = function()
+   {
+	  removeBlur();
+      $scope.welcomeScreen = false;
+      $scope.showRiderList = false;
+      $scope.showDriverList = false;
+      $scope.showAddDeparture = false;
+      $scope.showAddParkingRequest = false;
+      $scope.displayBottomSlider = false;
+	  $scope.displayChatSlider = true;
+	 $scope.cancelRequest = false;
+	 
+   }
+//---------------------------------------------------------------------------------------------------------------
   $scope.login = function()
   {
+     // should save username and email so they can be displayed on the left drawer
+     // use username as key, and get first name, last name, and e-mail
+     $scope.currentUserEmail = $scope.usernameEmail;
      $scope.loggedIn = true;
-    //$scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
+	 $scope.returnToMap();
+	 $scope.$apply();
+	 
   };
 //---------------------------------------------------------------------------------------------------------------
   $scope.signup = function()
   {
-    //$scope.users.push({id:id_counter, fName:$scope.fName, lName:$scope.lName})
+	  console.log("signup");
+     // should push data to database if username is not taken
+  };
+ //---------------------------------------------------------------------------------------------------------------
+  $scope.logout = function()
+  {
+    $scope.showRiderList = false;
+    $scope.showDriverList = false;
+    $scope.showAddDeparture = false;
+    $scope.showAddParkingRequest = false;
+    $scope.displayBottomSlider = false;
+    $scope.loggedIn = false;
+
+    $scope.currentUserEmail = '';
+    $scope.usernameEmail = '';
+    $scope.password = '';
   };
 //---------------------------------------------------------------------------------------------------------------
   $scope.submitTime = function()
   {
-    /*id_counter += 1;
+     // takes the data from "Add departure time" and saves it to the table
+     // should use the info of the user that is logged in (name, email, phone number?)
+     // should take the "Lot" and "Time" that the user typed in the two fields
+     $scope.welcomeScreen = true;
+     $scope.showRiderList = false;
+     $scope.showDriverList = false;
+     $scope.showAddDeparture = false;
+     $scope.displayBottomSlider = false;
 
-    // add to data
-    $scope.users.push({id:id_counter,
-                        fName:$scope.fName,
-                        lot:$scope.lot,
-                        departTime:$scope.departTime})
-
-    // clear fields and reset save button
-    $scope.fName = null;
-    $scope.lot = null;
-    $scope.departTime = null;
-    $scope.incomplete = true;*/
+     $scope.departTime = '';
+     $scope.lot = '';
   };
+  $scope.refresh = function() { $scope.$apply(); };
+  
+//---------------------------------------------------------------------------------------------------------------
+	$scope.carClickList = function(id){
+		carClickList(id);
+	}
+//---------------------------------------------------------------------------------------------------------------
+	$scope.parkingLotClickList = function(id){
+		parkingLotClickList(id);
+	}
 //---------------------------------------------------------------------------------------------------------------
   $scope.$watch('passw1',function() {$scope.test();});
   $scope.$watch('passw2',function() {$scope.test();});
@@ -105,6 +287,7 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
   $scope.$watch('vcolor', function() {$scope.test();});
   $scope.$watch('lot', function() {$scope.test();});
   $scope.$watch('departTime', function() {$scope.test();});
+  $scope.$watch('arrivalTime', function() {$scope.test();});
 //---------------------------------------------------------------------------------------------------------------
   $scope.test = function()
   {
@@ -112,17 +295,13 @@ angular.module('app', ['snap']).controller('loginController', function($scope, $
     else { $scope.error = false; } // no error
 
     $scope.incomplete = false;
-
-    // if all fields are still empty
+    // if all fields are still empty during create account
     if (!$scope.username.length || !$scope.passw1.length || !$scope.passw2.length
       || !$scope.email.length || !$scope.number.length || !$scope.vehicle.length
       || !$scope.vcolor.length )
     {
        $scope.incomplete = true;
     }
-
-    //if fields are empty during add phase
-    if ($scope.lot.length && $scope.departTime.length) { $scope.incomplete = false; }
   };
 //---------------------------------------------------------------------------------------------------------------
 });
