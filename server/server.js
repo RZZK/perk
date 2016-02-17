@@ -162,6 +162,12 @@ return query(sql,function(x,y,z){
 	});
 
 }
+function getTempUser (callback){
+	var sql = "SELECT email,passowrd FROM users WHERE email LIKE perkuser";
+	return query(sql,function(x,y,z){
+		callback(y);
+	})
+}
 
 
 
@@ -289,6 +295,9 @@ var drivers = new Array();
 io.on('connection', function (socket) {
 	console.log("socket " + socket.id + " opened.")
 	nonusers.push(socket);
+	socket.on("loginWithoutAccount",function(){
+		loginWithoutAccount(socket);
+	});
 	socket.on("login", function(data){
 		userLogin(data,socket);
 	});
@@ -298,7 +307,31 @@ io.on('connection', function (socket) {
 	});
 	socket.emit("data",{passengers:getClientFriendlyPassengerList(),drivers:getClientFriendlyDriverList()});
 });
+function loginWithoutAccount(socket){
+		socket.emit("login",{success:true});
+		removeFromNonUsers(socket);
+		var userid = parseInt(10000 * Math.random());
+		var name = "anon" + parseInt(100 * Math.random());
+		var phone = parseInt(10000000 * Math.random());
+		var email = parseInt(100000 * Math.random()) + "@perk.com";
 
+		user = new userBuilder().withUserID(userid)
+								.withName(name)
+								.withPhone(phone)
+								.withEmail(email)
+								.withPicture("")
+								.withSocket(socket).getUser();
+		
+		users.push(user);
+		console.log("#" + user.userid + " logged in.");
+		
+		socket.on("pickup", function(data){
+			initiatePickup(data,user)
+		});
+		socket.on("park", function(data){
+			initiatePark(data,user)
+		});
+}
 function userLogin(data,socket){
 	var user;
 	if(indexOfUserByEmail(data.email) != -1){

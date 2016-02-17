@@ -978,5 +978,14 @@ function animateBottomSlider(){
 	},1);
 	
 }
+function loginWithoutAccount(){
+	socket.emit("loginWithoutAccount");
+	socket.on("loginWithoutAccount", function(data){
+		socket.removeListener("loginWithoutAccount");
+		document.getElementById("username").value = data.username;
+		document.getElementById("password").value = data.password
+		login();
+	});
+}
 //removeListeners all over the place
 
