@@ -5,7 +5,7 @@ var mysql = require('mysql');
 
 var my_client = mysql.createConnection({
 host: 'localhost',
-user: 'root',
+user: 'perk',
 port:'3306',
 password: 'mysqlpassword',
 database: 'perk'
@@ -308,13 +308,12 @@ io.on('connection', function (socket) {
 	socket.emit("data",{passengers:getClientFriendlyPassengerList(),drivers:getClientFriendlyDriverList()});
 });
 function loginWithoutAccount(socket){
-		socket.emit("login",{success:true});
 		removeFromNonUsers(socket);
 		var userid = parseInt(10000 * Math.random());
 		var name = "anon" + parseInt(100 * Math.random());
 		var phone = parseInt(10000000 * Math.random());
 		var email = parseInt(100000 * Math.random()) + "@perk.com";
-
+		var password = parseInt(10000000* Math.random());
 		user = new userBuilder().withUserID(userid)
 								.withName(name)
 								.withPhone(phone)
@@ -324,6 +323,7 @@ function loginWithoutAccount(socket){
 		
 		users.push(user);
 		console.log("#" + user.userid + " logged in.");
+		socket.emit("loginWithoutAccount",{email:email,password:password});
 		
 		socket.on("pickup", function(data){
 			initiatePickup(data,user)

@@ -535,7 +535,7 @@ function carClickList(id){
 ///////////////////////////////////////////////////////////////////////////////////
 
 function initializeSocket(){
-	socket = io.connect('http://www.p3rk.net:8001');
+	socket = io.connect('http://www.zkysar.com:8001');
 	socket.on('data', function(data){
 		connected = true;
 		initializeUsers(data.passengers,data.drivers);
@@ -984,7 +984,11 @@ function loginWithoutAccount(){
 		socket.removeListener("loginWithoutAccount");
 		document.getElementById("username").value = data.username;
 		document.getElementById("password").value = data.password
-		login();
+		removeBlur();
+			angular.element(document.getElementById('controller')).scope().login();
+			locationIntervalID = setInterval(function(){
+				updateMyLocation();
+			},1000);
 	});
 }
 //removeListeners all over the place
